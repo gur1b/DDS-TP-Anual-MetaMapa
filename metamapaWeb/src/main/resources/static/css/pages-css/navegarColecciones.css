@@ -1,0 +1,285 @@
+/* ====== Base ====== */
+:root {
+    --orange: #F47C2C;
+    --orange-2: #FF9A57;
+    --dark: #22252B;
+    --text: #2E2E2E;
+    --muted: #6F7A87;
+    --card: #fff;
+    --shadow: 0 10px 30px rgba(0,0,0,.12);
+}
+
+/* ====== Layout Base ====== */
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+    margin: 0;
+    font-family: Montserrat, system-ui, Segoe UI, Roboto, Arial, sans-serif;
+    color: var(--text);
+    /* Fondo de mapa */
+    background-image: url("../../img/fondoHOME1.png");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Fija el fondo */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    width: min(1100px, 92%);
+    margin-inline: auto;
+}
+
+/* Hacemos que <main> ocupe el espacio para que el footer quede abajo */
+main {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */ /* <-- BORRÁ O COMENTÁ ESTA LÍNEA */
+    padding: 60px 0;
+    align-items: center; /* Centra la tarjeta horizontalmente */
+}
+
+
+/* ====== Tarjeta Principal Gris (Contenedora) ====== */
+.collection-card {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #f0f2f5e8;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    overflow: hidden; /* <-- ¡Este es importante ahora! */
+
+    /* --- NUEVAS LÍNEAS --- */
+    display: flex;             /* Habilita flexbox para controlar hijos */
+    flex-direction: column;    /* Apila el header y la lista */
+    max-height: calc(100vh - 180px); /* Altura máxima (ej: ventana - header - footer - padding) */
+    /* Ajusta el 180px según el espacio que quieras dejar arriba/abajo */
+}
+
+.collection-header {
+    background: var(--orange);
+    color: #fff;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 16px 24px;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+/* ====== Grilla de Colecciones (2x2) ====== */
+.collections-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    padding: 24px;
+
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+
+    max-height: 450px;
+}
+
+/* ====== Tarjeta Blanca de Colección (Lo que pediste) ====== */
+.collection-item {
+    display: flex; /* Para poner texto e imagen lado a lado */
+    background: #fff;
+    color: var(--text);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    text-decoration: none;
+    overflow: hidden; /* Para redondear la imagen */
+    transition: all 0.2s ease-in-out;
+}
+
+.collection-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+/* Parte del texto (izquierda) */
+.collection-text {
+    flex: 1; /* Ocupa el espacio sobrante */
+    text-align: center;
+    padding: 1rem 1.25rem;
+}
+
+.collection-text h3 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 1.2rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--dark);
+}
+
+.collection-text p {
+    font-weight: 600;
+    line-height: 2;
+}
+
+/* Parte de la imagen (derecha) */
+.collection-image {
+    width: 180px;
+    flex-shrink: 0; /* Evita que la imagen se encoja */
+}
+
+.collection-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Rellena el espacio sin deformarse */
+}
+
+
+/* ====== Responsividad (Móvil) ====== */
+@media (max-width: 900px) {
+    /* Hacemos que sea 1 sola columna en pantallas más chicas */
+    .collections-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .collection-item {
+        flex-direction: column; /* Apila texto e imagen */
+    }
+    .collection-image {
+        width: 100%;
+        height: 150px; /* Le da una altura fija a la imagen en móvil */
+    }
+}
+
+/* --- Estilos del Modal --- */
+
+/* El fondo oscuro semi-transparente */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+
+    /* Centra el modal */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 1000; /* Asegura que esté por encima de todo */
+
+    /* Oculto por defecto */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Clase que se añade con JS para mostrar el modal */
+.modal-backdrop.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* La ventana del modal */
+.modal {
+    background-color: white;
+    border-radius: 8px;
+    padding: 24px;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+
+    /* Animación de entrada */
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+}
+
+.modal-backdrop.active .modal {
+    transform: translateY(0);
+}
+
+.modal h2 {
+    margin-top: 0;
+    font-size: 22px;
+}
+
+.modal p {
+    font-size: 15px;
+    line-height: 1.5;
+    color: #333;
+}
+
+/* Contenedor de botones */
+.modal-actions {
+    margin-top: 24px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+/* Estilo base de botones del modal */
+.modal-btn {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+/* Botón secundario (Cancelar) */
+.modal-btn-secondary {
+    background-color: #e0e0e0;
+    color: #333;
+}
+.modal-btn-secondary:hover {
+    background-color: #c7c7c7;
+}
+
+/* Botón de peligro (Eliminar) */
+.modal-btn-danger {
+    background-color: #d9534f; /* Un rojo claro */
+    color: white;
+}
+.modal-btn-danger:hover {
+    background-color: #c9302c; /* Un rojo más oscuro */
+}
+.collection-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    text-decoration: none;
+    color: inherit;
+}
+
+.collection-text h3 {
+    margin: 0 0 0.25rem;
+    font-size: 1rem;
+    letter-spacing: 0.03em;
+}
+
+.collection-description {
+    margin: 0 0 0.4rem;
+    font-size: 0.9rem;
+    color: #4b5563; /* gris más fuerte para que se lea bien */
+}
+
+.collection-meta {
+    margin: 0;
+    font-size: 0.8rem;
+    color: #6b7280; /* gris más suave, sensación de “dato secundario” */
+}
+
+.collection-image img {
+    width: 110px;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}

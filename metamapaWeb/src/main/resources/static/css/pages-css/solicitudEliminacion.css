@@ -1,0 +1,230 @@
+/* ====== Base ====== */
+:root {
+    --orange: #f47c2c;
+    --orange-2: #ff9a57;
+    --dark: #22252b;
+    --text: #2e2e2e;
+    --muted: #6f7a87;
+    --paper: #fff8f2;
+    --card: #fff;
+    --glass: rgba(255, 255, 255, 0.85);
+    --radius: 18px;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    --blue: #1e7ba0;
+}
+
+* {
+    box-sizing: border-box;
+}
+html,
+body {
+    height: 100%;
+}
+body {
+    margin: 0;
+    font-family: Montserrat, system-ui, Segoe UI, Roboto, Arial, sans-serif;
+    color: var(--text);
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+
+}
+
+main {
+    flex: 1;
+}
+
+.container {
+    width: min(1100px, 92%);
+    margin-inline: auto;
+}
+
+/* ====== HERO / MAIN CONTENT ====== */
+.hero {
+    position: relative;
+    min-height: 80vh;
+    display: grid;
+    place-items: center;
+    background-image: url("../../img/fondoHOME1.png");
+    overflow: hidden;
+    height: 100%;
+}
+
+.hero-inner {
+    padding: 40px 0;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    /* Added flex display to properly center the modal card */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ====== MODAL CARD ====== */
+.modal-card {
+    width: min(750px, 92%);
+    background: var(--card);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    /* Added margin auto to ensure perfect centering */
+    margin: 0 auto;
+}
+
+.modal-header {
+    background: var(--orange);
+    color: #fff;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 16px 24px;
+    text-align: center;
+    letter-spacing: 0.03em;
+    font-size: 18px;
+}
+
+.modal-body {
+    padding: 28px 32px;
+    display: grid;
+    gap: 16px;
+}
+
+.info-group {
+    text-align: left;
+}
+
+.info-group label {
+    display: block;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text);
+}
+
+.info-group strong {
+    font-weight: 700;
+    color: var(--dark);
+}
+
+.form-group {
+    display: grid;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--dark);
+}
+
+.form-group textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+    min-height: 100px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group textarea:focus {
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(244, 124, 44, 0.2);
+}
+
+.char-count {
+    text-align: right;
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+}
+
+.btn-solicitar {
+    margin-top: 12px;
+    padding: 14px 32px;
+    background: var(--blue);
+    color: #fff;
+    border: 0;
+    border-radius: 25px;
+    font-weight: 800;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(30, 123, 160, 0.3);
+}
+
+.btn-solicitar:hover {
+    background: #165a7a;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(30, 123, 160, 0.4);
+}
+
+.btn-solicitar:active {
+    transform: translateY(0);
+}
+/* 1. CONTENEDOR (Para centrar los botones si hay más de uno) */
+.form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centra los elementos horizontalmente */
+    gap: 16px;
+    margin-top: 24px;
+}
+
+/* 2. CLASE BASE (Define la FORMA y el BORDE AZUL para AMBOS) */
+.btn-form {
+    border-radius: 99px; /* Forma de píldora */
+    padding: 10px 28px;  /* Tamaño */
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s ease-in-out;
+}
+
+/* 3. BOTÓN PRIMARIO (El Naranja Sólido "Solicitar") */
+/* Esta clase la usas en el <button> */
+.btn-form.btn-primary {
+    background-color: #ff8c42; /* <-- Color Naranja */
+    color: white;           /* <-- Texto Blanco */
+}
+
+.btn-form.btn-primary:hover {
+    background-color: #e67d38; /* Naranja un poco más oscuro al pasar el ratón */
+    transform: translateY(-1px);
+}
+
+.btn-form.btn-secondary {
+    background-color: transparent; /* Fondo transparente */
+    color: var(--muted);        /* Texto Azul */
+}
+
+.btn-form.btn-secondary:hover {
+    color: #347a8d;
+}
+
+/* ====== RESPONSIVE ====== */
+@media (max-width: 768px) {
+    .menu {
+        display: none;
+    }
+
+    .burger {
+        display: block;
+    }
+
+    .modal-card {
+        border-radius: 16px;
+    }
+
+    .modal-body {
+        padding: 20px 16px;
+    }
+
+    .footer-grid {
+        gap: 16px;
+    }
+}

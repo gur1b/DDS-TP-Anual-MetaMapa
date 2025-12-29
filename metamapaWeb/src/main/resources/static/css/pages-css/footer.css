@@ -1,0 +1,43 @@
+/* ====== Footer ====== */
+.site-footer {
+    /* Esta es la regla que se estaba usando (la segunda) */
+    background: var(--dark); /* Asegúrate de que --dark esté definido en tu :root */
+    color: #fff;
+    padding: 30px 0;
+    margin-top: auto; /* Empuja el footer al fondo */
+}
+
+.footer-grid {
+    /* Esta es la regla que se estaba usando (la segunda) */
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.footer-grid a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.footer-grid a:hover {
+    color: var(--orange-2); /* Asegúrate de que --orange-2 esté definido */
+}
+
+/* ====== Responsive ====== */
+/* Estas reglas de @media estaban en tu archivo,
+  pero parecían estar incompletas o no relacionadas con el footer.
+  Las dejo comentadas por si las necesitas.
+*/
+/*
+@media (max-width: 900px){
+    .collab-grid{ grid-template-columns: 1fr; }
+}
+@media (max-width: 760px){
+    .menu{ display:none; }
+    .burger{ display:block; }
+}
+*/

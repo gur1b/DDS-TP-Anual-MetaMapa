@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: cargador-dinamico
+server:
+  port: 8082
+spring.config.activate.on-profile: dinamico
+---
+spring:
+  application:
+    name: cargador-proxy
+server:
+  port: 8083
+spring.config.activate.on-profile: proxy
+---
+spring:
+  application:
+    name: cargador-estatico
+server:
+  port: 8084
+spring.config.activate.on-profile: estatico

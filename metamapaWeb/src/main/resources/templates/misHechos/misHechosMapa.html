@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(
+          titulo='Mis hechos',
+          linksAdicionales=~{:: #links-de-mis-hechos},
+          scriptsAdicionales=~{:: #scripts-de-mis-hechos},
+          contenido=~{:: #contenido-de-mis-hechos}
+      )}">
+
+
+<th:block id="links-de-mis-hechos">
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          crossorigin=""/>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/pages-css/verColeccion.css}">
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
+
+    <style>
+        /* Contenedor principal: mapa + sidebar */
+        .map-layout-container {
+            display: grid !important;
+            grid-template-columns: minmax(0, 2fr) minmax(0, 380px) !important; /* mapa | sidebar */
+            gap: 0 !important;
+            width: 100% !important;
+        }
+
+        /* Mapa ocupa toda su columna */
+        .map-panel {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .map-panel,
+        .map-panel .leaflet-container {
+            border-radius: 0 !important;
+        }
+
+        .map-layout-container,
+        .map-layout-container > * {
+            border-radius: 0 !important;
+        }
+
+        /* Sidebar: columna, padding y sin que nada la haga crecer */
+        .sidebar-panel {
+            display: flex !important;
+            flex-direction: column !important;
+            height: 100% !important;
+            overflow: hidden !important;
+            padding: 1rem 1rem 1rem 1.25rem;
+        }
+
+        .sidebar-header {
+            flex: 0 0 auto !important;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: .5rem;
+        }
+
+        .sidebar-content {
+            flex: 1 1 auto !important;
+            min-height: 0 !important;
+            display: flex !important;
+            flex-direction: column !important;
+        }
+
+        .sidebar-content > h2,
+        .sidebar-content > p,
+        .sidebar-content > h3 {
+            flex: 0 0 auto !important;
+        }
+
+        .hechos-accordion {
+            flex: 1 1 auto !important;
+            min-height: 0 !important;
+            overflow-y: auto !important;
+            padding-right: .25rem;
+        }
+
+        .hechos-accordion details {
+            margin-bottom: .5rem;
+        }
+
+        .hecho-title {
+            font-weight: 600;
+        }
+
+        /* Botones de acción dentro de cada hecho */
+        .field .edit-btn,
+        .field .save-btn,
+        .field .cancel-btn {
+            padding: 0.35rem 0.9rem;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color .15s ease, opacity .15s ease, transform .05s ease;
+        }
+
+        .field .edit-btn {
+            background: #F47C2C;
+            color: #fff;
+            margin-right: .5rem;
+        }
+
+        .field .save-btn {
+            background: #2980B9;
+            color: #fff;
+            margin-right: .5rem;
+        }
+
+        .field .cancel-btn {
+            background: #f3f4f6;
+            color: #111827;
+            border: 1px solid #d1d5db;
+        }
+
+        .field .edit-btn:hover,
+        .field .save-btn:hover,
+        .field .cancel-btn:hover {
+            opacity: .9;
+            transform: translateY(-1px);
+        }
+
+        .field .edit-btn:active,
+        .field .save-btn:active,
+        .field .cancel-btn:active {
+            transform: translateY(0);
+        }
+
+        .hechos-accordion details.highlight {
+            outline: 2px solid #3498db;
+            border-radius: 6px;
+            background: #f0f6ff;
+        }
+
+        .suggest-btn{
+            margin-top: .75rem;
+            width: 100%;
+        }
+
+    </style>
+</th:block>
+
+
+<div id="contenido-de-mis-hechos">
+    <main class="map-layout-container">
+        <div id="mapa" class="map-panel"></div>
+        <aside class="sidebar-panel">
+            <header class="sidebar-header">MIS HECHOS</header>
+            <section class="sidebar-content">
+                <h2>Mis hechos reportados</h2>
+                <p>Solo ves los hechos que reportaste con tu cuenta.</p>
+
+                <h3 style="margin-top:1rem">Hechos</h3>
+                <div class="hechos-accordion">
+                    <p th:if="${#lists.isEmpty(hechos)}" class="muted">Todavía no cargaste ningún hecho.</p>
+
+                    <details th:each="h : ${hechos}"
+                             th:attr="data-idhecho=${h.id},
+                                      data-hash=${h.hash},
+                                      data-lat=${h.latitud},
+                                      data-lon=${h.longitud},
+                                      data-fechacarga=${h.fechaCarga}">
+                        <summary>
+                            <div class="hecho-title" th:text="${h.nombre}">Título del hecho</div>
+                            <i class="chev fa-solid fa-chevron-right" aria-hidden="true"></i>
+                        </summary>
+                        <div class="hecho-detalle">
+                            <!-- VIEW MODE (se mantiene SIEMPRE visible) -->
+                            <div class="field view-mode">
+                                <span class="field-label">Título:</span>
+                                <span class="field-value" data-field="nombre" th:text="${h.nombre}"></span>
+                            </div>
+
+                            <div class="field view-mode">
+                                <span class="field-label">Descripción:</span>
+                                <span class="field-value" data-field="descripcion"
+                                      th:text="${h.descripcion != null ? h.descripcion : 'No indica'}"
+                                      th:classappend="${h.descripcion == null} ? 'muted' : ''"></span>
+                            </div>
+
+                            <div class="field view-mode">
+                                <span class="field-label">Etiquetas:</span>
+                                <span class="tags view-mode">
+                                    <span class="chip" th:each="tag : ${h.etiquetas}" th:text="${tag}"></span>
+                                </span>
+                            </div>
+
+                            <!-- EDIT MODE (SOLO DESCRIPCION + ETIQUETAS) -->
+                            <div class="field edit-mode" style="display:none">
+                                <span class="field-label">Descripción:</span>
+                                <input class="edit-mode" name="descripcion" type="text" th:value="${h.descripcion}" />
+                            </div>
+
+                            <div class="field edit-mode" style="display:none">
+                                <span class="field-label">Etiquetas (separadas por coma):</span>
+                                <input class="edit-mode" name="etiquetas" type="text" th:value="${#strings.arrayJoin(h.etiquetas, ', ')}" />
+                            </div>
+
+                            <!-- RESTO DEL HECHO EN VIEW MODE (para identificar cuál editan) -->
+                            <div class="field view-mode">
+                                <span class="field-label">Fecha del hecho:</span>
+                                <span class="field-value"
+                                      th:text="${h.fechaSuceso != null} ? ${#temporals.format(h.fechaSuceso, 'dd/MM/yyyy')} : 'No indica'"
+                                      th:classappend="${h.fechaSuceso == null} ? 'muted' : ''"></span>
+                            </div>
+                            <div class="field view-mode">
+                                <span class="field-label">Fecha de carga:</span>
+                                <span class="field-value"
+                                      th:text="${h.fechaCarga != null} ? ${#temporals.format(h.fechaCarga, 'dd/MM/yyyy')} : 'No indica'"
+                                      th:classappend="${h.fechaCarga == null} ? 'muted' : ''"></span>
+                            </div>
+                            <div class="field view-mode">
+                                <span class="field-label">Categorias:</span>
+                                <span class="field-value" th:if="${h.categorias != null and !#lists.isEmpty(h.categorias)}">
+                                    <span class="chip" th:each="tag : ${h.categorias}" th:text="${tag}"></span>
+                                </span>
+                                <span class="field-value muted" th:if="${h.categorias == null or #lists.isEmpty(h.categorias)}">No indica</span>
+                            </div>
+                            <!-- Multimedia -->
+                            <div class="field">
+                                <span class="field-label">Multimedia:</span>
+
+                                <span class="field-value" th:if="${h.multimedia()!=null and !h.multimedia().isEmpty()}">
+                                    <div class="multimedia-gallery">
+                                        <button type="button"
+                                                class="multimedia-item"
+                                                th:each="m : ${h.multimedia()}"
+                                                th:data-src="@{'/uploads/hechos/' + ${m}}"
+                                                th:data-alt="${h.nombre()} + ' - multimedia adjunta'"
+                                                th:data-type="${
+                                                    (#strings.endsWith(m.toLowerCase(), '.mp4') or
+                                                     #strings.endsWith(m.toLowerCase(), '.webm') or
+                                                     #strings.endsWith(m.toLowerCase(), '.ogg') or
+                                                     #strings.endsWith(m.toLowerCase(), '.mkv')) ? 'video' : 'image'
+                                                 }"><!-- Si es imagen --><img th:if="${#strings.endsWith(m.toLowerCase(), '.jpg') or #strings.endsWith(m.toLowerCase(), '.jpeg') or #strings.endsWith(m.toLowerCase(), '.png') or #strings.endsWith(m.toLowerCase(), '.gif') or #strings.endsWith(m.toLowerCase(), '.webp')}" th:src="@{'/uploads/hechos/' + ${m}}" th:alt="${h.nombre()} + ' - imagen adjunta'"
+                                                                              class="multimedia-thumb" />
+
+                                            <!-- Si es video (preview simple con ícono) -->
+                                      <div class="multimedia-video-thumb"
+                                           th:if="${#strings.endsWith(m.toLowerCase(), '.mp4') or #strings.endsWith(m.toLowerCase(), '.webm') or #strings.endsWith(m.toLowerCase(), '.ogg') or #strings.endsWith(m.toLowerCase(), '.mkv')}">
+                                        <i class="fa-solid fa-play"></i>
+                                        <span class="multimedia-video-label" th:text="${m}">video.mp4</span>
+                                      </div>
+
+                                    </button>
+                                  </div>
+                                </span>
+
+                                <span class="field-value muted" th:if="${h.multimedia()==null or h.multimedia().isEmpty()}">
+                                  No tiene archivos adjuntos.
+                                </span>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </section>
+        </aside>
+        <!-- Modal multimedia (imagen o video) -->
+        <div id="media-modal" class="img-modal" aria-hidden="true">
+            <div class="img-modal-backdrop"></div>
+
+            <div class="img-modal-content" role="dialog" aria-modal="true">
+                <button class="img-modal-close" type="button" aria-label="Cerrar">&times;</button>
+
+                <img id="media-modal-img" src="" alt="" style="display:none;">
+                <video id="media-modal-video" style="display:none;" controls playsinline>
+                    Tu navegador no soporta la reproducción de video.
+                </video>
+
+                <div class="media-modal-actions" style="margin-top:10px; display:none;" id="media-modal-actions">
+                    <a id="media-modal-download" class="btn-map" href="#" download>
+                        <i class="fa-solid fa-download"></i> Descargar
+                    </a>
+                    <a id="media-modal-open" class="btn-map" href="#" target="_blank" rel="noopener">
+                        <i class="fa-solid fa-up-right-from-square"></i> Abrir en pestaña
+                    </a>
+                </div>
+
+                <p id="media-modal-caption" class="img-modal-caption"></p>
+            </div>
+        </div>
+
+        <!-- Panel lateral: sugerencia de cambio -->
+        <div id="panel-sugerencia" class="panel-editar-hecho"
+             style="display:none; position:fixed; top:0; right:0; width:420px; height:100%; background:#fff; box-shadow:-2px 0 8px rgba(0,0,0,0.1); z-index:1000; overflow-y:auto;">
+            <div style="padding:1.5rem 1rem 1rem 1rem; border-bottom:1px solid #eee; display:flex; align-items:center; justify-content:space-between;">
+                <h2 style="margin:0; font-size:1.2em;">Sugerir cambios</h2>
+                <button id="cerrar-panel-sugerencia" type="button"
+                        style="background:none; border:none; font-size:1.5em; cursor:pointer; color:#888;">&times;</button>
+            </div>
+
+            <form id="form-sugerencia" style="padding:1rem;">
+                <!-- id del hecho -->
+                <input type="hidden" id="sug-idHecho" />
+
+                <!-- CSRF -->
+                <input type="hidden" id="csrfToken" th:if="${_csrf}" th:value="${_csrf.token}"/>
+                <input type="hidden" id="csrfHeader" th:if="${_csrf}" th:value="${_csrf.headerName}"/>
+
+                <div style="margin-bottom:1rem;">
+                    <label for="sug-motivo"><b>Motivo / Descripción de la sugerencia <span style="color:red">*</span></b></label>
+                    <textarea id="sug-motivo" class="form-control" rows="3"
+                              placeholder="Explicá qué querés cambiar (Obligatorio)"></textarea>
+
+                    <div id="sug-error-motivo" style="color: #dc3545; font-weight: bold; font-size: 0.9rem; margin-top: 5px; display: none;"></div>
+                </div>
+
+                <hr style="margin: 1rem 0;"/>
+
+                <div style="margin-bottom:1rem;">
+                    <label for="sug-titulo">Título sugerido</label>
+                    <input type="text" id="sug-titulo" class="form-control"/>
+                    <small class="muted">Vacío = no sugerir cambio de título.</small>
+                </div>
+
+                <div style="margin-bottom:1rem;">
+                    <label for="sug-descripcion">Descripción sugerida</label>
+                    <textarea id="sug-descripcion" class="form-control" rows="4"></textarea>
+                    <small class="muted">Vacío = no sugerir cambio de descripción.</small>
+                </div>
+
+                <div style="margin-bottom:1rem;">
+                    <label for="sug-fecha">Fecha del suceso sugerida</label>
+                    <input type="date" id="sug-fecha" class="form-control"/>
+                    <small class="muted">Vacío = no sugerir cambio de fecha.</small>
+                </div>
+
+                <div style="margin-bottom:1rem;">
+                    <label for="sug-hora">Hora del suceso sugerida</label>
+                    <input type="time" id="sug-hora" class="form-control"/>
+                    <small class="muted">Formato HH:mm. Vacío = no sugerir cambio.</small>
+                </div>
+
+                <div style="margin-bottom:1rem;">
+                    <label for="sug-categoria">Categoría sugerida</label>
+                    <select id="sug-categoria" class="form-control">
+                        <option value="">No cambiar</option>
+                        <option th:each="c : ${categorias}" th:value="${c}" th:text="${c}"></option>
+                    </select>
+                </div>
+
+                <div style="margin-bottom:1rem;">
+                    <label for="sug-etiquetas">Etiquetas sugeridas (coma)</label>
+                    <input type="text" id="sug-etiquetas" class="form-control" placeholder="Ej: urgente, zona norte"/>
+                    <small class="muted">Vacío = no cambiar etiquetas.</small>
+                </div>
+
+                <button id="btn-enviar-sugerencia" type="submit" class="btn btn-primary" style="width:100%;">
+                    Enviar sugerencia
+                </button>
+
+                <p id="sug-msg" style="margin-top:.75rem; display:none;"></p>
+            </form>
+        </div>
+
+    </main>
+</div>
+
+<th:block id="scripts-de-mis-hechos">
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        window.hechos = /*[[${hechos}]]*/ [];
+        /*]]>*/
+    </script>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <script>
+        // --- FUNCIÓN TOAST (Notificación flotante) ---
+        // La definimos afuera para que esté disponible globalmente
+        function mostrarToast(mensaje, tipo = 'success') {
+            const toast = document.createElement("div");
+            toast.textContent = mensaje;
+            const bgColor = tipo === 'success' ? '#28a745' : '#dc3545';
+
+            toast.style.cssText = `
+                position: fixed;
+                top: 80px;
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: ${bgColor};
+                color: white;
+                padding: 15px 30px;
+                border-radius: 50px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                z-index: 9999;
+                font-family: sans-serif;
+                font-size: 15px;
+                font-weight: 500;
+                text-align: center;
+                opacity: 0;
+                transition: opacity 0.5s ease-in-out, top 0.5s ease-in-out;
+            `;
+
+            document.body.appendChild(toast);
+
+            // Animación entrada
+            setTimeout(() => {
+                toast.style.opacity = "1";
+                toast.style.top = "90px";
+            }, 100);
+
+            // Animación salida
+            setTimeout(() => {
+                toast.style.opacity = "0";
+                toast.style.top = "80px";
+                setTimeout(() => { document.body.removeChild(toast); }, 500);
+            }, 4000);
+        }
+
+        // --- VALIDACION: Deshabilitar edicion si pasaron 7 días ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const detalles = document.querySelectorAll('details[data-hash]');
+
+            detalles.forEach(detalle => {
+                const fechaString = detalle.getAttribute('data-fechacarga');
+                let bloquearEdicion = false;
+                let mensajeError = "";
+
+                if (!fechaString || fechaString === "null" || fechaString.trim() === "") {
+                    bloquearEdicion = true;
+                    mensajeError = " (No puede editar: Fecha no disponible)";
+                } else {
+                    const fechaCarga = new Date(fechaString);
+                    const hoy = new Date();
+                    const diferenciaTiempo = hoy - fechaCarga;
+                    const diasPasados = diferenciaTiempo / (1000 * 3600 * 24);
+
+                    if (diasPasados > 7) {
+                        bloquearEdicion = true;
+                        mensajeError = " (No puede editar: Pasaron más de 7 días)";
+                    }
+                }
+
+                if (bloquearEdicion) {
+                    const btnEditar = detalle.querySelector('.edit-btn');
+                    if (btnEditar) {
+                        btnEditar.disabled = true;
+                        btnEditar.style.opacity = "0.5";
+                        btnEditar.style.cursor = "not-allowed";
+                        btnEditar.title = mensajeError.trim();
+                        // Opcional: mostrar mensaje visual
+                    }
+                }
+            });
+        });
+
+        // Edición de hechos en "mis hechos"
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.hecho-detalle').forEach(detalle => {
+                const editBtn = detalle.querySelector('.edit-btn');
+                const saveBtn = detalle.querySelector('.save-btn');
+                const cancelBtn = detalle.querySelector('.cancel-btn');
+                const editContainers = detalle.querySelectorAll('.field.edit-mode');
+                const hash = detalle.closest('details')?.getAttribute('data-hash');
+
+                function setEditing(editing) {
+                    editContainers.forEach(f => f.style.display = editing ? '' : 'none');
+                    editBtn.style.display = editing ? 'none' : '';
+                    saveBtn.style.display = editing ? '' : 'none';
+                    cancelBtn.style.display = editing ? '' : 'none';
+                }
+
+                if (editBtn && !editBtn.disabled) {
+                    editBtn.addEventListener('click', () => setEditing(true));
+                }
+                cancelBtn?.addEventListener('click', () => setEditing(false));
+
+                saveBtn?.addEventListener('click', async () => {
+                    saveBtn.disabled = true;
+                    const descripcion = detalle.querySelector('input.edit-mode[name="descripcion"]')?.value?.trim() || '';
+                    const etiquetasCsv = detalle.querySelector('input.edit-mode[name="etiquetas"]')?.value?.trim() || '';
+
+                    const payload = {
+                        descripcion: descripcion.length ? descripcion : null,
+                        etiquetas: etiquetasCsv.split(',').map(s => s.trim()).filter(Boolean)
+                    };
+
+                    try {
+                        const resp = await fetch(`/admin/hechos/${encodeURIComponent(hash)}/modificar`, {
+                            method: 'PATCH',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+
+                        if (!resp.ok) throw new Error('Error al guardar');
+
+                        // Actualizar UI
+                        const descSpan = detalle.querySelector('[data-field="descripcion"]');
+                        if (descSpan) {
+                            descSpan.textContent = payload.descripcion || 'No indica';
+                            payload.descripcion ? descSpan.classList.remove('muted') : descSpan.classList.add('muted');
+                        }
+                        const tagsWrap = detalle.querySelector('.tags.view-mode');
+                        if (tagsWrap) {
+                            tagsWrap.innerHTML = '';
+                            (payload.etiquetas || []).forEach(tag => {
+                                const span = document.createElement('span');
+                                span.className = 'chip';
+                                span.textContent = tag;
+                                tagsWrap.appendChild(span);
+                            });
+                        }
+                        setEditing(false);
+                        mostrarToast('Cambios guardados correctamente', 'success');
+                    } catch (err) {
+                        alert('Error guardando cambios.');
+                    } finally {
+                        saveBtn.disabled = false;
+                    }
+                });
+            });
+        });
+
+        // Configuración del Mapa
+        const toNum = v => {
+            if (v == null) return null;
+            const n = parseFloat(String(v).replace(',', '.'));
+            return Number.isFinite(n) ? n : null;
+        };
+
+        const puntos = (window.hechos || [])
+            .map(h => ({
+                hash: h.hash,
+                nombre: h.nombre,
+                lat: toNum(h.latitud),
+                lon: toNum(h.longitud)
+            }))
+            .filter(p => p.lat != null && p.lon != null);
+
+        const defaultCenter = [-34.6037, -58.3816], defaultZoom = 11;
+        const map = L.map('mapa', { maxZoom: 19 })
+            .setView(puntos.length ? [puntos[0].lat, puntos[0].lon] : defaultCenter,
+                puntos.length ? 13 : defaultZoom);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors', maxZoom: 19
+        }).addTo(map);
+
+        const markersByHash = {};
+        const clusterGroup = L.markerClusterGroup({
+            showCoverageOnHover: false,
+            maxClusterRadius: 60
+        });
+
+        puntos.forEach(p => {
+            const popupHtml = `<div class="popup-card"><div class="popup-title"><b>${p.nombre ?? '(sin título)'}</b></div></div>`;
+            const m = L.marker([p.lat, p.lon]).bindPopup(popupHtml);
+            clusterGroup.addLayer(m);
+            markersByHash[p.hash] = m;
+        });
+        clusterGroup.addTo(map);
+
+        const sidebarPanel = document.querySelector('.sidebar-panel');
+
+        function focusMarker(hash, {zoom=15, openPopup=true} = {}) {
+            const m = markersByHash[hash];
+            if (!m) return;
+            map.flyTo(m.getLatLng(), Math.max(map.getZoom(), zoom), { duration: .45 });
+            if (openPopup) m.openPopup();
+        }
+
+        function openDetails(hash, {scroll=true, highlight=true, closeOthers=true} = {}) {
+            const details = document.querySelector(`details[data-hash="${hash}"]`);
+            if (!details) return;
+            if (closeOthers) document.querySelectorAll('.hechos-accordion details[open]').forEach(d => { if (d !== details) d.removeAttribute('open'); });
+            details.setAttribute('open', true);
+            if (highlight) {
+                document.querySelectorAll('.hechos-accordion details').forEach(d => d.classList.remove('highlight'));
+                details.classList.add('highlight');
+            }
+            if (scroll && sidebarPanel) sidebarPanel.scrollTo({ top: details.offsetTop - 40, behavior: 'smooth' });
+        }
+
+        document.addEventListener('click', (e) => {
+            const link = e.target.closest('.js-ver-hecho');
+            if (!link) return;
+            e.preventDefault();
+            const hash = link.dataset.hash;
+            focusMarker(hash, { openPopup: true });
+            openDetails(hash);
+        });
+
+        function fitLayout(){
+            const cont = document.querySelector('.map-layout-container');
+            if(!cont) return;
+            const header = document.querySelector('header.site-header');
+            const footer = document.querySelector('footer.site-footer');
+            const h = window.innerHeight - (header?.offsetHeight||0) - (footer?.offsetHeight||0) - 16;
+            cont.style.height = Math.max(360, h) + 'px';
+        }
+        window.addEventListener('load',  () => { fitLayout(); setTimeout(()=>map.invalidateSize(), 80); });
+        window.addEventListener('resize',() => { fitLayout(); map.invalidateSize(); });
+
+        // ===== MODAL MULTIMEDIA =====
+        (function () {
+            const modal = document.getElementById('media-modal');
+            if (!modal) return;
+            const modalImg = document.getElementById('media-modal-img');
+            const modalVideo = document.getElementById('media-modal-video');
+            const modalCaption = document.getElementById('media-modal-caption');
+            const btnClose = modal.querySelector('.img-modal-close');
+            const actionsWrap = document.getElementById('media-modal-actions');
+            const btnDownload = document.getElementById('media-modal-download');
+            const btnOpenTab = document.getElementById('media-modal-open');
+
+            function openModal({ type, src, alt }) {
+                if (!src) return;
+                modalImg.style.display = 'none';
+                modalVideo.style.display = 'none';
+                modalVideo.pause();
+                modalCaption.textContent = alt || '';
+                if (actionsWrap) actionsWrap.style.display = 'flex';
+                if (btnDownload) btnDownload.href = src;
+                if (btnOpenTab) btnOpenTab.href = src;
+
+                if (type === 'video') {
+                    modalVideo.style.display = 'block';
+                    modalVideo.src = src;
+                } else {
+                    modalImg.style.display = 'block';
+                    modalImg.src = src;
+                }
+                modal.classList.add('is-visible');
+            }
+
+            function closeModal() {
+                modal.classList.remove('is-visible');
+                modalVideo.pause();
+                modalVideo.removeAttribute('src');
+            }
+
+            document.addEventListener('click', (e) => {
+                const btn = e.target.closest('.multimedia-item');
+                if (btn) {
+                    e.preventDefault();
+                    openModal({ type: btn.dataset.type, src: btn.dataset.src, alt: btn.dataset.alt });
+                }
+            });
+            btnClose?.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+        })();
+
+        // =========== PANEL SUGERENCIA ===========
+        function abrirPanelSugerencia(hecho, idHecho) {
+            document.getElementById('panel-sugerencia').style.display = 'block';
+            document.getElementById('sug-idHecho').value = idHecho;
+            document.getElementById('sug-titulo').value = hecho.nombre || '';
+            document.getElementById('sug-descripcion').value = hecho.descripcion || '';
+            document.getElementById('sug-fecha').value = hecho.fechaSuceso || '';
+            document.getElementById('sug-hora').value = hecho.horaSuceso || '';
+            document.getElementById('sug-categoria').value = (hecho.categorias && hecho.categorias.length) ? hecho.categorias[0] : '';
+            document.getElementById('sug-etiquetas').value = (hecho.etiquetas && hecho.etiquetas.length) ? hecho.etiquetas.join(', ') : '';
+
+            // Limpiar campos y errores
+            document.getElementById('sug-motivo').value = '';
+            const errorDiv = document.getElementById('sug-error-motivo');
+            if(errorDiv) errorDiv.style.display = 'none';
+            document.getElementById('sug-msg').style.display = 'none';
+        }
+
+        document.getElementById('cerrar-panel-sugerencia').addEventListener('click', () => {
+            document.getElementById('panel-sugerencia').style.display = 'none';
+        });
+
+        // Crear botón "Sugerir cambio"
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.hecho-detalle').forEach(det => {
+                const multimediaField = det.querySelector('.multimedia-gallery')?.closest('.field') ||
+                    Array.from(det.querySelectorAll('.field')).find(f => (f.querySelector('.field-label')?.textContent || '').toLowerCase().includes('multimedia'));
+
+                if (!multimediaField || det.querySelector('.hecho-actions')) return;
+
+                const acciones = document.createElement('div');
+                acciones.className = 'field hecho-actions';
+                acciones.innerHTML = `<span class="field-label">Acciones:</span>`;
+                multimediaField.insertAdjacentElement('afterend', acciones);
+
+                const b = document.createElement('button');
+                b.className = 'edit-btn suggest-btn';
+                b.textContent = 'Sugerir cambio';
+                b.style.background = '#ff8c42';
+                b.type = 'button';
+
+                b.addEventListener('click', () => {
+                    const details = det.closest('details');
+                    const idHecho = details?.getAttribute('data-idhecho');
+                    const hecho = (window.hechos || []).find(x => Number(x.id) === Number(idHecho));
+                    if (hecho) abrirPanelSugerencia(hecho, Number(idHecho));
+                });
+
+                const editBtn = det.querySelector('.edit-btn:not(.suggest-btn)');
+                if (editBtn && editBtn.disabled) {
+                    b.disabled = true;
+                    b.style.opacity = "0.5";
+                    b.style.cursor = "not-allowed";
+                }
+                acciones.appendChild(b);
+            });
+        });
+
+        // === ENVÍO DE SUGERENCIA (CORREGIDO) ===
+        document.getElementById('form-sugerencia').addEventListener('submit', async (e) => {
+            e.preventDefault(); // 1. Prevenir recarga
+
+            // 2. Obtener datos
+            const idHecho = Number(document.getElementById('sug-idHecho').value);
+            const motivo = document.getElementById('sug-motivo').value.trim();
+            const errorDiv = document.getElementById('sug-error-motivo');
+
+            // 3. Validación de Motivo
+            if(errorDiv) errorDiv.style.display = 'none';
+
+            if (!motivo) {
+                if(errorDiv) {
+                    errorDiv.textContent = "La descripción es obligatoria para enviar una sugerencia.";
+                    errorDiv.style.display = 'block';
+                } else {
+                    alert("La descripción es obligatoria.");
+                }
+                document.getElementById('sug-motivo').focus();
+                return; // Cortar ejecución si está vacío
+            }
+
+            // 4. Preparar Payload
+            const titulo = document.getElementById('sug-titulo').value.trim();
+            const descripcion = document.getElementById('sug-descripcion').value.trim();
+            const fechaSuceso = document.getElementById('sug-fecha').value;
+            const horaSuceso = document.getElementById('sug-hora').value;
+            const categoria = document.getElementById('sug-categoria').value;
+            const etiquetasCsv = document.getElementById('sug-etiquetas').value.trim();
+            const etiquetas = etiquetasCsv ? etiquetasCsv.split(',').map(s => s.trim()).filter(Boolean) : null;
+            const d = new Date();
+            const hoyIso = new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0,10);
+
+            const payload = {
+                descripcionSolicitud: motivo,
+                fechaSugerencia: hoyIso,
+                tituloSugerencia: titulo.length ? titulo : null,
+                descripcionSugerencia: descripcion.length ? descripcion : null,
+                fechaSucesoSugerencia: fechaSuceso ? fechaSuceso : null,
+                horaSucesoSugerencia: horaSuceso ? horaSuceso : null,
+                categoriaSugerencia: categoria ? categoria : null,
+                etiquetasSugerencia: etiquetas,
+                idHecho: idHecho
+            };
+
+            const csrfToken = document.getElementById('csrfToken')?.value;
+            const csrfHeader = document.getElementById('csrfHeader')?.value;
+            const headers = { 'Content-Type': 'application/json' };
+            if (csrfToken && csrfHeader) headers[csrfHeader] = csrfToken;
+
+            const msg = document.getElementById('sug-msg');
+            const btn = document.getElementById('btn-enviar-sugerencia');
+
+            // 5. Fetch
+            try {
+                btn.disabled = true;
+                const resp = await fetch(`/misHechos/${encodeURIComponent(idHecho)}/sugerencias`, {
+                    method: 'POST',
+                    headers,
+                    body: JSON.stringify(payload)
+                });
+
+                if (!resp.ok) {
+                    const txt = await resp.text().catch(() => '');
+                    throw new Error(`POST failed: ${resp.status} ${txt}`);
+                }
+
+                // 6. ÉXITO: Mostrar Toast y cerrar panel
+                mostrarToast('¡Sugerencia enviada con éxito! Gracias.', 'success');
+
+                setTimeout(() => {
+                    document.getElementById('panel-sugerencia').style.display = 'none';
+                    // Opcional: limpiar form
+                }, 400);
+
+            } catch (err) {
+                console.error(err);
+                mostrarToast('No se pudo enviar la sugerencia.', 'error');
+            } finally {
+                btn.disabled = false;
+            }
+        });
+    </script>
+</th:block>
+</html>

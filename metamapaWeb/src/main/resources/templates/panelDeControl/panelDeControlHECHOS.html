@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(
+          titulo='Panel de control — Hechos',
+          linksAdicionales=~{:: #links-hechos},
+          scriptsAdicionales=~{:: #scripts-hechos},
+          contenido=~{:: #contenido-hechos}
+      )}">
+
+<th:block id="links-hechos">
+    <link rel="stylesheet" th:href="@{/css/pages-css/button.css}">
+    <link rel="stylesheet" th:href="@{/css/pages-css/panelDeControl.css}">
+    <link rel="stylesheet" th:href="@{/css/pages-css/admin-hechos.css}">
+</th:block>
+
+<main id="contenido-hechos" class="admin-page">
+    <div class="admin-bg"></div>
+
+    <section class="admin-surface">
+        <header class="surface-header">
+            <h1 class="surface-title">Panel de control — Hechos</h1>
+        </header>
+
+        <div class="admin-container">
+            <!-- Columna principal -->
+            <div class="admin-main-content">
+                <!-- Buscar -->
+                <div class="search-bar" aria-live="polite">
+                    <input id="search-input" type="text" placeholder="Buscar hecho por nombre o descripción">
+                    <button id="search-btn" class="search-btn" aria-label="Buscar">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </div>
+
+                <!-- Lista -->
+                <div id="hechos-list" class="collections-list">
+                    <article th:each="h : ${listaDeHechos}"
+                             class="collection-card hecho-card"
+                             th:id="${'hecho-' + (h.hash() != null ? h.hash() : 'no-hash')}"
+                             th:attr="data-hash=${h.hash()}, data-nombre=${h.nombre()}, data-descripcion=${h.descripcion()}">
+                        <!-- Hidden por si hiciera falta -->
+                        <input type="hidden" class="hash-holder" th:value="${h.hash()}"/>
+
+                        <div class="card-header">
+                            <!-- Título -->
+                            <h2 class="view-mode" data-field="nombre" th:text="${h.nombre()}">Nombre del hecho</h2>
+                            <input type="text" class="card-input edit-mode" name="nombre"
+                                   th:value="${h.nombre()}" aria-label="Editar nombre del hecho"/>
+
+                            <div class="card-actions">
+                                <!-- Eliminar -->
+                                <form th:action="@{/admin/hechos/{hash}/eliminar(hash=${h.hash()})}"
+                                      method="post" class="delete-form">
+                                    <input type="hidden"
+                                           th:if="${_csrf}"
+                                           th:name="${_csrf.parameterName}"
+                                           th:value="${_csrf.token}"/>
+                                    <button type="button" class="icon-btn view-mode delete-btn" aria-label="Eliminar">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </form>
+                                <button type="button" class="icon-btn view-mode" th:if="${h.hash() == null}" disabled
+                                        title="Sin identificador para eliminar">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+
+                                <!-- Editar / Guardar / Cancelar -->
+                                <button type="button" class="icon-btn view-mode edit-btn" aria-label="Editar">
+                                    <i class="fa-solid fa-pencil"></i>
+                                </button>
+                                <button type="button" class="modal-btn modal-btn-secondary edit-mode cancel-btn">Cancelar</button>
+                                <button type="button" class="modal-btn modal-btn-primary edit-mode save-btn">Guardar</button>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <!-- Descripción -->
+                            <div class="card-field">
+                                <strong>Descripción:</strong>
+                                <p class="view-mode" data-field="descripcion" th:text="${h.descripcion()}">Descripción del hecho</p>
+                                <textarea class="card-input edit-mode" name="descripcion" rows="2"
+                                          th:text="${h.descripcion()}" aria-label="Editar descripción"></textarea>
+                            </div>
+
+                            <!-- Meta -->
+                            <!-- ... dentro de cada article .hecho-card, reemplazá el bloque de Meta por este ... -->
+
+                            <!-- Meta -->
+                            <div class="hecho-meta meta-box">
+                                <div class="meta-grid">
+                                    <!-- Dentro de la fila de Categorías -->
+                                    <div class="meta-row">
+                                        <span class="meta-label">Categorías:</span>
+                                        <span class="meta-value">
+                                        <span class="chip chip--category"
+                                              th:each="cat : ${(h.categorias() != null) ? h.categorias() : (h.categorias != null ? h.categorias : {})}"
+                                              th:text="${cat}">Categoría</span>
+                                        </span>
+                                    </div>
+
+                                    <div class="meta-row">
+                                        <span class="meta-label">Contribuyente:</span>
+                                        <span class="meta-value"
+                                              th:text="${(h.contribuyente() != null) ? h.contribuyente() : (h.contribuyente != null ? h.contribuyente : '')}">
+                                            Anónimo
+                                          </span>
+                                    </div>
+
+                                    <div class="meta-row">
+                                        <span class="meta-label">Fecha:</span>
+                                        <span class="meta-value">
+                                        <span th:text="${(h.fechaSuceso() != null) ? h.fechaSuceso() : (h.fechaSuceso != null ? h.fechaSuceso : '')}">2025-10-10</span>
+                                        <span th:text="${(h.horaSuceso() != null) ? h.horaSuceso() : (h.horaSuceso != null ? h.horaSuceso : '')}">14:30</span>
+                                        </span>
+                                    </div>
+
+                                    <div class="meta-row">
+                                        <span class="meta-label">Ubicación:</span>
+                                        <span class="meta-value">
+                                        Lat: <span th:text="${(h.latitud() != null) ? h.latitud() : (h.latitud != null ? h.latitud : '')}">-34.60</span>,
+                                        Lng: <span th:text="${(h.longitud() != null) ? h.longitud() : (h.longitud != null ? h.longitud : '')}">-58.38</span>
+                                      </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Etiquetas -->
+                            <div class="meta-row" style="grid-column: 1 / -1;">
+                                <span class="meta-label meta-label--black">Etiquetas:</span>
+
+                                    <span class="chip chip--tag"
+                                          th:each="tag : ${(h.etiquetas() != null) ? h.etiquetas() : (h.etiquetas != null ? h.etiquetas : {})}"
+                                          th:text="${tag}">robo</span>
+
+                                <input class="card-input edit-mode "
+                                       type="text"
+                                       name="etiquetas"
+                                       placeholder="Separá por comas: fuego, humo"/>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <aside class="admin-sidebar">
+                <nav class="admin-menu">
+                    <a class="admin-menu-item" th:href="@{/admin/colecciones}">ADMINISTRAR COLECCIONES</a>
+                    <a class="admin-menu-item active" th:href="@{/admin/hechos}">ADMINISTRAR HECHOS</a>
+                    <a class="admin-menu-item" th:href="@{/admin/fuentes}">ADMINISTRAR FUENTES</a>
+                    <a th:href="@{/admin/solicitudesEliminacion}" class="admin-menu-item">ADMINISTRAR SOLICITUDES DE ELIMINACIÓN</a>
+                    <a th:href="@{/admin/sugerenciasDeCambio}" class="admin-menu-item">ADMINISTRAR SUGERENCIAS DE CAMBIO</a>
+                </nav>
+
+                <form th:action="@{/ejecutar-agregacion}"
+                      method="post"
+                      class="aggregation-actions">
+
+                    <input type="hidden" name="_csrf"
+                           th:if="${_csrf}"
+                           th:value="${_csrf.token}"/>
+
+                    <button type="submit" class="aggregation-btn">
+                        Ejecutar Servicio de Agregación
+                    </button>
+                </form>
+                <div class="contenedor-botones-observabilidad" style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
+
+                    <a th:href="${graphqlUrl}" target="_blank" class="aggregation-btn" style="text-decoration: none; text-align: center; background-color: #2980b9; color: white;">
+                        <i class="fa-solid fa-rocket"></i> Playground GraphQL
+                    </a>
+
+                    <a th:href="${grafanaUrl}" target="_blank" class="aggregation-btn" style="text-decoration: none; text-align: center; background-color: #f47a20; color: white;">
+                        <i class="fa-solid fa-chart-line"></i> Ver Métricas Grafana
+                    </a>
+
+                </div>
+            </aside>
+        </div>
+
+        <!-- MOVIDO AQUÍ: Modal de eliminación dentro del contenido -->
+        <div id="delete-modal" class="modal-backdrop">
+            <div class="modal">
+                <h2>¿Confirmar eliminación?</h2>
+                <p>Estás a punto de eliminar este hecho. Esta acción no se puede deshacer.</p>
+                <div class="modal-actions">
+                    <button id="cancel-delete" class="modal-btn modal-btn-secondary">Cancelar</button>
+                    <button id="confirm-delete" class="modal-btn modal-btn-danger">Eliminar</button>
+                </div>
+            </div>
+        </div>
+        <!-- FIN modal -->
+    </section>
+</main>
+
+<th:block id="scripts-hechos">
+    <script th:src="@{/js/admin-hechos.js}" defer></script>
+</th:block>
+
+</html>

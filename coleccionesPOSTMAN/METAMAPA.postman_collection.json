@@ -1,0 +1,1294 @@
+{
+	"info": {
+		"_postman_id": "98b5254f-0cf2-4d64-ab0c-174db5c7a1d4",
+		"name": "METAMAPA",
+		"description": "API central de MetaMapa para consultar, administrar y unificar hechos reportados, colecciones y fuentes.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42598532"
+	},
+	"item": [
+		{
+			"name": "PUBLIC",
+			"item": [
+				{
+					"name": "HECHOS",
+					"item": [
+						{
+							"name": "Reportar nuevo hecho",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Urgente",
+										"value": "true",
+										"type": "text"
+									},
+									{
+										"key": "X-Anonimo",
+										"value": "false",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"titulo\": \"Choque en Triunvirato\",\r\n    \"descripcion\": \"Colisión entre un auto y una moto, sin heridos graves.\",\r\n    \"categoria\": \"Accidente de tránsito\",\r\n    \"latitud\": -34.603722,\r\n    \"longitud\": -58.381595,\r\n    \"fechaSuceso\": \"2025-02-15\",\r\n    \"horaSuceso\": \"14:35\",\r\n    \"etiquetas\": [\r\n        \"choque\",\r\n        \"dos autos\",\r\n        \"leve\"\r\n    ],\r\n    \"contribuyente\": \"maildelusuario@example.com\",\r\n    \"multimedia\": [\r\n        \"https://mis-fotos.com/foto1.jpg\"\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8081/core/api/public/hechos/reportar",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"core",
+										"api",
+										"public",
+										"hechos",
+										"reportar"
+									]
+								},
+								"description": "Crea y envía el hecho reportado por el usuario. El reporte puede ser anónimo como no.\n\n- Si no es enviado de forma NO URGENTE se envía al cargador DINAMICO.\n    \n- Si es enviado de forma URGENTE se guarda en la base de datos.\n    \n\nSe indica por el _header_ el valor de estos atributos:\n\nX-Urgente:true  \nX-Anonimo:true"
+							},
+							"response": [
+								{
+									"name": "New Request",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "X-Urgente",
+												"value": "false",
+												"type": "text"
+											},
+											{
+												"key": "X-Anonimo",
+												"value": "true",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"titulo\": \"Accidente en Av. Santa Fe\",\r\n    \"descripcion\": \"Colisión entre dos vehículos, sin heridos graves.\",\r\n    \"categoria\": \"Accidente de tránsito\",\r\n    \"latitud\": -34.603722,\r\n    \"longitud\": -58.381592,\r\n    \"fechaSuceso\": \"2025-02-15\",\r\n    \"horaSuceso\": \"14:35\",\r\n    \"etiquetas\": [\r\n        \"choque\",\r\n        \"dos autos\",\r\n        \"leve\"\r\n    ],\r\n    \"contribuyente\": \"maildelusuario@example.com\",\r\n    \"multimedia\": [\r\n        \"https://mis-fotos.com/foto1.jpg\"\r\n    ]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8081/core/api/public/hechos/reportar",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8081",
+											"path": [
+												"core",
+												"api",
+												"public",
+												"hechos",
+												"reportar"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": null,
+									"header": [
+										{
+											"key": "Date",
+											"value": "Sun, 14 Dec 2025 22:28:53 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										},
+										{
+											"key": "X-Trace-Id",
+											"value": "09989019-13bf-4218-906d-f12a0cd71e5f"
+										},
+										{
+											"key": "Content-Length",
+											"value": "39"
+										}
+									],
+									"cookie": [],
+									"body": "Hecho enviado correctamente al cargador"
+								},
+								{
+									"name": "New Request",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "X-Urgente",
+												"value": "true",
+												"type": "text"
+											},
+											{
+												"key": "X-Anonimo",
+												"value": "false",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"titulo\": \"Choque en Triunvirato\",\r\n    \"descripcion\": \"Colisión entre un auto y una moto, sin heridos graves.\",\r\n    \"categoria\": \"Accidente de tránsito\",\r\n    \"latitud\": -34.603722,\r\n    \"longitud\": -58.381595,\r\n    \"fechaSuceso\": \"2025-02-15\",\r\n    \"horaSuceso\": \"14:35\",\r\n    \"etiquetas\": [\r\n        \"choque\",\r\n        \"dos autos\",\r\n        \"leve\"\r\n    ],\r\n    \"contribuyente\": \"maildelusuario@example.com\",\r\n    \"multimedia\": [\r\n        \"https://mis-fotos.com/foto1.jpg\"\r\n    ]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8081/core/api/public/hechos/reportar",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8081",
+											"path": [
+												"core",
+												"api",
+												"public",
+												"hechos",
+												"reportar"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": null,
+									"header": [
+										{
+											"key": "Date",
+											"value": "Sun, 14 Dec 2025 22:29:46 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										},
+										{
+											"key": "X-Trace-Id",
+											"value": "2974d219-2399-4a44-984d-678bb6a4c592"
+										},
+										{
+											"key": "Content-Length",
+											"value": "35"
+										}
+									],
+									"cookie": [],
+									"body": "Hecho urgente agregado directamente"
+								}
+							]
+						},
+						{
+							"name": "Solicitar eliminacion de hecho",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"hecho\": 2,\r\n  \"descripcion\": \"Motivo de la solicictud\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8081/core/api/public/solicitudes",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"core",
+										"api",
+										"public",
+										"solicitudes"
+									]
+								},
+								"description": "Solicita la eliminacion de un hecho."
+							},
+							"response": []
+						},
+						{
+							"name": "Hechos de una coleccion",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8081/core/api/public/colecciones/{id}/hechos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"core",
+										"api",
+										"public",
+										"colecciones",
+										"{id}",
+										"hechos"
+									]
+								},
+								"description": "Obtiene los hechos de la colección pasada por id."
+							},
+							"response": [
+								{
+									"name": "New Request",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "http://localhost:8081/core/api/public/colecciones/2/hechos",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8081",
+											"path": [
+												"core",
+												"api",
+												"public",
+												"colecciones",
+												"2",
+												"hechos"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Sun, 14 Dec 2025 22:31:49 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "X-Trace-Id",
+											"value": "b357006c-0f03-46d2-8977-4e17992eef1d"
+										},
+										{
+											"key": "Content-Length",
+											"value": "1244"
+										}
+									],
+									"cookie": [
+										{
+											"expires": "Invalid Date",
+											"domain": "",
+											"path": ""
+										}
+									],
+									"body": "[\n    {\n        \"id\": 9,\n        \"hash\": \"bf5ef7292f9e82c15f50ad23de06cab039b0df4f4022b9beb79d7a1e77452d9b\",\n        \"nombre\": \"Asalto a estudiantes\",\n        \"descripcion\": \"Robo de celulares a mano armada en la salida de una escuela.\",\n        \"contribuyente\": \"Emilia\",\n        \"fechaCarga\": [\n            2025,\n            12,\n            9\n        ],\n        \"fechaSuceso\": [\n            2025,\n            12,\n            9\n        ],\n        \"horaSuceso\": [\n            13,\n            55\n        ],\n        \"multimedia\": [],\n        \"etiquetas\": [],\n        \"latitud\": \"-31.434858597950566\",\n        \"longitud\": \"-61.258164722731635\",\n        \"categorias\": [\n            \"Robo\"\n        ],\n        \"estado\": \"ACEPTADO\"\n    },\n    {\n        \"id\": 14,\n        \"hash\": \"4aa4305f969aead229a7c5841f835472b050f6d870b58921727786c596d20be7\",\n        \"nombre\": \"Robo en obra\",\n        \"descripcion\": \"Robo de herramientas en obrador durante la madrugada.\",\n        \"contribuyente\": \"Ailén\",\n        \"fechaCarga\": [\n            2025,\n            12,\n            8\n        ],\n        \"fechaSuceso\": [\n            2025,\n            12,\n            7\n        ],\n        \"horaSuceso\": [\n            2,\n            20\n        ],\n        \"multimedia\": [],\n        \"etiquetas\": [],\n        \"latitud\": \"-53.665871187885365\",\n        \"longitud\": \"-68.52336272249616\",\n        \"categorias\": [\n            \"Robo\"\n        ],\n        \"estado\": \"ACEPTADO\"\n    },\n    {\n        \"id\": 21,\n        \"hash\": \"712b6463b783b907837e2416812d0021cb826f4ace8d74b1c237f2dd87856c50\",\n        \"nombre\": \"Hurto en una verdulería\",\n        \"descripcion\": \"Se robó unas manzanas y bolsas\",\n        \"contribuyente\": null,\n        \"fechaCarga\": [\n            2025,\n            12,\n            9\n        ],\n        \"fechaSuceso\": [\n            2025,\n            12,\n            8\n        ],\n        \"horaSuceso\": null,\n        \"multimedia\": [],\n        \"etiquetas\": [\n            \"Seguridad\"\n        ],\n        \"latitud\": \"-34.71314181885889\",\n        \"longitud\": \"-58.40695807398642\",\n        \"categorias\": [\n            \"Robo\"\n        ],\n        \"estado\": \"ACEPTADO\"\n    }\n]"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "COLECCION",
+					"item": [
+						{
+							"name": "Colecciones",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8081/core/api/public/colecciones",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"core",
+										"api",
+										"public",
+										"colecciones"
+									]
+								},
+								"description": "Obtiene todas las colecciones existentes."
+							},
+							"response": [
+								{
+									"name": "New Request",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "http://localhost:8081/core/api/public/colecciones",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8081",
+											"path": [
+												"core",
+												"api",
+												"public",
+												"colecciones"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": null,
+									"header": [
+										{
+											"key": "Date",
+											"value": "Sun, 14 Dec 2025 22:39:19 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "X-Trace-Id",
+											"value": "4a54ddb4-6c2f-4a2a-b978-5247e24dc921"
+										},
+										{
+											"key": "Content-Length",
+											"value": "1154"
+										}
+									],
+									"cookie": [],
+									"body": "[\n    {\n        \"id\": 3,\n        \"titulo\": \"Estafas del año 2025\",\n        \"descripcionColeccion\": \"Estafas llevadas a cabo durante el año 2025\",\n        \"criterioDePertenencia\": [\n            {\n                \"type\": \"categoria\",\n                \"id\": 4,\n                \"categoria\": \"Estafa\"\n            },\n            {\n                \"type\": \"fechaSuceso\",\n                \"id\": 5,\n                \"desde\": [\n                    2024,\n                    12,\n                    31\n                ],\n                \"hasta\": [\n                    2026,\n                    1,\n                    1\n                ]\n            }\n        ],\n        \"hechos\": null,\n        \"identificadorHandle\": null,\n        \"fuentes\": [\n            1,\n            2,\n            3,\n            4\n        ],\n        \"cantidadHechos\": 4,\n        \"modoDeNavegacion\": \"IRRESTRICTA\",\n        \"algoritmoConsenso\": null,\n        \"cantidadHechosVisibles\": 0\n    },\n    {\n        \"id\": 2,\n        \"titulo\": \"Robos\",\n        \"descripcionColeccion\": \"Todos los robos\",\n        \"criterioDePertenencia\": [\n            {\n                \"type\": \"categoria\",\n                \"id\": 3,\n                \"categoria\": \"Robo\"\n            }\n        ],\n        \"hechos\": null,\n        \"identificadorHandle\": null,\n        \"fuentes\": [\n            1,\n            2,\n            3,\n            4\n        ],\n        \"cantidadHechos\": 3,\n        \"modoDeNavegacion\": \"IRRESTRICTA\",\n        \"algoritmoConsenso\": null,\n        \"cantidadHechosVisibles\": 0\n    },\n    {\n        \"id\": 1,\n        \"titulo\": \"Violencia Nocturna\",\n        \"descripcionColeccion\": \"Hechos violentos ocurridos en horas de noche y madrugada\",\n        \"criterioDePertenencia\": [\n            {\n                \"type\": \"horaSuceso\",\n                \"id\": 1,\n                \"horaDesde\": [\n                    18,\n                    0\n                ],\n                \"horaHasta\": [\n                    6,\n                    0\n                ]\n            },\n            {\n                \"type\": \"categoria\",\n                \"id\": 2,\n                \"categoria\": \"Violencia\"\n            }\n        ],\n        \"hechos\": null,\n        \"identificadorHandle\": null,\n        \"fuentes\": [\n            2,\n            3\n        ],\n        \"cantidadHechos\": 0,\n        \"modoDeNavegacion\": \"IRRESTRICTA\",\n        \"algoritmoConsenso\": null,\n        \"cantidadHechosVisibles\": 0\n    }\n]"
+								}
+							]
+						},
+						{
+							"name": "Coleccion específica",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8081/core/api/public/colecciones/{id}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"core",
+										"api",
+										"public",
+										"colecciones",
+										"{id}"
+									]
+								},
+								"description": "Obtiene los datos de la colección de id correspondiente."
+							},
+							"response": [
+								{
+									"name": "New Request",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "http://localhost:8081/core/api/public/colecciones/2",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8081",
+											"path": [
+												"core",
+												"api",
+												"public",
+												"colecciones",
+												"2"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": null,
+									"header": [
+										{
+											"key": "Date",
+											"value": "Sun, 14 Dec 2025 22:40:32 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "X-Trace-Id",
+											"value": "703c3275-d31a-4786-a6dd-f87d6e6b48da"
+										},
+										{
+											"key": "Content-Length",
+											"value": "304"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"id\": 2,\n    \"titulo\": \"Robos\",\n    \"descripcionColeccion\": \"Todos los robos\",\n    \"criterioDePertenencia\": [\n        {\n            \"type\": \"categoria\",\n            \"id\": 3,\n            \"categoria\": \"Robo\"\n        }\n    ],\n    \"hechos\": null,\n    \"identificadorHandle\": null,\n    \"fuentes\": [\n        1,\n        2,\n        3,\n        4\n    ],\n    \"cantidadHechos\": 3,\n    \"modoDeNavegacion\": \"IRRESTRICTA\",\n    \"algoritmoConsenso\": null,\n    \"cantidadHechosVisibles\": 0\n}"
+								}
+							]
+						},
+						{
+							"name": "Coleccion modo de navegación y filtros",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8081/core/api/public/colecciones/{id}/{Modo navegacion}/hechos?categoria=string&provincia=string&soloMultimedia=bool&fechaDesdeSuceso=AAAA-MM-DD&fechaHastaSuceso=AAAA-MM-DD&fechaDesdeCarga=AAAA-MM-DD&fechaHastaCarga =AAAA-MM-DD&titulo=string&descripcion=string",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"core",
+										"api",
+										"public",
+										"colecciones",
+										"{id}",
+										"{Modo navegacion}",
+										"hechos"
+									],
+									"query": [
+										{
+											"key": "categoria",
+											"value": "string"
+										},
+										{
+											"key": "provincia",
+											"value": "string"
+										},
+										{
+											"key": "soloMultimedia",
+											"value": "bool"
+										},
+										{
+											"key": "fechaDesdeSuceso",
+											"value": "AAAA-MM-DD"
+										},
+										{
+											"key": "fechaHastaSuceso",
+											"value": "AAAA-MM-DD"
+										},
+										{
+											"key": "fechaDesdeCarga",
+											"value": "AAAA-MM-DD"
+										},
+										{
+											"key": "fechaHastaCarga ",
+											"value": "AAAA-MM-DD"
+										},
+										{
+											"key": "titulo",
+											"value": "string"
+										},
+										{
+											"key": "descripcion",
+											"value": "string"
+										}
+									]
+								},
+								"description": "Permite modificar el modo de navegación de la colección, es decir, si es curada o irrestricta.\n\nPemite, además, filtrar los hechos de la colección con QueryParams:\n\n- titulo = String\n    \n- descripción = String\n    \n- etiqueta = String\n    \n- categoria = String\n    \n- provincia = String\n    \n- soloMultimedia = Boolean\n    \n- fechaDesdeSuceso = LocalDate\n    \n- fechaHastaSuceso = LocalDate\n    \n- fechaDesdeCarga = LocalDate\n    \n- fechaHastaCarga = LocalDate"
+							},
+							"response": [
+								{
+									"name": "New Request",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8081/core/api/public/colecciones/2/IRRESTRICTA/hechos?categoria=Robo&provincia=Buenos Aires&soloMultimedia=false&fechaDesdeSuceso=2025-07-01&fechaHastaSuceso=2025-12-18&titulo=hurto&descripcion=manzanas",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8081",
+											"path": [
+												"core",
+												"api",
+												"public",
+												"colecciones",
+												"2",
+												"IRRESTRICTA",
+												"hechos"
+											],
+											"query": [
+												{
+													"key": "categoria",
+													"value": "Robo"
+												},
+												{
+													"key": "provincia",
+													"value": "Buenos Aires"
+												},
+												{
+													"key": "soloMultimedia",
+													"value": "false"
+												},
+												{
+													"key": "fechaDesdeSuceso",
+													"value": "2025-07-01"
+												},
+												{
+													"key": "fechaHastaSuceso",
+													"value": "2025-12-18"
+												},
+												{
+													"key": "fechaDesdeCarga",
+													"value": "2025-12-18",
+													"disabled": true
+												},
+												{
+													"key": "fechaHastaCarga ",
+													"value": "2025-12-20",
+													"disabled": true
+												},
+												{
+													"key": "titulo",
+													"value": "hurto"
+												},
+												{
+													"key": "descripcion",
+													"value": "manzanas"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": null,
+									"header": [
+										{
+											"key": "Date",
+											"value": "Sun, 14 Dec 2025 23:05:31 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "X-Trace-Id",
+											"value": "eee8f595-34b6-469e-954d-ccb060e456dd"
+										},
+										{
+											"key": "Content-Length",
+											"value": "406"
+										}
+									],
+									"cookie": [],
+									"body": "[\n    {\n        \"id\": 21,\n        \"hash\": \"712b6463b783b907837e2416812d0021cb826f4ace8d74b1c237f2dd87856c50\",\n        \"nombre\": \"Hurto en una verdulería\",\n        \"descripcion\": \"Se robó unas manzanas y bolsas\",\n        \"contribuyente\": null,\n        \"fechaCarga\": [\n            2025,\n            12,\n            9\n        ],\n        \"fechaSuceso\": [\n            2025,\n            12,\n            8\n        ],\n        \"horaSuceso\": null,\n        \"multimedia\": [],\n        \"etiquetas\": [\n            \"Seguridad\"\n        ],\n        \"latitud\": \"-34.71314181885889\",\n        \"longitud\": \"-58.40695807398642\",\n        \"categorias\": [\n            \"Robo\"\n        ],\n        \"estado\": \"ACEPTADO\"\n    }\n]"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "USUARIO",
+					"item": [
+						{
+							"name": "Registrar usuario",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"correo\": \"contribuyente@example.com\",\r\n  \"nombre\": \"Carlos Ejemplin\",\r\n  \"fechaNacimiento\": \"2002-05-10\",\r\n  \"foto\": \"https://example.com/avatar.png\",\r\n  \"rol\": \"USER\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8081/core/api/public/usuarios/registrar",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"core",
+										"api",
+										"public",
+										"usuarios",
+										"registrar"
+									]
+								},
+								"description": "Registra un usuario nuevo en la base de datos."
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"description": "Destinada a que otras instancias de MetaMapa, visualizadores y contribuyentes puedan acceder a la información del sistema.  \n  \nPermite:\n\n- Navegar hechos de una colección\n    \n- Filtrar hechos por categoría, fecha, ubicación\n    \n- Elegir entre navegación **curada** o **irrestricta**\n    \n- Crear solicitudes de eliminación\n    \n- Reportar nuevos hechos\n    \n- Consultar colecciones"
+		},
+		{
+			"name": "ADMIN",
+			"item": [
+				{
+					"name": "SOLICITUD DE ELIMINACIÓN",
+					"item": [
+						{
+							"name": "Obtiene las solicitudes de eliminacion",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8081/core/api/admin/solicitudes",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"core",
+										"api",
+										"admin",
+										"solicitudes"
+									]
+								},
+								"description": "Obtiene las solicitudes de eliminación existentes."
+							},
+							"response": [
+								{
+									"name": "New Request",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8081/core/api/admin/solicitudes",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8081",
+											"path": [
+												"core",
+												"api",
+												"admin",
+												"solicitudes"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Sun, 14 Dec 2025 23:37:09 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "X-Trace-Id",
+											"value": "d6ed3886-8d3a-49e3-b582-91ba721ea8ab"
+										},
+										{
+											"key": "Content-Length",
+											"value": "935"
+										}
+									],
+									"cookie": [],
+									"body": "[\n    {\n        \"id\": 3,\n        \"descripcionSolicitud\": \"Motivo de la solicictud\",\n        \"aceptada\": null,\n        \"nombre\": \"Accidente auto y bicicleta\",\n        \"descripcionHecho\": \"Una bicicleta fue embestida por un automóvil que giró sin mirar.\",\n        \"contribuyente\": \"Sofía\",\n        \"fechaCarga\": [\n            2025,\n            12,\n            12\n        ],\n        \"fechaSuceso\": [\n            2025,\n            12,\n            12\n        ],\n        \"horaSuceso\": [\n            8,\n            45\n        ]\n    },\n    {\n        \"id\": 2,\n        \"descripcionSolicitud\": \"espero que la persona este bien\",\n        \"aceptada\": null,\n        \"nombre\": \"Colisión en la ruta\",\n        \"descripcionHecho\": \"Choque leve entre dos camionetas en la ruta, sin heridos.\",\n        \"contribuyente\": \"Valeria\",\n        \"fechaCarga\": [\n            2025,\n            12,\n            13\n        ],\n        \"fechaSuceso\": [\n            2025,\n            12,\n            13\n        ],\n        \"horaSuceso\": [\n            13,\n            10\n        ]\n    },\n    {\n        \"id\": 1,\n        \"descripcionSolicitud\": \"Cualquier cosa dice, es mi casa. No hubo ningun incendio\",\n        \"aceptada\": null,\n        \"nombre\": \"Ciberestafa con pago anticipado\",\n        \"descripcionHecho\": \"El vendedor prometió un producto que nunca llegó luego de recibir el pago.\",\n        \"contribuyente\": \"Ana\",\n        \"fechaCarga\": [\n            2025,\n            12,\n            10\n        ],\n        \"fechaSuceso\": [\n            2025,\n            12,\n            9\n        ],\n        \"horaSuceso\": [\n            10,\n            30\n        ]\n    }\n]"
+								}
+							]
+						},
+						{
+							"name": "Acepta la solicitud de eliminacion",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8081/core/api/admin/solicitudes/2/aceptar",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"core",
+										"api",
+										"admin",
+										"solicitudes",
+										"2",
+										"aceptar"
+									]
+								},
+								"description": "Acepta la solicitud de eliminación, desactiva el hecho."
+							},
+							"response": []
+						},
+						{
+							"name": "Rechaza la solicitud de eliminacion",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8081/core/api/admin/solicitudes/1/rechazar",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"core",
+										"api",
+										"admin",
+										"solicitudes",
+										"1",
+										"rechazar"
+									]
+								},
+								"description": "Rechaza la solicitud de eliminacion. No afecta al hecho."
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "COLECCIONES",
+					"item": [
+						{
+							"name": "Crear colección",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"titulo\": \"Colección de Accidentes en Buenos Aires\",\r\n  \"descripcionColeccion\": \"Accidentes reportados en CABA durante el último año\",\r\n  \"identificadorHandle\": null,\r\n  \"modoDeNavegacion\": \"CURADA\",\r\n  \"algoritmoConsenso\": \"MAYORIA_SIMPLE\",\r\n\r\n  \"hechos\": [],\r\n  \"fuentes\": [1, 3],\r\n\r\n  \"criterioDePertenencia\": [\r\n    {\r\n      \"type\": \"categoria\",\r\n      \"categoria\": \"Accidente\"\r\n    },\r\n    {\r\n      \"type\": \"nombre\",\r\n      \"palabraClave\": \"choque\"\r\n    },\r\n    {\r\n      \"type\": \"fechaSuceso\",\r\n      \"desde\": \"2024-01-01\",\r\n      \"hasta\": \"2024-12-31\"\r\n    },\r\n    {\r\n      \"type\": \"horaSuceso\",\r\n      \"horaDesde\": \"07:00\",\r\n      \"horaHasta\": \"10:00\"\r\n    },\r\n    {\r\n      \"type\": \"fechaCarga\",\r\n      \"desde\": \"2024-01-01\",\r\n      \"hasta\": \"2024-12-31\"\r\n    }\r\n  ]\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8081/core/api/admin/colecciones",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"core",
+										"api",
+										"admin",
+										"colecciones"
+									]
+								},
+								"description": "Crea una colección con su nombre, descripción, modo de navegación, algoritmo de consenso, criterios de pertenencia y fuentes.\n\nLos criterios de pertenencia soportados son:\n\n- Criterio nombre: { \"type\": \"nombre\", \"palabraClave\": \"robo\" }\n    \n- Criterio descripción: { \"type\": \"descripcion\", \"palabraClave\": \"violencia\" }\n    \n- Criterio categoria: { \"type\": \"categoria\", \"categoria\": \"Accidente\" }\n    \n- Criterio fecha suceso: { \"type\": \"fechaSuceso\", \"desde\": \"2024-01-01\", \"hasta\": \"2024-12-31\"}\n    \n- Criterio fecha de carga: { \"type\": \"fechaCarga\", \"desde\": \"2024-02-01\", \"hasta\": \"2024-03-01\"}\n    \n- Criterio hora suceso: { \"type\": \"horaSuceso\", \"horaDesde\": \"08:00\", \"horaHasta\": \"12:00\" }"
+							},
+							"response": []
+						},
+						{
+							"name": "Coleccion",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8081/core/api/admin/colecciones/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"core",
+										"api",
+										"admin",
+										"colecciones",
+										"1"
+									]
+								},
+								"description": "Elimina la colección del ID correspondiente."
+							},
+							"response": []
+						},
+						{
+							"name": "Modificar coleccion",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"titulo\": \"prueba cambio de titulo\",\r\n  \"descripcionColeccion\": \"prueba de modificación\",\r\n  \"algoritmoConsenso\": \"ABSOLUTO\",\r\n  \"modoDeNavegacion\": \"CURADA\",\r\n  \"criterioDePertenencia\": [],\r\n  \"fuentes\": [1, 2, 3],\r\n  \"hechos\": []\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8081/core/api/admin/colecciones/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"core",
+										"api",
+										"admin",
+										"colecciones",
+										"2"
+									]
+								},
+								"description": "Modifica la colección del id correspondiente.\n\nSe puede modificar:\n\n- El titulo\n    \n- La descripción\n    \n- El algoritmo de consenso: ABSOLUTO | MAYORIA_SIMPLE | MULTIPLES_MENCIONES\n    \n- El modo de navegacion\": CURADA | IRRESTRICTA\n    \n- Los criterios de pertenencia: una lista de los mismos documentados en el POST de creaar colección.\n    \n- Las fuentes: \\[idFuente1, idFuente2\\]\n    \n- Hechos: \\[hecho1, hecho2\\]"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "HECHO",
+					"item": [
+						{
+							"name": "Obtener todos los hechos",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8081/core/api/admin/hechos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"core",
+										"api",
+										"admin",
+										"hechos"
+									]
+								},
+								"description": "Obtiene todos los hechos existentes."
+							},
+							"response": [
+								{
+									"name": "New Request",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8081/core/api/admin/hechos",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8081",
+											"path": [
+												"core",
+												"api",
+												"admin",
+												"hechos"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Sun, 14 Dec 2025 23:47:55 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "X-Trace-Id",
+											"value": "89a607fb-15da-4a45-9b65-ef01a0e4694b"
+										},
+										{
+											"key": "Content-Encoding",
+											"value": "gzip"
+										},
+										{
+											"key": "Content-Length",
+											"value": "3188"
+										}
+									],
+									"cookie": [],
+									"body": "[\n    {\n        \"id\": 1,\n        \"hash\": \"0663607e9566d5fa26f2edbbd14ea076cfb05dc4d89549d9474792cca44d5db4\",\n        \"nombre\": \"Ciberestafa con pago anticipado\",\n        \"descripcion\": \"El vendedor prometió un producto que nunca llegó luego de recibir el pago.\",\n        \"contribuyente\": \"Ana\",\n        \"fechaCarga\": [\n            2025,\n            12,\n            10\n        ],\n        \"fechaSuceso\": [\n            2025,\n            12,\n            9\n        ],\n        \"horaSuceso\": [\n            10,\n            30\n        ],\n        \"multimedia\": [],\n        \"etiquetas\": [],\n        \"latitud\": \"-31.424164939481255\",\n        \"longitud\": \"-64.51253034145859\",\n        \"categorias\": [\n            \"Estafa\"\n        ],\n        \"estado\": \"ACEPTADO\"\n    },\n    {\n        \"id\": 2,\n        \"hash\": \"c3b0022bda9b791b9bc887992a3f4607563622a78526ac9823be52ca9b82e0c9\",\n        \"nombre\": \"Accidente auto y bicicleta\",\n        \"descripcion\": \"Una bicicleta fue embestida por un automóvil que giró sin mirar.\",\n        \"contribuyente\": \"Sofía\",\n        \"fechaCarga\": [\n            2025,\n            12,\n            12\n        ],\n        \"fechaSuceso\": [\n            2025,\n            12,\n            12\n        ],\n        \"horaSuceso\": [\n            8,\n            45\n        ],\n        \"multimedia\": [],\n        \"etiquetas\": [],\n        \"latitud\": \"-31.42081334780942\",\n        \"longitud\": \"-64.49981512580771\",\n        \"categorias\": [\n            \"Accidente vial\"\n        ],\n        \"estado\": \"ACEPTADO\"\n    },\n    {\n        \"id\": 3,\n        \"hash\": \"f0a9b48fa4cf532eea911b9e5f979856f578e20c22d6f44ce248ecd0c1dd3d34\",\n        \"nombre\": \"Amenaza por estacionamiento\",\n        \"descripcion\": \"Un vecino amenazó con dañar el auto si lo seguían aparcando frente a su casa.\",\n        \"contribuyente\": \"Carlos\",\n        \"fechaCarga\": [\n            2025,\n            12,\n            11\n        ],\n        \"fechaSuceso\": [\n            2025,\n            12,\n            10\n        ],\n        \"horaSuceso\": [\n            22,\n            0\n        ],\n        \"multimedia\": [],\n        \"etiquetas\": [],\n        \"latitud\": \"-31.420218194636984\",\n        \"longitud\": \"-64.18860387845267\",\n        \"categorias\": [\n            \"Amenaza\"\n        ],\n        \"estado\": \"ACEPTADO\"\n    },\n    {\n        \"id\": 5,\n        \"hash\": \"59ec36d307d164f5c4ad4868e6d9a3e35721bc9ea2d0bd21f9caf0777ec413cc\",\n        \"nombre\": \"Venta fraudulenta con cheques\",\n        \"descripcion\": \"Alguien usó cheques falsos para pagar una compra importante.\",\n        \"contribuyente\": \"Martín\",\n        \"fechaCarga\": [\n            2025,\n            12,\n            8\n        ],\n        \"fechaSuceso\": [\n            2025,\n            12,\n            6\n        ],\n        \"horaSuceso\": [\n            16,\n            55\n        ],\n        \"multimedia\": [],\n        \"etiquetas\": [],\n        \"latitud\": \"-33.12311719110758\",\n        \"longitud\": \"-64.3500117112537\",\n        \"categorias\": [\n            \"Estafa\"\n        ],\n        \"estado\": \"ACEPTADO\"\n    },\n    {\n        \"id\": 6,\n        \"hash\": \"b049efca0e75b1946a9210bfdfde0443dc4eb6246cd3afb5e9a298d082b9098a\",\n        \"nombre\": \"Amenaza a local comercial\",\n        \"descripcion\": \"Hubo un llamado anónimo donde amenazaban a un comercio.\",\n        \"contribuyente\": \"Nicolás\",\n        \"fechaCarga\": [\n            2025,\n            12,\n            7\n        ],\n        \"fechaSuceso\": [\n            2025,\n            12,\n            5\n        ],\n        \"horaSuceso\": [\n            19,\n            20\n        ],\n        \"multimedia\": [],\n        \"etiquetas\": [],\n        \"latitud\": \"-33.927945800754834\",\n        \"longitud\": \"-64.39990066896273\",\n        \"categorias\": [\n            \"Amenaza\"\n        ],\n        \"estado\": \"ACEPTADO\"\n    },\n    {\n        \"id\": 7,\n        \"hash\": \"ac1e187d80b620377beb816b173a7d09f69116b04f74df13b036c0ef4f274349\",\n        \"nombre\": \"Incendio en depósito agrícola\",\n        \"descripcion\": \"Un cortocircuito en un galpón generó un incendio. Solo hubo daños materiales.\",\n        \"contribuyente\": \"Federico\",\n        \"fechaCarga\": [\n            2025,\n            12,\n            11\n        ],\n        \"fechaSuceso\": [\n            2025,\n            12,\n            11\n        ],\n        \"horaSuceso\": [\n            2,\n            30\n        ],\n        \"multimedia\": [],\n        \"etiquetas\": [],\n        \"latitud\": \"-33.75348684460431\",\n        \"longitud\": \"-61.93034229480898\",\n        \"categorias\": [\n            \"Incendio\"\n        ],\n        \"estado\": \"ACEPTADO\"\n    },\n    {\n        \"id\": 8,\n        \"hash\": \"a9a22a594a6f914e0fcae30a34c66fe4d27059cb3884ad28712eb981bd73c7aa\",\n        \"nombre\": \"Choque en semáforo\",\n        \"descripcion\": \"Dos autos chocaron en la intersección, uno de los conductores no respetó el semáforo.\",\n        \"contribuyente\": \"Julieta\",\n        \"fechaCarga\": [\n            2025,\n            12,\n            12\n        ],\n        \"fechaSuceso\": [\n            2025,\n            12,\n            12\n        ],\n        \"horaSuceso\": [\n            7,\n            10\n        ],\n        \"multimedia\": [],\n        \"etiquetas\": [],\n        \"latitud\": \"-32.95638173243072\",\n        \"longitud\": \"-60.69951830380286\",\n        \"categorias\": [\n            \"Choque\"\n        ],\n        \"estado\": \"ACEPTADO\"\n    },\n    {\n        \"id\": 9,\n        \"hash\": \"bf5ef7292f9e82c15f50ad23de06cab039b0df4f4022b9beb79d7a1e77452d9b\",\n        \"nombre\": \"Asalto a estudiantes\",\n        \"descripcion\": \"Robo de celulares a mano armada en la salida de una escuela.\",\n        \"contribuyente\": \"Emilia\",\n        \"fechaCarga\": [\n            2025,\n            12,\n            9\n        ],\n        \"fechaSuceso\": [\n            2025,\n            12,\n            9\n        ],\n        \"horaSuceso\": [\n            13,\n            55\n        ],\n        \"multimedia\": [],\n        \"etiquetas\": [],\n        \"latitud\": \"-31.434858597950566\",\n        \"longitud\": \"-61.258164722731635\",\n        \"categorias\": [\n            \"Robo\"\n        ],\n        \"estado\": \"ACEPTADO\"\n    },\n    {\n        \"id\": 10,\n        \"hash\": \"91ba7a071e3dea31c8b471996f2d8f591e090f49fa1e6dbdd4d255aa37d30eaa\",\n        \"nombre\": \"Demora vial por camión\",\n        \"descripcion\": \"Camión quedó atascado en la ruta por exceso de carga. Hubo demoras en el tránsito.\",\n        \"contribuyente\": \"Lucas\",\n        \"fechaCarga\": [\n            2025,\n            12,\n            13\n        ],\n        \"fechaSuceso\": [\n            2025,\n            12,\n            13\n        ],\n        \"horaSuceso\": [\n            11,\n            0\n        ],\n        \"multimedia\": [],\n        \"etiquetas\": [],\n        \"latitud\": \"-28.773476303139006\",\n        \"longitud\": \"-60.73555955706228\",\n        \"categorias\": [\n            \"Accidente vial\"\n        ],\n        \"estado\": \"ACEPTADO\"\n    },\n    {\n        \"id\": 11,\n        \"hash\": \"d3bd3024e55c6a81da8fb9605198bb05d0d9d8af3d772f93cb79d453e0bd0b77\",\n        \"nombre\": \"Llamado falso de banco\",\n        \"descripcion\": \"Intento de estafa telefónica fingiendo ser del banco para obtener claves.\",\n        \"contribuyente\": \"Gustavo\",\n        \"fechaCarga\": [\n            2025,\n            12,\n            4\n        ],\n        \"fechaSuceso\": [\n            2025,\n            12,\n            3\n        ],\n        \"horaSuceso\": [\n            18,\n            40\n        ],\n        \"multimedia\": [],\n        \"etiquetas\": [],\n        \"latitud\": \"-34.19294767533878\",\n        \"longitud\": \"-62.044978836970174\",\n        \"categorias\": [\n            \"Estafa\"\n        ],\n        \"estado\": \"ACEPTADO\"\n    },\n    {\n        \"id\": 12,\n        \"hash\": \"8e3c872177285e21924b81f10ae1dc69d40353d69ef29db3c95155af6415b3c1\",\n        \"nombre\": \"Incendio en Ushuaia\",\n        \"descripcion\": \"Incendio en vivienda por estufa eléctrica en mal estado. Sin víctimas.\",\n        \"contribuyente\": \"Camila\",\n        \"fechaCarga\": [\n            2025,\n            12,\n            11\n        ],\n        \"fechaSuceso\": [\n            2025,\n            12,\n            11\n        ],\n        \"horaSuceso\": [\n            23,\n            15\n        ],\n        \"multimedia\": [],\n        \"etiquetas\": [],\n        \"latitud\": \"-54.82743465704266\",\n        \"longitud\": \"-65.60292262000861\",\n        \"categorias\": [\n            \"Incendio\"\n        ],\n        \"estado\": \"ACEPTADO\"\n    },\n    {\n        \"id\": 13,\n        \"hash\": \"fab76bf4fdce3fb4de3f13becd2359b0101722061b58338188bf1262fd8541df\",\n        \"nombre\": \"Poste caído por hielo\",\n        \"descripcion\": \"Caída de poste producto del hielo en la ruta. Sin heridos, gran atasco vehicular.\",\n        \"contribuyente\": \"Ramiro\",\n        \"fechaCarga\": [\n            2025,\n            12,\n            10\n        ],\n        \"fechaSuceso\": [\n            2025,\n            12,\n            10\n        ],\n        \"horaSuceso\": [\n            7,\n            35\n        ],\n        \"multimedia\": [],\n        \"etiquetas\": [],\n        \"latitud\": \"-54.666363791933556\",\n        \"longitud\": \"-68.1621271405244\",\n        \"categorias\": [\n            \"Accidente vial\"\n        ],\n        \"estado\": \"ACEPTADO\"\n    },\n    {\n        \"id\": 14,\n        \"hash\": \"4aa4305f969aead229a7c5841f835472b050f6d870b58921727786c596d20be7\",\n        \"nombre\": \"Robo en obra\",\n        \"descripcion\": \"Robo de herramientas en obrador durante la madrugada.\",\n        \"contribuyente\": \"Ailén\",\n        \"fechaCarga\": [\n            2025,\n            12,\n            8\n        ],\n        \"fechaSuceso\": [\n            2025,\n            12,\n            7\n        ],\n        \"horaSuceso\": [\n            2,\n            20\n        ],\n        \"multimedia\": [],\n        \"etiquetas\": [],\n        \"latitud\": \"-53.665871187885365\",\n        \"longitud\": \"-68.52336272249616\",\n        \"categorias\": [\n            \"Robo\"\n        ],\n        \"estado\": \"ACEPTADO\"\n    },\n    {\n        \"id\": 15,\n        \"hash\": \"9f7283d8b358e45c0c18c7c73c2f9e413dabba671de36133aa3216eba7e9d915\",\n        \"nombre\": \"Estafa virtual en compra\",\n        \"descripcion\": \"Transferencia bancaria fraudulenta a nombre de empresa inexistente.\",\n        \"contribuyente\": \"Tomás\",\n        \"fechaCarga\": [\n            2025,\n            12,\n            12\n        ],\n        \"fechaSuceso\": [\n            2025,\n            12,\n            12\n        ],\n        \"horaSuceso\": [\n            14,\n            50\n        ],\n        \"multimedia\": [],\n        \"etiquetas\": [],\n        \"latitud\": \"-53.43278885018243\",\n        \"longitud\": \"-68.20096970099226\",\n        \"categorias\": [\n            \"Estafa\"\n        ],\n        \"estado\": \"ACEPTADO\"\n    },\n    {\n        \"id\": 16,\n        \"hash\": \"cca692d7076d22a1e0399abd05a3e2be6cc42581b1fc6a9fd583fcfe0876279a\",\n        \"nombre\": \"Accidente por niebla\",\n        \"descripcion\": \"Choque múltiple por niebla en curva, tres vehículos involucrados.\",\n        \"contribuyente\": \"Verónica\",\n        \"fechaCarga\": [\n            2025,\n            12,\n            13\n        ],\n        \"fechaSuceso\": [\n            2025,\n            12,\n            13\n        ],\n        \"horaSuceso\": [\n            10,\n            5\n        ],\n        \"multimedia\": [],\n        \"etiquetas\": [],\n        \"latitud\": \"-54.81703556259818\",\n        \"longitud\": \"-68.3345503752549\",\n        \"categorias\": [\n            \"Choque\"\n        ],\n        \"estado\": \"ACEPTADO\"\n    },\n    {\n        \"id\": 17,\n        \"hash\": \"2ba3fbc90aa8a0ae38fa51a3c6408d5073a7df6d212664fc8a5a9082a4af6383\",\n        \"nombre\": \"Incendio en casa\",\n        \"descripcion\": \"No hubo heridos, fue por una sartén\",\n        \"contribuyente\": \"Juan\",\n        \"fechaCarga\": [\n            2025,\n            12,\n            12\n        ],\n        \"fechaSuceso\": [\n            2025,\n            12,\n            11\n        ],\n        \"horaSuceso\": null,\n        \"multimedia\": [],\n        \"etiquetas\": [],\n        \"latitud\": \"-34.61969316128249\",\n        \"longitud\": \"-58.4494697301956\",\n        \"categorias\": [\n            \"Incendio\"\n        ],\n        \"estado\": \"ACEPTADO\"\n    },\n    {\n        \"id\": 18,\n        \"hash\": \"ced51cfc2f75135e658c5e4f4883e033e9bdcb40cb0a45a8b5feb83c3dbe6cd4\",\n        \"nombre\": \"Choque entre moto y gol\",\n        \"descripcion\": \"Un perro cruzo por la calle y frenó de golpe, todos a salvo.\",\n        \"contribuyente\": \"Luciana\",\n        \"fechaCarga\": [\n            2025,\n            12,\n            12\n        ],\n        \"fechaSuceso\": [\n            2025,\n            12,\n            11\n        ],\n        \"horaSuceso\": null,\n        \"multimedia\": [],\n        \"etiquetas\": [],\n        \"latitud\": \"-34.55289162117985\",\n        \"longitud\": \"-58.697023577203126\",\n        \"categorias\": [\n            \"Choque\"\n        ],\n        \"estado\": \"ACEPTADO\"\n    },\n    {\n        \"id\": 19,\n        \"hash\": \"624cc6268faad47aec08b178e02f73b6dc7552b1946c882bbfdfc2eee8b1a6d9\",\n        \"nombre\": \"Departamento en un edicio\",\n        \"descripcion\": \"Causa desconocida\",\n        \"contribuyente\": null,\n        \"fechaCarga\": [\n            2025,\n            12,\n            13\n        ],\n        \"fechaSuceso\": [\n            2025,\n            12,\n            12\n        ],\n        \"horaSuceso\": null,\n        \"multimedia\": [],\n        \"etiquetas\": [],\n        \"latitud\": \"-34.71314181885889\",\n        \"longitud\": \"-58.40695807398643\",\n        \"categorias\": [\n            \"Incendio\"\n        ],\n        \"estado\": \"ACEPTADO\"\n    },\n    {\n        \"id\": 20,\n        \"hash\": \"08d045b26e6a77427eb0406348071672b3e0e16139c6a8f432fe7881a8e001d8\",\n        \"nombre\": \"Choque con maceta\",\n        \"descripcion\": \"Parecía que el conductor iba borracho, se llevó puesto una maceta que estaba en la calle\",\n        \"contribuyente\": \"Mariana\",\n        \"fechaCarga\": [\n            2025,\n            12,\n            13\n        ],\n        \"fechaSuceso\": [\n            2025,\n            12,\n            12\n        ],\n        \"horaSuceso\": null,\n        \"multimedia\": [],\n        \"etiquetas\": [\n            \"COTO Lanus\"\n        ],\n        \"latitud\": \"-34.63254438302316\",\n        \"longitud\": \"-58.36621806522921\",\n        \"categorias\": [\n            \"Choque\"\n        ],\n        \"estado\": \"ACEPTADO\"\n    },\n    {\n        \"id\": 21,\n        \"hash\": \"712b6463b783b907837e2416812d0021cb826f4ace8d74b1c237f2dd87856c50\",\n        \"nombre\": \"Hurto en una verdulería\",\n        \"descripcion\": \"Se robó unas manzanas y bolsas\",\n        \"contribuyente\": null,\n        \"fechaCarga\": [\n            2025,\n            12,\n            9\n        ],\n        \"fechaSuceso\": [\n            2025,\n            12,\n            8\n        ],\n        \"horaSuceso\": null,\n        \"multimedia\": [],\n        \"etiquetas\": [\n            \"Seguridad\"\n        ],\n        \"latitud\": \"-34.71314181885889\",\n        \"longitud\": \"-58.40695807398642\",\n        \"categorias\": [\n            \"Robo\"\n        ],\n        \"estado\": \"ACEPTADO\"\n    },\n    {\n        \"id\": 22,\n        \"hash\": \"a9a22a594a6f914e0fcae30a34c66fe4d27059cb3884ad28712eb981bd73c7aa\",\n        \"nombre\": \"Choque en semáforo\",\n        \"descripcion\": \"Dos autos chocaron en la intersección, uno de los conductores no respetó el semáforo.\",\n        \"contribuyente\": \"Julieta\",\n        \"fechaCarga\": [\n            2025,\n            12,\n            12\n        ],\n        \"fechaSuceso\": [\n            2025,\n            12,\n            12\n        ],\n        \"horaSuceso\": [\n            7,\n            10\n        ],\n        \"multimedia\": [],\n        \"etiquetas\": [],\n        \"latitud\": \"-32.95638173243072\",\n        \"longitud\": \"-60.69951830380286\",\n        \"categorias\": [\n            \"Choque\"\n        ],\n        \"estado\": \"ACEPTADO\"\n    },\n    {\n        \"id\": 23,\n        \"hash\": \"ced51cfc2f75135e658c5e4f4883e033e9bdcb40cb0a45a8b5feb83c3dbe6cd4\",\n        \"nombre\": \"Choque entre moto y gol\",\n        \"descripcion\": \"Un perro cruzo por la calle y frenó de golpe, todos a salvo.\",\n        \"contribuyente\": \"Luciana\",\n        \"fechaCarga\": [\n            2025,\n            12,\n            12\n        ],\n        \"fechaSuceso\": [\n            2025,\n            12,\n            11\n        ],\n        \"horaSuceso\": null,\n        \"multimedia\": [],\n        \"etiquetas\": [],\n        \"latitud\": \"-34.55289162117985\",\n        \"longitud\": \"-58.697023577203126\",\n        \"categorias\": [\n            \"Choque\"\n        ],\n        \"estado\": \"ACEPTADO\"\n    },\n    {\n        \"id\": 24,\n        \"hash\": \"c8ffe6dd04d38a95c36d09b643564fb5b33a11bd599721a4728ed6c941ce7a29\",\n        \"nombre\": \"Choque en Triunvirato\",\n        \"descripcion\": \"Colisión entre un auto y una moto, sin heridos graves.\",\n        \"contribuyente\": null,\n        \"fechaCarga\": [\n            2025,\n            12,\n            14\n        ],\n        \"fechaSuceso\": [\n            2025,\n            2,\n            15\n        ],\n        \"horaSuceso\": [\n            14,\n            35\n        ],\n        \"multimedia\": [\n            \"https://mis-fotos.com/foto1.jpg\"\n        ],\n        \"etiquetas\": [\n            \"choque\",\n            \"dos autos\",\n            \"leve\"\n        ],\n        \"latitud\": \"-34.603722\",\n        \"longitud\": \"-58.381595\",\n        \"categorias\": [\n            \"Accidente de tránsito\"\n        ],\n        \"estado\": \"ACEPTADO\"\n    }\n]"
+								}
+							]
+						},
+						{
+							"name": "Eliminar hecho",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8081/core/api/admin/hechos/bf5ef7292f9e82c15f50ad23de06cab039b0df4f4022b9beb79d7a1e77452d9b",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"core",
+										"api",
+										"admin",
+										"hechos",
+										"bf5ef7292f9e82c15f50ad23de06cab039b0df4f4022b9beb79d7a1e77452d9b"
+									]
+								},
+								"description": "Elimina el hecho del hash correspondiente."
+							},
+							"response": []
+						},
+						{
+							"name": "Modificar hecho",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nombre\": \"Choque múltiple en autopista\",\r\n  \"descripcion\": \"Accidente entre varios vehículos. Sin heridos.\",\r\n  \"fecha_suceso\": \"2024-03-15\",\r\n  \"latitud\": -34.6037,\r\n  \"longitud\": -58.3816,\r\n  \"categoria\": \"Accidente de tránsito\",\r\n  \"etiquetas\": [\"choque\", \"transito\", \"demoras\"]\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8081/core/api/admin/hechos/ced51cfc2f75135e658c5e4f4883e033e9bdcb40cb0a45a8b5feb83c3dbe6cd4",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"core",
+										"api",
+										"admin",
+										"hechos",
+										"ced51cfc2f75135e658c5e4f4883e033e9bdcb40cb0a45a8b5feb83c3dbe6cd4"
+									]
+								},
+								"description": "Se pueden modificar todos los atributos del hecho."
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "FUENTES",
+					"item": [
+						{
+							"name": "Fuentes",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8081/core/api/admin/fuentes",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"core",
+										"api",
+										"admin",
+										"fuentes"
+									]
+								},
+								"description": "Obtiene todas las fuentes."
+							},
+							"response": [
+								{
+									"name": "New Request",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8081/core/api/admin/fuentes",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8081",
+											"path": [
+												"core",
+												"api",
+												"admin",
+												"fuentes"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Mon, 15 Dec 2025 00:25:47 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "X-Trace-Id",
+											"value": "c3ccaa6a-48b4-443d-a401-088b0ec8a8b4"
+										},
+										{
+											"key": "Content-Length",
+											"value": "572"
+										}
+									],
+									"cookie": [],
+									"body": "[\n    {\n        \"id\": 1,\n        \"nombre\": \"Hechos Reportados\",\n        \"link\": null,\n        \"tipoFuente\": \"DINAMICA\",\n        \"strategyTipoConexion\": \"DINAMICA\"\n    },\n    {\n        \"id\": 2,\n        \"nombre\": \"Seguridad Ciudadana\",\n        \"link\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/SeguridadCiudadana\",\n        \"tipoFuente\": \"PROXY\",\n        \"strategyTipoConexion\": \"APIREST\"\n    },\n    {\n        \"id\": 3,\n        \"nombre\": \"Reportes Vecinales\",\n        \"link\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/ReportesVecinales\",\n        \"tipoFuente\": \"PROXY\",\n        \"strategyTipoConexion\": \"APIREST\"\n    },\n    {\n        \"id\": 4,\n        \"nombre\": \"Comunidad ARG\",\n        \"link\": \"alertasurbanas.csv\",\n        \"tipoFuente\": \"ESTATICA\",\n        \"strategyTipoConexion\": \"CSV\"\n    }\n]"
+								}
+							]
+						},
+						{
+							"name": "Eliminar fuente",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8081/core/api/admin/fuentes/2/eliminar",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"core",
+										"api",
+										"admin",
+										"fuentes",
+										"2",
+										"eliminar"
+									]
+								},
+								"description": "Elimina la fuente del id correspondiente."
+							},
+							"response": []
+						},
+						{
+							"name": "Agregar fuente",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nombre\": \"Fuentes de Accidentes CABA\",\r\n  \"link\": \"https://datos.buenosaires.gob.ar\",\r\n  \"strategyTipoConexion\": \"API REST\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8081/core/api/admin/fuentes",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"core",
+										"api",
+										"admin",
+										"fuentes"
+									]
+								},
+								"description": "Agrega la fuente enviada a su cargador correspondiente."
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "SUGERENCIA DE CAMBIO",
+					"item": [
+						{
+							"name": "Sugerencias de cambio pendientes",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8081/core/api/admin/sugerencias",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"core",
+										"api",
+										"admin",
+										"sugerencias"
+									]
+								},
+								"description": "Obtiene todas las sugerencias de cambio que estan pendientes."
+							},
+							"response": [
+								{
+									"name": "New Request",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8081/core/api/admin/sugerencias",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8081",
+											"path": [
+												"core",
+												"api",
+												"admin",
+												"sugerencias"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Mon, 15 Dec 2025 00:45:46 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "X-Trace-Id",
+											"value": "e03a08de-4cf0-41e3-8581-9864b519e04d"
+										},
+										{
+											"key": "Content-Length",
+											"value": "735"
+										}
+									],
+									"cookie": [],
+									"body": "[\n    {\n        \"id\": 3,\n        \"descripcionSolicitud\": \"La descripción original no coincide con la evidencia.\",\n        \"fechaSugerencia\": [\n            2025,\n            2,\n            20\n        ],\n        \"aceptada\": null,\n        \"tituloSugerencia\": \"Choque leve entre dos autos\",\n        \"descripcionSugerencia\": \"El hecho parece ser más leve de lo cargado originalmente\",\n        \"fechaSucesoSugerencia\": [\n            2025,\n            2,\n            20\n        ],\n        \"horaSucesoSugerencia\": [\n            14,\n            30\n        ],\n        \"categoriaSugerencia\": \"Accidente leve\",\n        \"etiquetasSugerencia\": [\n            \"choque\",\n            \"leve\",\n            \"sin-heridos\"\n        ],\n        \"idHecho\": 12,\n        \"tituloHecho\": \"Choque leve entre dos autos\",\n        \"descripcionHecho\": \"El hecho parece ser más leve de lo cargado originalmente\",\n        \"contribuyenteHecho\": \"Camila\",\n        \"fechaSucesoHecho\": [\n            2025,\n            2,\n            19\n        ],\n        \"horaSucesoHecho\": [\n            14,\n            30\n        ],\n        \"categoriaHecho\": \"Accidente leve\",\n        \"etiquetasHecho\": [\n            \"choque\",\n            \"leve\",\n            \"sin-heridos\"\n        ]\n    }\n]"
+								}
+							]
+						},
+						{
+							"name": "Sugerencia de cambio",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"idHecho\": 12,\r\n  \"tituloSugerencia\": \"Choque leve entre dos autos\",\r\n  \"descripcionSugerencia\": \"El hecho parece ser más leve de lo cargado originalmente\",\r\n  \"descripcionSolicitud\": \"La descripción original no coincide con la evidencia.\",\r\n  \"fechaSugerencia\": \"2025-02-20\",\r\n  \"categoriaSugerencia\": \"Accidente leve\",\r\n  \"fechaSucesoSugerencia\": \"2025-02-19\",\r\n  \"horaSucesoSugerencia\": \"14:30\",\r\n  \"etiquetasSugerencia\": [\"choque\", \"leve\", \"sin-heridos\"]\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8081/core/api/admin/sugerencias",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"core",
+										"api",
+										"admin",
+										"sugerencias"
+									]
+								},
+								"description": "Crea una sugerencia de cambio para el hecho de id correspondiente."
+							},
+							"response": []
+						},
+						{
+							"name": "Aceptar sugerencia de cambio",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8081/core/api/admin/sugerencias/1/aceptar",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"core",
+										"api",
+										"admin",
+										"sugerencias",
+										"1",
+										"aceptar"
+									]
+								},
+								"description": "Se acepta la sugerencia de cambio, se actualizan los datos del hecho."
+							},
+							"response": []
+						},
+						{
+							"name": "Rechazar sugerencia de cambio",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8081/core/api/admin/sugerencias/1/rechazar",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"core",
+										"api",
+										"admin",
+										"sugerencias",
+										"1",
+										"rechazar"
+									]
+								},
+								"description": "Se rechaza la sugerencia de cambio. No produce cambios en el hecho."
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"description": "Utilizada por personas administradoras de MetaMapa para gestionar la información central del sistema.  \n  \nPemite:\n\n- CRUD de colecciones\n    \n- Asignar o quitar fuentes a una colección\n    \n- Modificar el algoritmo de consenso\n    \n- Aprobar / denegar solicitudes de eliminación\n    \n- Administrar hechos importados y normalizados"
+		}
+	]
+}

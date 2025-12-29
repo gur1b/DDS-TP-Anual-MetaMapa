@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(
+          titulo='Inicio',
+          linksAdicionales=~{:: #links-de-navegar},
+          scriptsAdicionales=~{:: #scripts-de-navegar},
+          contenido=~{:: #contenido-de-navegar}
+      )}">
+<th:block id="links-de-navegar">
+    <link rel="stylesheet" th:href="@{/css/pages-css/navegarColecciones.css}">
+</th:block>
+
+<div id="contenido-de-navegar">
+    <div class="collection-card">
+        <div class="collection-header">SUCESOS</div>
+
+        <div class="collections-list">
+            <a th:each="c : ${listaDeColecciones}"
+               th:href="@{/colecciones/{id}(id=${c.id()})}"
+               class="collection-item">
+
+                <div class="collection-text">
+                    <h3 th:text="${c.titulo()}">Título</h3>
+                    <p class="collection-description"
+                       th:text="${c.descripcionColeccion()}">
+                        Descripción
+                    </p>
+                    <!-- Línea meta: Navegación xxx • N hechos -->
+                    <p class="collection-meta">
+                        <!-- Navegación curada / irrestricta -->
+                        <span th:text="|Navegación ${#strings.toLowerCase(c.modoDeNavegacion())}|">Navegación irrestricta</span>
+                        <span> • </span>
+                        <!-- 3 hechos / 0 hechos, según el modo -->
+                        <span th:text="${ (c.modoDeNavegacion() == 'IRRESTRICTA'
+                                   ? c.cantidadHechos()
+                                   : c.cantidadHechosVisibles())
+                                   + ' hechos' }">0 hechos</span>
+                    </p>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<th:block id="scripts-de-navegar">
+    <script th:src="@{/js/navegarColecciones.js}" defer></script>
+</th:block>
+
+</html>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(
+          titulo='Panel de control — Fuentes',
+          linksAdicionales=~{:: #links-fuentes},
+          scriptsAdicionales=~{:: #scripts-fuentes},
+          contenido=~{:: #contenido-fuentes}
+      )}">
+
+<!-- ========== CSS específico (reusa tus estilos) ========== -->
+<th:block id="links-fuentes">
+    <link rel="stylesheet" th:href="@{/css/pages-css/panelDeControl.css}">
+</th:block>
+
+
+<main id="contenido-fuentes" class="admin-page">
+    <div class="admin-bg"></div>
+
+    <section class="admin-surface">
+        <header class="surface-header">
+            <h1 class="surface-title">Panel de control — Fuentes</h1>
+        </header>
+
+        <div class="admin-container">
+            <!-- Columna izquierda -->
+            <div class="admin-main-content">
+                <!-- Search -->
+                <div class="search-bar" aria-live="polite">
+                    <input id="search-input" type="text" placeholder="Buscar fuente por nombre">
+                    <button id="search-btn" class="search-btn" aria-label="Buscar">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </div>
+
+                <!-- Lista de Fuentes en cards -->
+                <div id="fuentes-list" class="collections-list">
+                    <article th:each="f : ${listaDeFuentes}"
+                             class="collection-card fuente-card"
+                             th:attr="data-nombre=${f.nombre()}">
+
+                        <div class="card-header">
+                            <h2 th:text="${f.nombre()}">*NOMBRE*</h2>
+
+                            <div class="card-actions">
+                                <!-- Eliminar solo si NO es dinámica-dinámica -->
+                                <form class="delete-form"
+                                      th:if="${!(f.tipoFuente() == 'DINAMICA' and f.strategyTipoConexion() == 'DINAMICA')}"
+                                      th:action="@{/admin/fuentes/{id}/eliminar(id=${f.id()})}"
+                                      method="post">
+                                    <input type="hidden" name="_csrf" th:if="${_csrf}" th:value="${_csrf.token}"/>
+                                    <button type="submit" class="icon-btn delete-btn" aria-label="Eliminar">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </form>
+
+                                <!-- Mensaje alternativo -->
+                                <span class="badge badge-disabled"
+                                      th:if="${f.tipoFuente() == 'DINAMICA' and f.strategyTipoConexion() == 'DINAMICA'}">
+                                        No se puede eliminar
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="card-field" th:if="${f.link() != null}">
+                                <strong>Link:</strong>
+                                <p>
+                                    <a th:href="${f.link()}" target="_blank" rel="noopener noreferrer"
+                                       th:text="${f.link()}"></a>
+                                </p>
+                            </div>
+
+
+                            <div class="card-field">
+                                <strong>Tipo de fuente:</strong>
+                                <p th:text="${f.tipoFuente()}">*TIPO*</p>
+                            </div>
+
+                            <div class="card-field">
+                                <strong>Formato de conexión:</strong>
+                                <p th:text="${f.strategyTipoConexion()}">*ESTRATEGIA*</p>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Botón flotante agregar -->
+                <button class="add-btn" aria-label="Añadir fuente" id="open-add-modal">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+            </div>
+
+            <!-- Sidebar -->
+            <aside class="admin-sidebar">
+                <nav class="admin-menu">
+                    <a th:href="@{/admin/colecciones}" class="admin-menu-item">ADMINISTRAR COLECCIONES</a>
+                    <a th:href="@{/admin/hechos}" class="admin-menu-item">ADMINISTRAR HECHOS</a>
+                    <a th:href="@{/admin/fuentes}" class="admin-menu-item active">ADMINISTRAR FUENTES</a>
+                    <a th:href="@{/admin/solicitudesEliminacion}" class="admin-menu-item">ADMINISTRAR SOLICITUDES DE ELIMINACIÓN</a>
+                    <a th:href="@{/admin/sugerenciasDeCambio}" class="admin-menu-item">ADMINISTRAR SUGERENCIAS DE CAMBIO</a>
+                </nav>
+
+                <form th:action="@{/ejecutar-agregacion}"
+                      method="post"
+                      class="aggregation-actions">
+
+                    <input type="hidden" name="_csrf"
+                           th:if="${_csrf}"
+                           th:value="${_csrf.token}"/>
+
+                    <button type="submit" class="aggregation-btn">
+                        Ejecutar Servicio de Agregación
+                    </button>
+                </form>
+                <div class="contenedor-botones-observabilidad" style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
+
+                    <a th:href="${graphqlUrl}" target="_blank" class="aggregation-btn" style="text-decoration: none; text-align: center; background-color: #2980b9; color: white;">
+                        <i class="fa-solid fa-rocket"></i> Playground GraphQL
+                    </a>
+
+                    <a th:href="${grafanaUrl}" target="_blank" class="aggregation-btn" style="text-decoration: none; text-align: center; background-color: #f47a20; color: white;">
+                        <i class="fa-solid fa-chart-line"></i> Ver Métricas Grafana
+                    </a>
+
+                </div>
+            </aside>
+        </div>
+    </section>
+
+    <!-- ========== MODAL ELIMINAR ========== -->
+    <div id="delete-modal" class="modal-backdrop">
+        <div class="modal">
+            <h2>¿Confirmar eliminación?</h2>
+            <p>Vas a eliminar esta fuente. Esta acción no se puede deshacer.</p>
+            <div class="modal-actions">
+                <button id="cancel-delete" class="modal-btn modal-btn-secondary">Cancelar</button>
+                <button id="confirm-delete" class="modal-btn modal-btn-danger">Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== MODAL ALTA ========== -->
+    <div id="add-modal" class="modal-backdrop">
+        <div class="modal">
+            <h2>Nueva Fuente</h2>
+
+            <!-- AHORA ES UN FORM REAL -->
+            <!-- IMPORTANTE: th:action apunta al endpoint POST /fuentes -->
+            <form id="add-form"
+                  class="modal-form"
+                  th:action="@{/admin/fuentes}"
+                  method="post"
+                  enctype="multipart/form-data">
+
+                <!-- Nombre -->
+                <div class="form-group" style="grid-column:1 / -1">
+                    <label for="new-nombre">Nombre</label>
+                    <input
+                            id="new-nombre"
+                            name="nombre"
+                            class="card-input"
+                            type="text"
+                            required
+                            placeholder="Ej: Boletín Policial">
+                </div>
+
+                <!-- Formato de fuente (API REST / CSV) -->
+                <div class="form-group" style="grid-column:1 / -1">
+                    <label for="new-formato">Formato de fuente</label>
+                    <select
+                            id="new-formato"
+                            name="strategyTipoConexion"
+                            class="card-input"
+                            required>
+                        <option value="" disabled selected>Seleccionar formato...</option>
+                        <option value="API REST">API REST</option>
+                        <option value="CSV">CSV</option>
+                        <option value="BIBLIOTECA">BIBLIOTECA</option>
+                    </select>
+
+                </div>
+
+                <!-- Campo LINK (solo API REST) -->
+                <div class="form-group" id="group-link" style="grid-column:1 / -1; display:none;">
+                    <label for="new-link">Link</label>
+                    <input
+                            id="new-link"
+                            name="link"
+                            class="card-input"
+                            type="url"
+                            placeholder="https://...">
+                </div>
+
+                <!-- Campo ARCHIVO (solo CSV) -->
+                <div class="form-group" id="group-file" style="grid-column:1 / -1; display:none;">
+                    <label for="new-file">Archivo CSV</label>
+                    <label class="attach-btn">
+                        <span id="archivoCsvLabel">Seleccionar archivo</span>
+                        <input
+                                id="new-file"
+                                name="archivoCsv"
+                                type="file"
+                                accept=".csv"
+                                style="display:none">
+                    </label>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" id="cancel-add" class="modal-btn modal-btn-secondary">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="modal-btn modal-btn-primary">
+                        Crear Fuente
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+</main>
+
+
+<th:block id="scripts-fuentes">
+    <script th:src="@{/js/panelControlFuentes.js}" defer></script>
+</th:block>
+</html>

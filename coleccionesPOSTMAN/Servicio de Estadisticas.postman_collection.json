@@ -1,0 +1,701 @@
+{
+	"info": {
+		"_postman_id": "0c70773d-58d2-42fa-b34d-71fa2de78ff9",
+		"name": "Servicio de Estadisticas",
+		"description": "Servicio analítico que procesa información del sistema MetaMapa para generar métricas que se actualizan periodicamente.\n\nIncluye endpoints para:\n\n- Consultar estadísticas agregadas\n    \n- Filtrar estadísticas por categoría\n    \n- Obtener horarios y provincias más frecuentes\n    \n- Exportar resultados en formato CSV",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42598532"
+	},
+	"item": [
+		{
+			"name": "health",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/servicioEstadisticas/health",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"servicioEstadisticas",
+						"health"
+					]
+				},
+				"description": "Health check del servicio."
+			},
+			"response": [
+				{
+					"name": "health",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8090/servicioEstadisticas/health",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"servicioEstadisticas",
+								"health"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "31"
+						}
+					],
+					"cookie": [],
+					"body": "servicio de estadisticas ACTIVA"
+				}
+			]
+		},
+		{
+			"name": "Provincia con mas hechos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/servicioEstadisticas/provincia-con-mas-hechos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"servicioEstadisticas",
+						"provincia-con-mas-hechos"
+					]
+				},
+				"description": "Obtiene un ranking de mayor a menor de las provincias con su cantidad de hechos."
+			},
+			"response": [
+				{
+					"name": "Provincia con mas hechos",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8090/servicioEstadisticas/provincia-con-mas-hechos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"servicioEstadisticas",
+								"provincia-con-mas-hechos"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "394"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"cantidad\": 78,\n        \"provincia\": \"Córdoba\"\n    },\n    {\n        \"cantidad\": 65,\n        \"provincia\": \"Tierra del Fuego\"\n    },\n    {\n        \"cantidad\": 42,\n        \"provincia\": \"Ciudad Autónoma de Buenos Aires\"\n    },\n    {\n        \"cantidad\": 28,\n        \"provincia\": \"Buenos Aires\"\n    },\n    {\n        \"cantidad\": 26,\n        \"provincia\": \"Santa Fe\"\n    },\n    {\n        \"cantidad\": 13,\n        \"provincia\": \"Departamento General López\"\n    },\n    {\n        \"cantidad\": 13,\n        \"provincia\": \"Departamento Vera\"\n    },\n    {\n        \"cantidad\": 13,\n        \"provincia\": \"Departamento Las Colonias\"\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Categoria mayor cantidad hechos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/servicioEstadisticas/categoria-mayor-cantidad",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"servicioEstadisticas",
+						"categoria-mayor-cantidad"
+					]
+				},
+				"description": "Obtiene un ranking de mayor a menor de las categorias con su cantidad de hechos."
+			},
+			"response": [
+				{
+					"name": "Categoria mayor cantidad hechos",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8090/servicioEstadisticas/categoria-mayor-cantidad",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"servicioEstadisticas",
+								"categoria-mayor-cantidad"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "232"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"categoria\": \"Incendio\",\n        \"cantidad\": 54\n    },\n    {\n        \"categoria\": \"Choque\",\n        \"cantidad\": 54\n    },\n    {\n        \"categoria\": \"Estafa\",\n        \"cantidad\": 52\n    },\n    {\n        \"categoria\": \"Accidente vial\",\n        \"cantidad\": 52\n    },\n    {\n        \"categoria\": \"Robo\",\n        \"cantidad\": 40\n    },\n    {\n        \"categoria\": \"Amenaza\",\n        \"cantidad\": 26\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Cantidad spam",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/servicioEstadisticas/cantidad-spam",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"servicioEstadisticas",
+						"cantidad-spam"
+					]
+				},
+				"description": "Obtiene la cantidad de solicitudes de eliminacion que fueron spam con respecto a todas las solicitudes de eliminacion creadas."
+			},
+			"response": [
+				{
+					"name": "Cantidad spam",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8090/servicioEstadisticas/cantidad-spam",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"servicioEstadisticas",
+								"cantidad-spam"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "48"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"solicitudes spam\": 0,\n    \"total de solicitudes\": 11\n}"
+				}
+			]
+		},
+		{
+			"name": "Provincia con mas hechos por categoria",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/servicioEstadisticas/provincia-con-mas-hechos-por-categoria?categoria=nombre categoria",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"servicioEstadisticas",
+						"provincia-con-mas-hechos-por-categoria"
+					],
+					"query": [
+						{
+							"key": "categoria",
+							"value": "nombre categoria"
+						}
+					]
+				},
+				"description": "Obtiene un ranking de mayor a menor de las provincias con su cantidad de hechos dependiendo de la categoria enviada por Query Param."
+			},
+			"response": [
+				{
+					"name": "Provincia con mas hechos por categoria",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8090/servicioEstadisticas/provincia-con-mas-hechos-por-categoria?categoria=robo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"servicioEstadisticas",
+								"provincia-con-mas-hechos-por-categoria"
+							],
+							"query": [
+								{
+									"key": "categoria",
+									"value": "robo"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "167"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"cantidad\": 14,\n        \"provincia\": \"Ciudad Autónoma de Buenos Aires\"\n    },\n    {\n        \"cantidad\": 13,\n        \"provincia\": \"Departamento Las Colonias\"\n    },\n    {\n        \"cantidad\": 13,\n        \"provincia\": \"Tierra del Fuego\"\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Horario por categoria",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/servicioEstadisticas/horario-categoria?categoria=nombre categoria",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"servicioEstadisticas",
+						"horario-categoria"
+					],
+					"query": [
+						{
+							"key": "categoria",
+							"value": "nombre categoria"
+						}
+					]
+				},
+				"description": "Obtiene un ranking de mayor a menor de las horarios con su cantidad de hechos dependiendo de la categoria enviada por Query Param."
+			},
+			"response": [
+				{
+					"name": "Horario por categoria",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8090/servicioEstadisticas/horario-categoria?categoria=Estafa",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"servicioEstadisticas",
+								"horario-categoria"
+							],
+							"query": [
+								{
+									"key": "categoria",
+									"value": "Estafa"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "125"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"hora\": \"10:00\",\n        \"cantidad\": 13\n    },\n    {\n        \"hora\": \"16:00\",\n        \"cantidad\": 13\n    },\n    {\n        \"hora\": \"18:00\",\n        \"cantidad\": 13\n    },\n    {\n        \"hora\": \"14:00\",\n        \"cantidad\": 13\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Obtener CSV provincia con mas hechos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/servicioEstadisticas/export/csv/provincia-mas-hechos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"servicioEstadisticas",
+						"export",
+						"csv",
+						"provincia-mas-hechos"
+					]
+				},
+				"description": "Exporta el CSV de la estadistica solicitada."
+			},
+			"response": [
+				{
+					"name": "Obtener CSV provincia con mas hechos",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8090/servicioEstadisticas/export/csv/provincia-mas-hechos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"servicioEstadisticas",
+								"export",
+								"csv",
+								"provincia-mas-hechos"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "",
+					"header": [
+						{
+							"key": "Content-Disposition",
+							"value": "attachment; filename=provincia_mas_hechos.csv"
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/csv"
+						},
+						{
+							"key": "Content-Length",
+							"value": "228"
+						}
+					],
+					"cookie": [],
+					"body": "provincia,cantidad\n\"Córdoba\",\"78\"\n\"Tierra del Fuego\",\"65\"\n\"Ciudad Autónoma de Buenos Aires\",\"42\"\n\"Buenos Aires\",\"28\"\n\"Santa Fe\",\"26\"\n\"Departamento General López\",\"13\"\n\"Departamento Vera\",\"13\"\n\"Departamento Las Colonias\",\"13\"\n"
+				}
+			]
+		},
+		{
+			"name": "Obtener CSV categoria mas reportada",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/servicioEstadisticas/export/csv/categoria-mas-reportada",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"servicioEstadisticas",
+						"export",
+						"csv",
+						"categoria-mas-reportada"
+					]
+				},
+				"description": "Exporta el CSV de la estadistica solicitada."
+			},
+			"response": [
+				{
+					"name": "Obtener CSV categoria mas reportada",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8090/servicioEstadisticas/export/csv/categoria-mas-reportada",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"servicioEstadisticas",
+								"export",
+								"csv",
+								"categoria-mas-reportada"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "",
+					"header": [
+						{
+							"key": "Content-Disposition",
+							"value": "attachment; filename=categoria_mas_reportada.csv"
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/csv"
+						},
+						{
+							"key": "Content-Length",
+							"value": "112"
+						}
+					],
+					"cookie": [],
+					"body": "categoria,cantidad\n\"Incendio\",\"54\"\n\"Choque\",\"54\"\n\"Estafa\",\"52\"\n\"Accidente vial\",\"52\"\n\"Robo\",\"40\"\n\"Amenaza\",\"26\"\n"
+				}
+			]
+		},
+		{
+			"name": "Obtener CSV solicitudes spam",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/servicioEstadisticas/export/csv/solicitudes-spam",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"servicioEstadisticas",
+						"export",
+						"csv",
+						"solicitudes-spam"
+					]
+				},
+				"description": "Exporta el CSV de la estadistica solicitada."
+			},
+			"response": [
+				{
+					"name": "Obtener CSV solicitudes spam",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8090/servicioEstadisticas/export/csv/solicitudes-spam",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"servicioEstadisticas",
+								"export",
+								"csv",
+								"solicitudes-spam"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "",
+					"header": [
+						{
+							"key": "Content-Disposition",
+							"value": "attachment; filename=solicitudes_spam.csv"
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/csv"
+						},
+						{
+							"key": "Content-Length",
+							"value": "47"
+						}
+					],
+					"cookie": [],
+					"body": "solicitudes spam,total de solicitudes\n\"0\",\"11\"\n"
+				}
+			]
+		},
+		{
+			"name": "Obtener CSV horario por categoria",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/servicioEstadisticas/export/csv/horario-por-categoria/Nombre categoria",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"servicioEstadisticas",
+						"export",
+						"csv",
+						"horario-por-categoria",
+						"Nombre categoria"
+					]
+				},
+				"description": "Exporta el CSV de la estadistica solicitada."
+			},
+			"response": [
+				{
+					"name": "Obtener CSV horario por categoria",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8090/servicioEstadisticas/export/csv/horario-por-categoria/Nombre categoria",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"servicioEstadisticas",
+								"export",
+								"csv",
+								"horario-por-categoria",
+								"Nombre categoria"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "",
+					"header": [
+						{
+							"key": "Content-Disposition",
+							"value": "attachment; filename=horario_por_categoria_Estafa.csv"
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/csv"
+						},
+						{
+							"key": "Content-Length",
+							"value": "66"
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"domain": "",
+							"path": ""
+						}
+					],
+					"body": "hora,cantidad\n\"10:00\",\"13\"\n\"16:00\",\"13\"\n\"18:00\",\"13\"\n\"14:00\",\"13\"\n"
+				}
+			]
+		},
+		{
+			"name": "Obtener CSV provincia con mas hechos por categoria",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/servicioEstadisticas/export/csv/provincia-por-categoria/Nombre categoria",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"servicioEstadisticas",
+						"export",
+						"csv",
+						"provincia-por-categoria",
+						"Nombre categoria"
+					]
+				},
+				"description": "Exporta el CSV de la estadistica solicitada."
+			},
+			"response": [
+				{
+					"name": "Obtener CSV provincia con mas hechos por categoria",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8090/servicioEstadisticas/export/csv/provincia-por-categoria/Robo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"servicioEstadisticas",
+								"export",
+								"csv",
+								"provincia-por-categoria",
+								"Robo"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "",
+					"header": [
+						{
+							"key": "Content-Disposition",
+							"value": "attachment; filename=provincia_mas_hechos_categoria_Robo.csv"
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/csv"
+						},
+						{
+							"key": "Content-Length",
+							"value": "116"
+						}
+					],
+					"cookie": [],
+					"body": "provincia,cantidad\n\"Ciudad Autónoma de Buenos Aires\",\"14\"\n\"Departamento Las Colonias\",\"13\"\n\"Tierra del Fuego\",\"13\"\n"
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,253 @@
+/* ====== Base ====== */
+:root{
+    --orange:#F47C2C;
+    --orange-2:#FF9A57;
+    --dark:#22252B;
+    --text:#2E2E2E;
+    --muted:#6F7A87;
+    --paper:#fff8f2;
+    --card:#fff;
+    --glass:rgba(255, 255, 255, .85);
+    --radius:18px;
+    --shadow:0 10px 30px rgba(0,0,0,.12);
+}
+
+*{box-sizing:border-box}
+html,body{}
+body{
+    margin:0;
+    font-family:Montserrat,system-ui,Segoe UI,Roboto,Arial,sans-serif;
+    color:var(--text);
+    background:#fff;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container{
+    width:min(1100px, 92%);
+    margin-inline:auto;
+}
+
+/* Burger (mobile) */
+.burger{ display:none; background:none; border:0; padding:8px; }
+.burger span{ display:block; width:24px; height:2px; background:#333; margin:5px 0; }
+
+/* ====== Hero ====== */
+.hero{
+    background-image: url("../../img/fondoHOME1.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+     padding: 60px 0;
+     color: white;
+     min-height: 100vh;     /* 1. Altura mínima: 100% de la ventana */
+     display: grid;         /* 2. Usamos grid... */
+     place-items: center; /* 3. ...para centrar el contenido perfectamente */
+ }
+
+.hero-inner{  text-align:center; }
+
+.hero-title{
+    font-size: clamp(36px, 6vw, 64px);
+    line-height:1.05; margin:0; font-weight:800; color: #173F63;
+}
+.hero-title .pin{ filter:grayscale(.1) }
+.hero-subtitle{
+    margin:.75rem 0 2.25rem; font-weight:600; color:#2f3a44;
+}
+
+/* About card */
+.about-card{
+    width:min(820px, 92%);
+    margin: 28px auto 0;
+    background: var(--glass);
+    border:1px solid #f1e3da;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    text-align:left;
+}
+
+.card-title{
+    margin:0; padding:14px 18px;
+    text-align: center;
+    font-size: .9rem; letter-spacing:.03em;
+    text-transform:uppercase; font-weight:800;
+
+    color:white; background:var(--orange); /* tira a naranja suave */
+    border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.card-body{
+    margin:0; padding:18px;
+    background:#fff; border-radius:0 0 var(--radius) var(--radius);
+}
+
+.about-card,
+.about-card .card-body{
+  color:#1f2937; /* gris/azul oscuro legible */
+}
+
+/* ====== Colaborá / Form ====== */
+/* === sección "Reportá un suceso" === */
+.collab {
+    position: relative;
+    background: url("../../img/fondoHOME2.png") center/cover no-repeat;
+    padding: 8rem 1.5rem;
+    color: #fff;
+}
+
+.collab::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,.55);   /* oscurece para que se lea */
+    z-index: 0;
+}
+
+.collab .container {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+}
+
+.collab h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.collab p {
+    line-height: 2;
+    margin-bottom: 2rem;
+    color: rgba(255,255,255,.92);
+}
+
+.collab-grid{
+    display:grid; grid-template-columns: 1.1fr .9fr; gap:28px;
+    padding:56px 0 80px;
+}
+.collab-copy h2{
+    margin:0; padding-top:6px;
+    font-size: clamp(22px, 2.6vw, 28px); text-transform:uppercase;
+    letter-spacing:.04em;
+}
+
+/* Form card */
+.report-card{
+    display:grid; gap:12px;
+    background:#ffffffee; color:#1e1e1e;
+    border-radius:20px; padding:16px;
+    border:1px solid #e9e1dc;
+    box-shadow: var(--shadow);
+}
+.report-header{
+    background: var(--orange);
+    color:#fff; font-weight:800; text-transform:uppercase;
+    padding:10px 14px; border-radius:12px;
+    text-align:center; letter-spacing:.03em;
+}
+.field{ display:grid; gap:6px; }
+.field.half{ display:grid; }
+.field span{ font-size:.85rem; font-weight:700; color:#4a4a4a; }
+
+input[type="text"], input[type="date"], input[type="file"],
+select, textarea{
+    width:100%; padding:10px 12px; border-radius:10px;
+    border:1px solid #e1e5ea; background:#fff;
+    font:inherit; outline:none;
+    transition: border-color .15s, box-shadow .15s;
+}
+textarea{ resize: vertical; min-height: 88px; }
+
+input:focus, select:focus, textarea:focus{
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px #f47c2c33;
+}
+
+.btn-primary{
+    margin-top:6px;
+    appearance:none; border:0; border-radius:12px;
+    padding:12px 16px; font-weight:800; cursor:pointer;
+    background: linear-gradient(180deg, var(--orange), #e66b18);
+    color:#fff;
+    transition: transform .06s ease, filter .2s ease;
+    text-decoration: none;
+}
+.btn-primary:hover{ filter:saturate(110%) brightness(1.02); }
+.btn-primary:active{ transform: translateY(1px); }
+
+.hint{
+    margin:4px 2px 0; font-size:.8rem; color:#6b6f76;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* separación entre logo y texto */
+  text-decoration: none;
+}
+
+.brand-logo {
+  width: 100px;     /* ajustá el tamaño según lo que necesites */
+  height: auto;
+}
+
+.brand-text {
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: #ff6600; /* o el color de tu marca */
+}
+/* ==== Botón personalizado de adjuntar ==== */
+
+/* Ocultamos el input nativo */
+input[type="file"] {
+  display: none;
+}
+
+.attach-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.file-name {
+  font-size: .9rem;
+  color: var(--muted);
+}
+
+/* Botón visual con el ícono de clip */
+.file-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  background: #f4f4f4;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-weight: 600;
+  color: #333;
+  transition: all 0.25s ease;
+}
+
+/* Ícono del clip */
+.file-btn i {
+  font-size: 1rem;
+  color: var(--orange);
+  transition: color 0.25s ease;
+}
+
+/* Hover con efecto oscuro */
+.file-btn:hover {
+  background: #eaeaea;
+  border-color: var(--orange);
+}
+
+.file-btn:hover i {
+  color: #c85e10; /* clip más oscuro en hover */
+}
+
+/* Para mantener consistencia con tus inputs */
+.field.half .file-btn {
+  width: 100%;
+  justify-content: center;
+}

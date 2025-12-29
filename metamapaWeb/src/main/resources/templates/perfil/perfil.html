@@ -1,0 +1,65 @@
+<div th:fragment="sidebarPerfil">
+    <button onclick="cerrarSidebarPerfil()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:2rem;cursor:pointer">&times;</button>
+    <aside class="sidebar-perfil">
+        <div class="perfil-header">
+            <!-- Mostrar foto para principal OAuth2 o Map -->
+            <img th:if="${#authentication.principal instanceof T(org.springframework.security.oauth2.core.user.DefaultOAuth2User) and #authentication.principal.attributes['picture'] != null}"
+                 th:src="${#authentication.principal.attributes['picture']}"
+                 alt="Foto de perfil" class="perfil-foto" style="width:100px;border-radius:50%;">
+            <img th:if="${#authentication.principal instanceof T(java.util.Map) and #authentication.principal['picture'] != null}"
+                 th:src="${#authentication.principal['picture']}"
+                 alt="Foto de perfil" class="perfil-foto" style="width:100px;border-radius:50%;">
+            <i th:if="${(#authentication.principal instanceof T(org.springframework.security.oauth2.core.user.DefaultOAuth2User) and #authentication.principal.attributes['picture'] == null) or (#authentication.principal instanceof T(java.util.Map) and #authentication.principal['picture'] == null)}"
+               class="fa-regular fa-user perfil-foto" style="font-size:100px;"></i>
+            <!-- Mostrar nombre -->
+            <h2 th:if="${#authentication.principal instanceof T(org.springframework.security.oauth2.core.user.DefaultOAuth2User)}" th:text="${#authentication.principal.attributes['name']}" style="font-weight:600;font-size:2rem;margin-bottom:0.5rem;">Nombre Apellido</h2>
+            <h2 th:if="${#authentication.principal instanceof T(java.util.Map)}" th:text="${#authentication.principal['name']}" style="font-weight:600;font-size:2rem;margin-bottom:0.5rem;">Nombre Apellido</h2>
+            <!-- Mostrar email -->
+            <p th:if="${#authentication.principal instanceof T(org.springframework.security.oauth2.core.user.DefaultOAuth2User)}" th:text="${#authentication.principal.attributes['email']}">email</p>
+            <p th:if="${#authentication.principal instanceof T(java.util.Map)}" th:text="${#authentication.principal['email']}">email</p>
+        </div>
+        <div class="perfil-datos">
+            <p th:if="${edad}" style="margin-bottom:0.5rem;">Edad: <span th:text="${edad}">Edad</span></p>
+            <a href="/logout" class="btn-cerrar-sesion" style="display:block;margin:2rem auto 0 auto;padding:0.75rem 1.5rem;background:#e74c3c;color:#fff;border:none;border-radius:6px;text-align:center;text-decoration:none;font-weight:600;">Cerrar sesión</a>
+            <a href="/mis-hechos/mapa" class="btn-mis-hechos" style="display:block;margin:1rem auto 0 auto;padding:0.75rem 1.5rem;background:#3498db;color:#fff;border:none;border-radius:6px;text-align:center;text-decoration:none;font-weight:600;">Mostrar todos mis hechos</a>
+        </div>
+    </aside>
+    <style>
+        .sidebar-perfil-content {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 350px;
+            height: 100vh;
+            background: #fff;
+            box-shadow: -2px 0 16px rgba(0,0,0,0.12);
+            z-index: 1101;
+            padding: 2rem 1.5rem;
+            overflow-y: auto;
+            transition: right 0.3s;
+        }
+        .sidebar-perfil-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.25);
+            z-index: 1100;
+        }
+        .sidebar-perfil {
+            width: 100%;
+        }
+        .perfil-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .perfil-foto {
+            margin-bottom: 1rem;
+        }
+        .perfil-datos {
+            font-size: 1rem;
+            color: #444;
+        }
+    </style>
+</div>

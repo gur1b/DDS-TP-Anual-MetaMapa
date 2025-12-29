@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="cargadorEstatica" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <option name="ACTIVE_PROFILES" value="estatico" />
+    <module name="cargadorEstatica" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="cargadorEstatica.application.Application" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

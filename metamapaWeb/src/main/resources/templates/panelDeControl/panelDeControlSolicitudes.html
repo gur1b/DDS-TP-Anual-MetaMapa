@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(
+          titulo='Panel de control - Solicitudes',
+          linksAdicionales=~{:: #links-panel},
+          scriptsAdicionales=~{:: #scripts-panel},
+          contenido=~{:: #contenido-panel}
+      )}">
+
+<!-- ========== CSS ESPECÍFICO ========== -->
+<th:block id="links-panel">
+    <link rel="stylesheet" th:href="@{/css/pages-css/button.css}">
+    <link rel="stylesheet" th:href="@{/css/pages-css/panelDeControl.css}">
+</th:block>
+
+<!-- ========== CONTENIDO PRINCIPAL ========== -->
+<main id="contenido-panel" class="admin-page">
+
+    <div class="admin-bg"></div>
+
+    <section class="admin-surface">
+        <header class="surface-header">
+            <h1 class="surface-title">Panel de control — Solicitudes de eliminación</h1>
+        </header>
+
+        <div class="admin-container">
+            <div class="admin-main-content">
+
+                <div class="search-bar">
+                    <input id="search-input" type="text" placeholder="Buscar solicitud o hecho...">
+                    <button class="search-btn" id="search-btn">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </div>
+
+                <div class="collections-list" id="solicitudes-list">
+                    <article th:each="s : ${listaDeSolicitudes}"
+                             class="collection-card solicitud-card"
+                             th:id="${'solicitud-' + s.id}">
+
+                        <div class="card-header">
+                            <h2 th:text="${s.nombre} != null ? ${s.nombre} : ${'Solicitud #' + s.id}">
+                                Solicitud #1
+                            </h2>
+                        </div>
+
+                        <div class="card-body">
+
+                            <div class="card-field">
+                                <strong>Motivo de la solicitud:</strong>
+                                <p th:text="${s.descripcionSolicitud} ?: 'No indica'">No indica</p>
+                            </div>
+
+                            <div class="hecho-box">
+                                <h3>Datos del hecho</h3>
+
+                                <!-- Hash oculto, solo disponible en backend -->
+
+                                <div class="hecho-row">
+                                    <span class="hecho-label">Título:</span>
+                                    <span class="hecho-value" th:text="${s.nombre} ?: 'No indica'">No indica</span>
+                                </div>
+
+                                <div class="hecho-row">
+                                    <span class="hecho-label">Descripción:</span>
+                                    <span class="hecho-value"
+                                          th:text="${s.descripcionHecho} ?: 'No indica'">No indica</span>
+                                </div>
+
+                                <div class="hecho-row">
+                                    <span class="hecho-label">Contribuyente:</span>
+                                    <span class="hecho-value"
+                                          th:text="${s.contribuyente} ?: 'No indica'">No indica</span>
+                                </div>
+
+                                <div class="hecho-row">
+                                    <span class="hecho-label">Fecha carga:</span>
+                                    <span class="hecho-value"
+                                          th:text="${s.fechaCarga} != null ? ${#temporals.format(s.fechaCarga, 'dd/MM/yyyy')} : 'No indica'">No indica</span>
+                                </div>
+
+                                <div class="hecho-row">
+                                    <span class="hecho-label">Fecha suceso:</span>
+                                    <span class="hecho-value"
+                                          th:text="${s.fechaSuceso} != null ? ${#temporals.format(s.fechaSuceso, 'dd/MM/yyyy')} : 'No indica'">No indica</span>
+                                </div>
+
+                                <div class="hecho-row">
+                                    <span class="hecho-label">Hora suceso:</span>
+                                    <span class="hecho-value"
+                                          th:text="${s.horaSuceso} ?: 'No indica'">No indica</span>
+                                </div>
+                            </div>
+
+                            <!-- BOTONES -->
+                            <div class="solicitud-actions">
+                                <form th:action="@{'/admin/solicitudesEliminacion/' + ${s.id} + '/rechazar'}" method="post">
+                                    <button type="submit" class="modal-btn modal-btn-danger">Rechazar</button>
+                                </form>
+                                <form th:action="@{'/admin/solicitudesEliminacion/' + ${s.id} + '/aceptar'}" method="post">
+                                    <button type="submit" class="modal-btn modal-btn-primary">Aceptar</button>
+                                </form>
+                            </div>
+
+                        </div>
+                    </article>
+                </div>
+
+            </div>
+
+            <aside class="admin-sidebar">
+                <nav class="admin-menu">
+                    <a th:href="@{/admin/colecciones}" class="admin-menu-item">ADMINISTRAR COLECCIONES</a>
+                    <a th:href="@{/admin/hechos}" class="admin-menu-item">ADMINISTRAR HECHOS</a>
+                    <a th:href="@{/admin/fuentes}" class="admin-menu-item">ADMINISTRAR FUENTES</a>
+                    <a th:href="@{/admin/solicitudesEliminacion}" class="admin-menu-item active">ADMINISTRAR SOLICITUDES DE ELIMINACIÓN</a>
+                    <a th:href="@{/admin/sugerenciasDeCambio}" class="admin-menu-item">ADMINISTRAR SUGERENCIAS DE CAMBIO</a>
+                </nav>
+
+                <form th:action="@{/ejecutar-agregacion}"
+                      method="post"
+                      class="aggregation-actions">
+
+                    <input type="hidden" name="_csrf"
+                           th:if="${_csrf}"
+                           th:value="${_csrf.token}"/>
+
+                    <button type="submit" class="aggregation-btn">
+                        Ejecutar Servicio de Agregación
+                    </button>
+                </form>
+                <div class="contenedor-botones-observabilidad" style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
+
+                    <a th:href="${graphqlUrl}" target="_blank" class="aggregation-btn" style="text-decoration: none; text-align: center; background-color: #2980b9; color: white;">
+                        <i class="fa-solid fa-rocket"></i> Playground GraphQL
+                    </a>
+
+                    <a th:href="${grafanaUrl}" target="_blank" class="aggregation-btn" style="text-decoration: none; text-align: center; background-color: #f47a20; color: white;">
+                        <i class="fa-solid fa-chart-line"></i> Ver Métricas Grafana
+                    </a>
+
+                </div>
+            </aside>
+        </div>
+    </section>
+
+</main>
+
+<th:block id="scripts-panel">
+    <script th:src="@{/js/panelDeControlSolicitudes.js}" defer></script>
+</th:block>
+
+</html>

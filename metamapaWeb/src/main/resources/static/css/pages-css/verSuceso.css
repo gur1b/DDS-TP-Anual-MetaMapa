@@ -1,0 +1,310 @@
+main {
+    flex-grow: 1;  /* <-- Hace que <main> ocupe todo el espacio vertical */
+    display: flex;   /* <-- Necesario para que el hijo también crezca */
+}
+
+/* 2. Hacemos que tu bloque de contenido crezca */
+#contenido-de-mapa {
+    flex-grow: 1;  /* <-- Hace que tu 'div' de contenido llene el <main> */
+    display: flex;   /* <-- Necesario para que .robbery-details-container crezca */
+}
+
+/*
+  EL RESTO DE TU CSS ESTÁ PERFECTO
+*/
+
+.robbery-details-container {
+    display: flex;
+    flex-grow: 1; /* <-- Esto ya lo tenías bien */
+    background-color: #f5f5f5;
+}
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* <-- Esto ya lo tenías bien */
+}
+.robbery-details-container {
+    display: flex;
+    flex-grow: 1;
+    background-color: #f5f5f5;
+}
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.map-section {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+}
+#mapa {
+    height: 100%;  /* Ocupa el 100% de .map-section */
+    min-height: 400px;
+    width: 100%;
+    background-color: #ffffff;
+}
+.map-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #e8f4f8 0%, #d0e8f2 100%);
+}
+.btn-solicitud {
+    /* Fondo y bordes */
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px; /* <-- MÁS CHICO */
+
+    /* Espaciado y tamaño */
+    padding: 6px 10px; /* <-- MÁS CHICO */
+    font-size: 12px;   /* <-- MÁS CHICO */
+    font-weight: 600;
+
+    /* Cursor y transiciones para interacción */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+
+    /* Sombra para darle profundidad */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* <-- MÁS SUTIL */
+
+    /* Asegurarse de que no tenga decoración de texto si es un enlace */
+    text-decoration: none;
+    display: inline-block;
+}
+
+/* Efecto al pasar el ratón (hover) */
+.btn-solicitud:hover {
+    background-color: #c82333;
+    transform: translateY(-0.5px); /* <-- MENOS LEVANTAMIENTO */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); /* <-- Sombra más pequeña al hover */
+}
+
+/* Efecto al hacer clic (active) */
+.btn-solicitud:active {
+    background-color: #bd2130;
+    transform: translateY(0);
+    box-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.1); /* <-- Sombra más pequeña al active */
+}
+/* Barra lateral */
+.details-sidebar {
+    width: 400px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+/* Header de la sidebar */
+.sidebar-header {
+    background-color: #ff8c42;
+    color: white;
+    padding: 24px;
+    text-align: center;
+}
+
+.sidebar-header h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Contenido de la sidebar */
+.sidebar-content {
+    padding: 24px;
+    flex: 1;
+}
+
+/* Grupos de formulario */
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/*
+ *
+ * AQUÍ ESTABA LA REGLA INCORRECTA (.description-box) - LA HE ELIMINADO
+ *
+ */
+
+.description-box p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #333;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Inputs */
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #333;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'Montserrat', sans-serif;
+    background-color: #fafafa;
+    color: #333;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #ff8c42;
+    background-color: white;
+}
+
+/* Link de eliminación */
+.delete-link {
+    color: #0099ff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+    transition: color 0.3s ease;
+}
+
+.delete-link:hover {
+    color: #0077cc;
+    text-decoration: underline;
+}
+
+/* Responsive - Tablet */
+@media (max-width: 1024px) {
+    .details-sidebar {
+        width: 350px;
+    }
+
+    .sidebar-header h1 {
+        font-size: 20px;
+    }
+
+    .sidebar-content {
+        padding: 16px;
+    }
+
+    .form-group {
+        margin-bottom: 16px;
+    }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 768px) {
+    .robbery-details-container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .map-section {
+        height: 300px;
+        border-right: none;
+        border-bottom: 3px solid #0099ff;
+    }
+
+    .details-sidebar {
+        width: 100%;
+        height: auto;
+    }
+
+    .sidebar-header h1 {
+        font-size: 18px;
+    }
+
+    .sidebar-content {
+        padding: 16px;
+    }
+}
+
+/* --- ESTA ES LA SECCIÓN DE ESTILOS DEL POPUP (LA CORRECTA) --- */
+.leaflet-popup-content-wrapper {
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.leaflet-popup-content {
+    margin: 0 !important; /* Resetea el margen de Leaflet */
+    width: 300px !important; /* Ancho fijo para el popup */
+    font-family: 'Montserrat', sans-serif;
+}
+
+.custom-popup-card {
+    width: 100%;
+}
+
+.popup-header {
+    background-color: #F47C2C; /* Naranja base */
+    color: white;
+    font-size: 16px;
+    font-weight: 800;
+    padding: 10px 15px;
+    /* Truco para que ocupe todo el ancho del popup de Leaflet */
+    margin: -1px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    text-align: center;
+}
+
+.popup-body {
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.popup-body p {
+    margin: 5px 0 10px 0;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #333;
+}
+
+.popup-body strong {
+    font-weight: 700;
+    color: #22252B;
+}
+
+/* ESTA ES LA REGLA CORRECTA */
+.description-box {
+    background-color: #f0f0f0;
+    border-left: 3px solid #ccc;
+    padding: 8px 12px;
+    margin: 10px 0;
+    font-style: italic;
+    font-size: 13px;
+    color: #555;
+}
+
+.tags {
+    margin: 12px 0;
+}
+
+.tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 500;
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+.tag-category {
+    background-color: #FFF0E5;
+    color: #F47C2C;
+}
+
+.tag-label {
+    background-color: #E5F3FF;
+    color: #6f7a87;
+}

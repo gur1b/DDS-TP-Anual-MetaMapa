@@ -1,0 +1,111 @@
+# ==== TYPES BÁSICOS ====
+
+type Coordenadas {
+  id: ID
+  latitud: Float
+  longitud: Float
+}
+
+type Categoria {
+  id: ID
+  nombre: String
+}
+
+type Etiqueta {
+  id: ID
+  nombre: String
+}
+
+type Contribuyente {
+  id: ID
+  nombre: String
+  apellido: String
+  mail: String
+  fechaNacimiento: String
+  nombreCompleto: String
+}
+
+type Fuente {
+  id: ID
+  nombre: String
+  link: String
+  tipoFuente: String
+  codigoDeFuente: String
+  ultimoProcesado: String
+}
+
+enum EstadoHecho {
+  ACEPTADO
+  INACTIVO
+}
+
+type Hecho {
+  id: ID!
+  titulo: String
+  descripcion: String
+  categoria: Categoria
+  etiquetas: [Etiqueta!]
+  fuenteDeOrigen: String
+  fechaCarga: String
+  fechaSuceso: String
+  horaSuceso: String
+  estado: EstadoHecho
+  multimedia: [String!]
+  ultimaFechaModificacion: String
+  contribuyente: Contribuyente
+  ubicacion: Coordenadas
+  codigoDeFuente: String
+  hash: String
+  idFuente: Int
+  linkFuente: String
+}
+
+type Coleccion {
+  id: ID!
+  titulo: String
+  descripcionColeccion: String
+  modoDeNavegacion: String
+
+  # Hechos agregados en la colección (todos)
+  hechos: [Hecho!]
+
+  # Hechos visibles según consenso / modo
+  hechosVisibles: [Hecho!]
+
+  # Fuentes asociadas
+  fuentes: [Fuente!]
+
+  # Criterios de pertenencia, si querés exponerlos después
+  # criterioDePertenencia: [Criterio!]
+}
+
+# ==== FILTROS DE CONSULTA ====
+
+input HechoFilterInput {
+  coleccionId: ID
+  categoriaNombre: String
+  estado: EstadoHecho
+  sucesoDesde: String             # fechaSuceso >= desde (ISO yyyy-MM-dd)
+  sucesoHasta: String             # fechaSuceso <= hasta
+  cargaDesde: String
+  cargaHasta: String
+  idFuente: Int
+  textoBuscado: String      # título/descripcion contiene…
+}
+
+# ==== QUERIES RAÍZ ====
+
+type Query {
+
+  # 1) Hechos con filtros dinámicos
+  hechos(filter: HechoFilterInput): [Hecho!]!
+
+  # 2) Listar colecciones
+  colecciones: [Coleccion!]!
+
+  # 3) Una colección puntual por id
+  coleccion(id: ID!): Coleccion
+
+  # 4) Fuentes (por si querés usarlas desde el panel)
+  fuentes: [Fuente!]!
+}

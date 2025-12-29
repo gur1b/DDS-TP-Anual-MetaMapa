@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Editar Hecho</title>
+    <link rel="stylesheet" th:href="@{/css/pages-css/misHechos.css}">
+</head>
+<body>
+<div class="editar-hecho-container">
+    <h2>Editar Hecho</h2>
+    <form th:action="@{'/misHechos/editar/' + ${hecho.hash}}" th:object="${hecho}" method="post">
+        <div>
+            <label for="nombre">Título:</label>
+            <input type="text" id="nombre" th:field="*{nombre}" required />
+        </div>
+        <div>
+            <label for="descripcion">Descripción:</label>
+            <textarea id="descripcion" th:field="*{descripcion}" required></textarea>
+        </div>
+        <div>
+            <label for="fechaSuceso">Fecha:</label>
+            <input type="date" id="fechaSuceso" th:field="*{fechaSuceso}" required />
+        </div>
+        <button type="submit" class="btn-guardar">Guardar Cambios</button>
+        <a th:href="@{'/perfil/misHechos'}" class="btn-cancelar">Cancelar</a>
+    </form>
+</div>
+</body>
+</html>

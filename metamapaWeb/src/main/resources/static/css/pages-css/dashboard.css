@@ -1,0 +1,144 @@
+body {
+    background: url("../../img/fondoHOME1.png") repeat center center fixed;
+    background-size: cover;
+}
+#titulo{
+    background: #F47C2C;
+    border-radius: 16px 16px 0 0;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: center;
+    color: white;
+
+}
+.dashboard-header {
+    background: #E5F3FA;
+    padding: 1rem;
+    border-radius: 1rem;
+    margin: 3rem 4rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.dashboard-kpis{
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.kpi {
+    background: #fff;
+    padding: 1rem 2rem;
+    border-radius: 9px;
+    box-shadow: 0 1px 10px rgba(44,171,176,0.10);
+    flex: 1 1 0;
+    text-align: center;
+    font-size: 1.15rem;
+    color: #146886;
+}
+.dashboard-row {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 1.2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.dashboard-row1 {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 1.2rem;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.dashboard-chart-card {
+    flex: 1 1 340px;
+    background: #FBFEFF;
+    border-radius: 28px;
+    box-shadow: 0 4px 30px rgba(44, 171, 176, 0.09), 0 1.5px 0px #E5F3FA;
+    margin-bottom: 2rem;
+    padding: 0 0 2rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    min-width:320px;
+}
+.dashboard-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.6rem;
+    font-weight: 600;
+    color: #146886;
+}
+.descarga-csv {
+    font-size: 0.95em;
+    color: #2B76B9;
+    text-decoration: underline;
+    margin-left:1em;
+}
+.dashboard-extra-panels {
+    margin: 0rem 4rem;
+}
+#categoria-filtro {
+
+    border-radius: 7px;
+    border: 1px solid #b1d7ec;
+    margin-bottom: 1em;
+    color: #146886;
+    font-size: 1em;
+}
+#hechos-por-categoria {
+    max-width: 330px !important;
+    max-height: 330px !important;
+    width: 100% !important;
+    height: auto !important;
+    display: block;
+    margin: 0 auto;
+}
+.dashboard-chart-card {
+    flex: 1 1 400px;
+    min-width: 340px;
+    max-width: 600px; /* limita el ancho para que no sea full-width en pantallas grandes */
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.2rem 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 3px 12px rgba(44,171,176,0.09);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.dashboard-maincard {
+    max-width: 1280px;
+    margin: 38px auto 36px auto;
+    background: #FBFEFF;
+    border-radius: 32px;
+    box-shadow: 0 6px 32px rgba(44,171,176,0.15);
+    padding: 0 0 2.5rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    border: 1.5px solid #E5F3FA;
+    /* Si en mobile ocupa mucho, usá width:95vw y max-width */
+    width: 97vw;
+}
+
+#contenido-dashboard {
+
+    background: #FBFEFF;
+    margin: 2rem 15rem;
+    border-radius: 2rem ;
+}
+
+
+
+@media (max-width: 900px) {
+    .dashboard-maincard {
+        padding-bottom: 0.8rem;
+        border-radius: 20px;
+        width: 99vw;
+    }
+    #contenido-dashboard {
+        padding: 0 0.2rem;
+    }
+}

@@ -1,0 +1,40 @@
+metamapa:
+  api:
+    base-url: http://localhost:8081/core/api/public
+    admin-base-url: http://localhost:8081/core/api/admin
+    estadisticas-base-url: http://localhost:8090/servicioEstadisticas
+  admin-emails:
+    - jmillan@frba.utn.edu.ar
+    - cojedacabrera@frba.utn.edu.ar
+    - ghrybalvarez@frba.utn.edu.ar
+    - vraimondo@frba.utn.edu.ar
+    - ascali@frba.utn.edu.ar
+    - varbarello@frba.utn.edu.ar
+    - nm@gmail.com
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope:
+              - openid
+              - profile
+              - email
+#
+# El bloque 'provider' que tenías aquí abajo no es necesario,
+# Spring Boot ya conoce las URIs de Google.
+app:
+  url:
+    # Busca la variable de entorno 'GRAPHQL_URL'. Si no existe, usa localhost.
+    graphql-playground: "http://localhost:8081/playground"
+
+    # Busca la variable de entorno 'GRAFANA_URL'. Si no existe, usa localhost.
+    grafana-dashboard: "http://localhost:3000/d/metamapa-observabilidad/metamapa-observabilidad-core-metricas"

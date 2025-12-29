@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(
+          titulo='Dashboard',
+          linksAdicionales=~{:: #links-dashboard},
+          scriptsAdicionales=~{:: #scripts-dashboard},
+          contenido=~{:: #contenido-dashboard}
+      )}">
+<th:block id="links-dashboard">
+  <link rel="stylesheet" th:href="@{/css/pages-css/dashboard.css}">
+</th:block>
+
+<div class="dashboard-maincard">
+
+<div id="contenido-dashboard">
+  <div id="titulo">
+    <h1>Panel de estadísticas</h1>
+  </div>
+
+  <div class="dashboard-header">
+    <div class="dashboard-kpis">
+      <div class="kpi" id="provincia-top"></div>
+      <div class="kpi" id="categoria-top"></div>
+      <div class="kpi" id="solicitudes-top"></div>
+    </div>
+  </div>
+
+  <div class="dashboard-row">
+
+    <div class="dashboard-chart-card">
+      <div class="dashboard-card-header">
+        <span>Cantidad de hechos por categoría</span>
+        <a class="descarga-csv"
+           th:href="${estadisticasBaseUrl + '/export/csv/categoria-mas-reportada'}"
+           target="_blank">
+          Descargar CSV
+        </a>
+      </div>
+      <canvas id="hechos-por-categoria"></canvas>
+    </div>
+    <div class="dashboard-chart-card">
+      <div class="dashboard-card-header">
+        <span>Cantidad de hechos por provincia</span>
+        <a class="descarga-csv"
+           th:href="${estadisticasBaseUrl + '/export/csv/provincia-mas-hechos'}"
+           target="_blank">
+          Descargar CSV
+        </a>
+      </div>
+      <canvas id="hechos-por-provincia"></canvas>
+    </div>
+  </div>
+
+  <!-- Filtros por categoría y visualización de provincia-más-hechos y horario por esa categoría -->
+  <div class="dashboard-extra-panels">
+    <h2>Estadísticas por categoria</h2>
+    <div>
+      <select id="categoria-filtro">
+        <option value="">(Elegir)</option>
+      </select>
+    </div>
+    <div class="dashboard-row1">
+      <div class="dashboard-chart-card">
+        <div class="dashboard-card-header">
+          <span>Hechos por provincia (categoría seleccionada)</span>
+          <a id="csv-prov-categ" class="descarga-csv"
+             th:href="${estadisticasBaseUrl + '/export/csv/provincia-por-categoria/' + selectedCategoria}"
+             target="_blank">
+            Descargar CSV
+          </a>
+        </div>
+        <canvas id="hechos-por-provincia-cat"></canvas>
+      </div>
+      <div class="dashboard-chart-card">
+        <div class="dashboard-card-header">
+          <span>Hechos por hora (categoría seleccionada)</span>
+          <a id="csv-hora-categ" class="descarga-csv"
+             th:href="${estadisticasBaseUrl + '/export/csv/horario-por-categoria/' + selectedCategoria}"
+             target="_blank">
+            Descargar CSV
+          </a>
+        </div>
+        <canvas id="hechos-por-hora-cat"></canvas>
+      </div>
+    </div>
+  </div>
+
+
+<th:block id="scripts-dashboard">
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script th:src="@{/js/dashboard.js}" defer></script>
+</th:block>
+</html>

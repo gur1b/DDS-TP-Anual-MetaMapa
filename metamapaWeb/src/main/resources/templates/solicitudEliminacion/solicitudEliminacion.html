@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(
+          titulo='Solicitud eliminación',
+          linksAdicionales=~{:: #links-de-solicitud},
+          scriptsAdicionales=~{:: #scripts-de-solicitud},
+          contenido=~{:: #contenido-de-solicitud}
+      )}">
+
+<!-- CSS específicos de esta vista -->
+<th:block id="links-de-solicitud">
+    <link rel="stylesheet" th:href="@{/css/pages-css/solicitudEliminacion.css}">
+</th:block>
+
+<th:block id="scripts-de-solicitud">
+    <script th:src="@{/js/solicitudEliminacion.js}" defer></script>
+</th:block>
+
+<div id="contenido-de-solicitud" class="hero">
+    <div class="hero-inner container">
+        <div class="modal-card">
+            <div class="modal-header">Solicitud eliminación</div>
+            <div class="modal-body">
+                <div class="info-group">
+                    <label><strong>Título:</strong> <span th:text="${hecho.nombre()}">Título del hecho...</span></label>
+                </div>
+                <div class="info-group">
+                    <label><strong>Descripción:</strong> <span th:text="${hecho.descripcion()}">Descripción del hecho...</span> </label>
+                </div>
+                <div class="info-group">
+                    <label><strong>Categoría:</strong>   <span th:text="${hecho.categorias()}">Categoría del hecho...</span> </label>
+                </div>
+                <div class="info-group">
+                    <label><strong>Fecha suceso:</strong> <span th:text="${hecho.fechaSuceso()}">Fecha del hecho...</span> </label>
+                </div>
+
+                <!-- Si luego querés postear, podés usar th:action y method="post" -->
+                <form th:action="@{/solicitudes/eliminacion}" method="post" autocomplete="off">
+                    <!-- si TENÉS id en el DTO -->
+                    <input type="hidden" name="idHecho" th:value="${hecho.id}" />
+
+                    <div class="form-group">
+                        <label for="descripcion"><strong>Motivo solicitud</strong></label>
+                        <textarea id="descripcion" name="descripcion" placeholder="Escribe el motivo de tu solicitud..." maxlength="1000"></textarea>
+                        <div class="char-count">0/1000</div>
+                    </div>
+                    <div class="form-actions">
+                        <a class="btn-form btn-secondary" th:href="@{/mapa}">Atras</a>
+                        <button class="btn-form btn-primary" type="submit">Solicitar</button>
+                    </div>
+
+                    <input type="hidden" name="_csrf" th:if="${_csrf}" th:value="${_csrf.token}"/>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</html>

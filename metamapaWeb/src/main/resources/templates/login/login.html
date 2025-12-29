@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(
+          titulo='Iniciar sesión',
+          linksAdicionales=~{:: #links-login},
+          scriptsAdicionales=~{:: #scripts-login},
+          contenido=~{:: #contenido-login}
+      )}">
+
+<th:block id="links-login">
+    <link rel="stylesheet" th:href="@{/css/pages-css/home.css}">
+    <style>
+        .login-bg {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: url('/img/fondoHOME1.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .btn-animado {
+            cursor: pointer;
+            transition: transform 0.1s ease, filter 0.2s;
+        }
+        .btn-animado:hover {
+            filter: brightness(0.9);
+            transform: translateY(-2px); /* Se levanta un poquito */
+        }
+        .btn-animado:active {
+            transform: scale(0.96);
+            filter: brightness(0.85);
+        }
+    </style>
+</th:block>
+
+<div id="contenido-login" class="login-bg">
+    <div style="width:100%;max-width:400px;margin:auto;">
+        <div style="background:#fff;border-radius:18px;box-shadow:0 2px 16px rgba(0,0,0,0.15);padding:0 0 2rem 0;">
+            <div style="background:var(--orange,#F47C2C);color:#fff;padding:1rem 0;border-radius:18px 18px 0 0;text-align:center;font-size:1.35rem;font-weight:800;">
+                Iniciar sesión
+            </div>
+
+            <div th:if="${param.error}"
+                 style="background:#ff4d4f;color:#fff;padding:.7rem 1rem;border-radius:8px;margin-bottom:1rem;text-align:center;font-weight:600;">
+                Usuario o contraseña incorrectos.
+            </div>
+
+            <!-- FORM LOGIN -->
+            <form id="formLoginPage" style="padding:2rem;" method="post">
+                <label for="correo" style="font-weight:600;font-size:.98rem;">Email</label>
+                <input type="email" name="username" id="correo" required
+                       style="width:100%;margin-bottom:.7rem;padding:.5rem;border-radius:8px;border:2px solid #222;font-size:1rem;">
+                <label for="contrasena" style="font-weight:600;font-size:.98rem;">Contraseña</label>
+                <input type="password" name="password" id="contrasena" required
+                       style="width:100%;margin-bottom:.7rem;padding:.5rem;border-radius:8px;border:2px solid #222;font-size:1rem;">
+                <button type="submit" class="btn-animado"
+                        style="width:100%;padding:.7rem;border-radius:8px;background:#4285F4;color:#fff;font-weight:700;border:none;font-size:1.1rem;margin-bottom:.5rem;">
+                    Iniciar
+                </button>
+            </form>
+
+            <!-- BLOQUE "¿NO TIENES CUENTA?" -->
+            <div id="noCuentaBlock" style="text-align:center;margin-bottom:1rem;font-size:.98rem;">
+                <span style="color:var(--orange,#F47C2C);font-weight:600;">¿No tienes cuenta?</span>
+                <a href="#" onclick="mostrarRegisterFormPage();return false;"
+                   style="color:#4285F4;font-weight:600;margin-left:.3rem;">Registrarse</a>
+            </div>
+
+            <!-- FORM REGISTRO -->
+            <form id="formRegisterPage" onsubmit="return enviarRegistro(event)"
+                  style="display:none;padding:2rem;">
+                <label for="nombre" style="font-weight:600;font-size:.98rem;">Nombre</label>
+                <input type="text" name="nombre" id="nombre" required
+                       style="width:100%;margin-bottom:.7rem;padding:.5rem;border-radius:8px;border:2px solid #222;font-size:1rem;">
+                <label for="apellido" style="font-weight:600;font-size:.98rem;">Apellido</label>
+                <input type="text" name="apellido" id="apellido" required
+                       style="width:100%;margin-bottom:.7rem;padding:.5rem;border-radius:8px;border:2px solid #222;font-size:1rem;">
+                <label for="correoReg" style="font-weight:600;font-size:.98rem;">Email</label>
+                <input type="email" name="correo" id="correoReg" required
+                       style="width:100%;margin-bottom:.7rem;padding:.5rem;border-radius:8px;border:2px solid #222;font-size:1rem;">
+                <label for="contrasenaReg" style="font-weight:600;font-size:.98rem;">Contraseña</label>
+
+                <input type="password" name="contrasena" id="contrasenaReg" required
+                       style="width:100%;margin-bottom:.7rem;padding:.5rem;border-radius:8px;border:2px solid #222;font-size:1rem;">
+                <label for="fechaNacimientoReg"
+                       style="font-weight:600;font-size:.98rem;">Fecha de nacimiento</label>
+                <input
+                        type="date"
+                        name="fechaNacimiento"
+                        id="fechaNacimientoReg"
+                        required
+                        style="width:100%;margin-bottom:.7rem;padding:.5rem;border-radius:8px;border:2px solid #222;font-size:1rem;">
+
+                <button type="submit" class="btn-animado"
+                        style="width:100%;padding:.7rem;border-radius:8px;background:var(--orange,#F47C2C);color:#fff;font-weight:700;border:none;font-size:1.1rem;margin-bottom:.5rem;">
+                    Registrarse
+                </button>
+            </form>
+
+            <!-- BLOQUE "¿YA TIENES CUENTA?" -->
+            <div id="toggleLoginRegisterPage"
+                 style="text-align:center;margin-bottom:1rem;font-size:.98rem;display:none;">
+                <span style="color:#4285F4;font-weight:600;">¿Ya tienes cuenta?</span>
+                <a href="#" onclick="mostrarLoginFormPage();return false;"
+                   style="color:var(--orange,#F47C2C);font-weight:600;margin-left:.3rem;">Iniciar sesión</a>
+            </div>
+
+            <!-- LOGIN CON GOOGLE -->
+            <button onclick="window.location.href='/oauth2/authorization/google'" class="btn-animado"
+                    style="width:90%;margin:0 auto 1rem auto;display:block;padding:.75rem;border-radius:8px;background:#4285F4;color:#fff;font-weight:600;border:none;font-size:1rem;">
+                <i class="fa-brands fa-google"></i> Iniciar sesión con Google
+            </button>
+
+        </div>
+    </div>
+</div>
+
+<th:block id="scripts-login">
+    <script th:src="@{/js/login-modal.js}" defer></script>
+    <script>
+        function mostrarRegisterFormPage() {
+            document.getElementById('formLoginPage').style.display = 'none';
+            document.getElementById('formRegisterPage').style.display = 'block';
+            document.getElementById('toggleLoginRegisterPage').style.display = 'block';
+            document.getElementById('noCuentaBlock').style.display = 'none';
+        }
+        function mostrarLoginFormPage() {
+            document.getElementById('formLoginPage').style.display = 'block';
+            document.getElementById('formRegisterPage').style.display = 'none';
+            document.getElementById('toggleLoginRegisterPage').style.display = 'none';
+            document.getElementById('noCuentaBlock').style.display = 'block';
+        }
+    </script>
+</th:block>
+
+</html>

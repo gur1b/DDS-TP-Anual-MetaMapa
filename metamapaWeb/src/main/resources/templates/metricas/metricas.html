@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(
+          titulo='Panel de control',
+          linksAdicionales=~{:: #links-panel},
+          scriptsAdicionales=~{:: #scripts-panel},
+          contenido=~{:: #contenido-panel}
+      )}">
+
+<!-- ========== CSS ESPECÍFICO DE LA VISTA ========== -->
+<th:block id="links-panel">
+    <link rel="stylesheet" th:href="@{/css/pages-css/button.css}">
+    <link rel="stylesheet" th:href="@{/css/pages-css/panelDeControl.css}">
+</th:block>
+
+<!-- ========== CONTENIDO PRINCIPAL (se inyecta dentro de <main>) ========== -->
+<main id="contenido-panel" class="admin-page">
+
+
+    <div class="admin-bg"></div>
+
+    <section class="admin-surface">
+        <header class="surface-header">
+            <h1 class="surface-title">Panel de control — Colección</h1>
+        </header>
+
+        <div class="admin-container">
+            <div class="admin-main-content">
+                <div class="search-bar" aria-live="polite">
+                    <input id="search-input" type="text" placeholder="Buscar coleccion">
+                    <button id="search-btn" class="search-btn" aria-label="Buscar">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </div>
+
+                <div class="collections-list">
+                    <article th:each="c : ${listaDeColecciones}"
+                             class="collection-card"
+                             th:id="${'card-' + c.id()}"
+                             th:attr="data-titulo=${c.titulo()}, data-descripcion=${c.descripcionColeccion()}">
+                        <div class="card-header">
+                            <!-- Título SOLO texto (sin link) -->
+                            <h2 class="view-mode" th:text="${c.titulo()}">Título de la colección</h2>
+
+                            <!-- Campo editable -->
+                            <input type="text" class="card-input edit-mode"
+                                   th:value="${c.titulo()}" aria-label="Editar título">
+
+                            <div class="card-actions">
+                                <!-- FORM para eliminar esta colección vía Controller -->
+                                <form th:action="@{/admin/colecciones/{id}/eliminar(id=${c.id()})}"
+                                      method="post"
+                                      class="delete-form">
+                                    <!-- CSRF si usás Spring Security -->
+                                    <input type="hidden" name="_csrf" th:if="${_csrf}" th:value="${_csrf.token}"/>
+
+                                    <!-- TACHITO: no envía el form directo; solo abre el modal -->
+                                    <button type="button" class="icon-btn view-mode delete-btn" aria-label="Eliminar">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </form>
+
+                                <button type="button" class="icon-btn view-mode edit-btn" aria-label="Editar">
+                                    <i class="fa-solid fa-pencil"></i>
+                                </button>
+                                <button type="button" class="modal-btn modal-btn-secondary edit-mode cancel-btn">
+                                    Cancelar
+                                </button>
+                                <button type="button" class="modal-btn modal-btn-primary edit-mode save-btn">
+                                    Guardar
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+
+                            <div class="card-field">
+                                <strong style="color: var(--brand-primary);">Identificador:</strong>
+                                <p class="view-mode" th:text="${c.id()}">*IDENTIFICADOR*</p>
+                                <p class="card-input edit-mode"
+                                   style="background: #f3f4f6; color: #6b7280; cursor: not-allowed;"
+                                   th:text="${c.id()}"></p>
+                            </div>
+
+                            <div class="card-field">
+                                <strong>Descripción:</strong>
+                                <p class="view-mode" th:text="${c.descripcionColeccion()}">*DESCRIPCIÓN*</p>
+                                <input type="text" class="card-input edit-mode"
+                                       th:value="${c.descripcionColeccion()}" aria-label="Editar descripción">
+                            </div>
+
+                            <!-- Selector de fuentes en modo edición -->
+                            <div class="card-field edit-mode">
+                                <strong>Fuentes:</strong>
+                                <div class="fuentes-list-container"
+                                     style="max-height: 150px; overflow-y: auto; border: 1px solid var(--border, #e5e7eb); border-radius: 12px; padding: 10px; background: #f9fafb;">
+                                    <p th:if="${listaDeFuentes == null or #lists.isEmpty(listaDeFuentes)}"
+                                       style="font-size: 0.9rem; color: var(--text-muted, #6b7280); margin: 0;">
+                                        No hay fuentes disponibles para agregar.
+                                    </p>
+                                    <div class="fuente-checkbox-item" th:each="fuente : ${listaDeFuentes}">
+                                        <label style="display: block; font-weight: normal; font-size: 0.95rem; cursor: pointer;">
+                                            <input type="checkbox"
+                                                   name="fuentesSeleccionadasEdit"
+                                                   th:value="${fuente.id()}"
+                                                   th:checked="${c.fuentes != null and #lists.contains(c.fuentes, fuente.id())}"
+                                                   style="margin-right: 8px; vertical-align: middle;">
+                                            <span th:text="${fuente.nombre()}">Nombre de la Fuente</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-field">
+                                <strong>Modo de Navegación:</strong>
+
+                                <p class="view-mode"
+                                   th:text="${c.modoDeNavegacion()}">IRRESTRICTA</p>
+
+                                <select name="modoDeNavegacionEdit" class="card-select edit-mode">
+                                    <option value="IRRESTRICTA"
+                                            th:selected="${c.modoDeNavegacion() == 'IRRESTRICTA'}">Irrestricta
+                                    </option>
+                                    <option value="CURADA"
+                                            th:selected="${c.modoDeNavegacion() == 'CURADA'}">Curada
+                                    </option>
+                                </select>
+                            </div>
+
+                            <!-- Selector de algoritmo de consenso en modo edición -->
+                            <div class="card-field">
+                                <strong>Algoritmo de consenso:</strong>
+
+                                <p class="view-mode"
+                                   th:text="${c.algoritmoConsenso() != null ? c.algoritmoConsenso() : '-'}">
+                                    -
+                                </p>
+
+                                <select class="card-input edit-mode" name="algoritmoConsensoEdit">
+                                    <option value="SIN"
+                                            th:selected="${c.algoritmoConsenso() == null}">
+                                        Ninguno
+                                    </option>
+                                    <option value="ABSOLUTO"
+                                            th:selected="${c.algoritmoConsenso() == 'ABSOLUTO'}">
+                                        Absoluto
+                                    </option>
+                                    <option value="MAYORIA_SIMPLE"
+                                            th:selected="${c.algoritmoConsenso() == 'MAYORIA_SIMPLE'}">
+                                        Mayoría Simple
+                                    </option>
+                                    <option value="MULTIPLES_MENCIONES"
+                                            th:selected="${c.algoritmoConsenso() == 'MULTIPLES_MENCIONES'}">
+                                        Múltiples Menciones
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="card-field">
+                                <strong>Criterios de Pertenencia:</strong>
+
+                                <ul class="view-mode source-list" style="margin-top: 5px;">
+                                    <li th:each="crit : ${c.criterioDePertenencia}">
+                                        <span th:text="|${crit.type}: ${crit.palabraClave ?: ''} ${crit.categoria ?: ''} ${crit.latitud != null ? (crit.latitud + ', ' + crit.longitud) : ''} ${crit.desde != null ? (crit.desde + ' al ' + crit.hasta) : ''}|">
+                                            Criterio
+                                        </span>
+                                    </li>
+                                    <li th:if="${#lists.isEmpty(c.criterioDePertenencia)}" style="color: #999;">Ninguno</li>
+                                </ul>
+
+                                <div class="edit-mode criteria-manager">
+                                    <p style="font-size:0.85rem; color:#666; margin-bottom:5px;">Lista actual:</p>
+
+                                    <ul class="criteria-list-edit source-list">
+                                        <li th:each="crit : ${c.criterioDePertenencia}"
+                                            class="criteria-item"
+                                            th:attr="data-type=${crit.type},
+                                                     data-palabra=${crit.palabraClave},
+                                                     data-categoria=${crit.categoria},
+                                                     data-lat=${crit.latitud},
+                                                     data-lon=${crit.longitud},
+                                                     data-desde=${crit.desde},
+                                                     data-hasta=${crit.hasta}">
+                                            <span th:text="|${crit.type}: ${crit.palabraClave ?: ''}${crit.categoria ?: ''}${crit.latitud != null ? (' Ubicación') : ''}${crit.desde != null ? (' Rango fechas') : ''}|">
+                                                Info
+                                            </span>
+
+                                            <button type="button" class="delete-source-btn btn-delete-crit">×</button>
+                                        </li>
+                                    </ul>
+
+                                    <button type="button"
+                                            class="modal-btn modal-btn-secondary btn-open-criteria-modal"
+                                            style="width: 100%; margin-top: 10px; border: 1px dashed #ccc;">
+                                        <i class="fa-solid fa-plus"></i> Agregar nuevo criterio
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="card-field">
+                                <strong>Cantidad de hechos:</strong>
+                                <p class="view-mode"><span th:text="${c.cantidadHechos()}">0</span></p>
+                                <p class="card-input edit-mode"
+                                   style="background: #f3f4f6; color: #6b7280; cursor: not-allowed;"
+                                   th:text="${c.cantidadHechos()}"></p>
+                            </div>
+
+                            <div class="card-field">
+                                <strong>Cantidad de hechos visibles:</strong>
+                                (Modo de navegación curado, puede estar desactualizado)
+                                <p class="view-mode"><span th:text="${c.cantidadHechosVisibles()}">0</span></p>
+                                <p class="card-input edit-mode"
+                                   style="background: #f3f4f6; color: #6b7280; cursor: not-allowed;"
+                                   th:text="${c.cantidadHechosVisibles()}"></p>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <button class="add-btn" aria-label="Añadir colección">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+            </div>
+
+            <aside class="admin-sidebar">
+                <nav class="admin-menu">
+                    <a th:href="@{/admin/colecciones}" class="admin-menu-item active">ADMINISTRAR COLECCIONES</a>
+                    <a th:href="@{/admin/hechos}" class="admin-menu-item">ADMINISTRAR HECHOS</a>
+                    <a th:href="@{/admin/fuentes}" class="admin-menu-item">ADMINISTRAR FUENTES</a>
+                    <a th:href="@{/admin/solicitudesEliminacion}" class="admin-menu-item">
+                        ADMINISTRAR SOLICITUDES DE ELIMINACIÓN
+                    </a>
+                </nav>
+
+                <form th:action="@{/ejecutar-agregacion}"
+                      method="post"
+                      class="aggregation-actions">
+
+                    <input type="hidden" name="_csrf"
+                           th:if="${_csrf}"
+                           th:value="${_csrf.token}"/>
+
+                    <button type="submit" class="aggregation-btn">
+                        Ejecutar Servicio de Agregación
+                    </button>
+                </form>
+
+
+            </aside>
+        </div>
+
+    </section>
+
+    <!-- ========== MODALES ========== -->
+    <div id="delete-modal" class="modal-backdrop">
+        <div class="modal">
+            <h2>¿Confirmar eliminación?</h2>
+            <p>Estás a punto de eliminar esta colección. Esta acción no se puede deshacer.</p>
+            <div class="modal-actions">
+                <button id="cancel-delete" class="modal-btn modal-btn-secondary">Cancelar</button>
+                <button id="confirm-delete" class="modal-btn modal-btn-danger">Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="add-modal" class="modal-backdrop">
+        <div class="modal">
+            <h2>Crear Nueva Colección</h2>
+
+            <form class="modal-form">
+                <div class="form-group">
+                    <label for="new-nombre">Nombre de la Colección</label>
+                    <input type="text" id="new-nombre" class="card-input" placeholder="Ej: Robos en Palermo">
+                </div>
+
+                <div class="form-group">
+                    <label for="new-info">Información / Descripción</label>
+                    <input type="text" id="new-info" class="card-input" placeholder="Detalles de la colección...">
+                </div>
+
+                <div class="form-group">
+                    <label>Fuentes de datos</label>
+                    <div class="fuentes-list-container">
+                        <p th:if="${listaDeFuentes == null or #lists.isEmpty(listaDeFuentes)}"
+                           style="font-size: 0.9rem; color: #666; text-align: center;">
+                            No hay fuentes disponibles.
+                        </p>
+
+                        <div class="fuente-checkbox-item" th:each="fuente : ${listaDeFuentes}">
+                            <label style="cursor: pointer; display: flex; align-items: center; width: 100%;">
+                                <input type="checkbox" name="fuentesSeleccionadas" th:value="${fuente.id()}">
+                                <span th:text="${fuente.nombre()}">Nombre Fuente</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="new-modoNavegacion">Modo de Navegación</label>
+                        <select id="new-modoNavegacion" class="card-select">
+                            <option value="IRRESTRICTA" selected>Irrestricta</option>
+                            <option value="CURADA">Curada</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="new-algoritmo">Algoritmo de Consenso</label>
+                        <select id="new-algoritmo" class="card-select">
+                            <option value="SIN" selected>Sin algoritmo</option>
+                            <option value="MULTIPLES_MENCIONES">Múltiples menciones</option>
+                            <option value="MAYORIA_SIMPLE">Mayoría simple</option>
+                            <option value="ABSOLUTO">Absoluto</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group"
+                     style="border-top: 1px dashed var(--border); padding-top: 15px; margin-top: 5px;">
+                    <label>Criterios de Pertenencia</label>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">
+                        Define reglas automáticas para esta colección.
+                    </p>
+
+                    <ul id="new-collection-criteria-list" class="source-list" style="margin-bottom: 10px;"></ul>
+
+                    <button type="button" id="btn-add-crit-creation"
+                            class="modal-btn modal-btn-secondary"
+                            style="width: 100%; border: 1px dashed #ccc; background: #fff;">
+                        <i class="fa-solid fa-plus"></i> Agregar nuevo criterio
+                    </button>
+                </div>
+            </form>
+
+            <div class="modal-actions">
+                <button id="cancel-add" class="modal-btn modal-btn-secondary">Cancelar</button>
+                <button id="confirm-add" class="modal-btn modal-btn-primary">Crear Colección</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para criterios -->
+    <div id="modal-add-criteria" class="modal-backdrop">
+        <div class="modal" style="max-width: 500px;">
+            <h2>Agregar Criterio</h2>
+
+            <form id="form-add-criteria" class="modal-form"
+                  style="display: flex; flex-direction: column; gap: 15px;">
+
+                <div class="form-group">
+                    <label for="select-criteria-type">Seleccionar criterio</label>
+                    <select id="select-criteria-type" class="card-select">
+                        <option value="" disabled selected>-- Elegí un tipo --</option>
+                        <option value="nombre">Nombre (Palabra clave)</option>
+                        <option value="descripcion">Descripción (Palabra clave)</option>
+                        <option value="categoria">Categoría</option>
+                        <option value="ubicacion">Ubicación (Lat/Lon)</option>
+                        <option value="fechaSuceso">Fecha de Suceso</option>
+                        <option value="fechaCarga">Fecha de Carga</option>
+                    </select>
+                </div>
+
+                <div id="criteria-inputs-container"
+                     style="background: #f9f9f9; padding: 15px; border-radius: 8px; display:none;">
+
+                    <div id="input-group-text" class="dynamic-group hidden">
+                        <label>Palabra Clave:</label>
+                        <input type="text" id="crit-input-keyword" class="card-input">
+                    </div>
+
+                    <div id="input-group-cat" class="dynamic-group hidden">
+                        <label for="crit-select-category">Categoría</label>
+                        <select id="crit-select-category" class="card-select">
+                            <option value="">Elegí una categoría</option>
+                            <option th:each="c : ${categorias}"
+                                    th:value="${c}"
+                                    th:text="${c}">
+                            </option>
+                            <option value="Otro">Otro</option>
+                        </select>
+
+                        <div class="form-group hidden" id="crit-category-otra-group" style="margin-top: 8px;">
+                            <label for="crit-input-category-otra">Especificá la categoría</label>
+                            <input type="text" id="crit-input-category-otra" class="card-input"
+                                   placeholder="Describí la categoría">
+                        </div>
+                    </div>
+
+                    <div id="input-group-geo" class="dynamic-group hidden">
+                        <label>Coordenadas:</label>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <input type="number" id="crit-input-lat" class="card-input" placeholder="Latitud">
+                            <input type="number" id="crit-input-lon" class="card-input" placeholder="Longitud">
+                        </div>
+                    </div>
+
+                    <div id="input-group-date" class="dynamic-group hidden">
+                        <label>Rango de Fechas:</label>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <input type="date" id="crit-input-from" class="card-input">
+                            <input type="date" id="crit-input-to" class="card-input">
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+
+            <div class="modal-actions">
+                <button id="btn-cancel-criteria" class="modal-btn modal-btn-secondary">Cancelar</button>
+                <button id="btn-confirm-criteria" class="modal-btn modal-btn-primary">Agregar a la lista</button>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<!-- ========== SCRIPTS ESPECÍFICOS ========== -->
+<th:block id="scripts-panel">
+    <script th:src="@{/js/panelDeControl.js}" defer></script>
+
+</th:block>
+
+</html>

@@ -1,0 +1,135 @@
+/* =======================================
+   REGLAS GLOBALES AÑADIDAS
+   ======================================= */
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+}
+
+main {
+  /* Esta regla empuja el footer hacia abajo en páginas cortas */
+  flex-grow: 1;
+}
+/* =======================================
+   FIN DE REGLAS GLOBALES
+   ======================================= */
+
+.login-link-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  gap: 5px;
+}
+
+
+.login-link-container .avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-text {
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+/* ====== Header / Nav ====== */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #ffffffc9;
+  backdrop-filter: saturate(140%) blur(6px);
+  border-bottom: 1px solid #eee;
+  transition: box-shadow .2s ease;
+}
+
+.site-header.is-scrolled {
+  box-shadow: var(--shadow);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 56px;
+  gap: 12px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.brand-logo {
+  width: 100px;
+  height: auto;
+}
+
+.brand-text {
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: #ff6600;
+}
+
+.menu {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.menu a {
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 600;
+  padding: .4rem .6rem;
+  border-radius: 999px;
+  transition: all .15s ease;
+}
+
+.menu a:hover {
+  color: #173F63;
+  background: #f4f6f8;
+}
+
+.menu .avatar {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid #e9ecef;
+  border-radius: 50%;
+}
+
+.avatar-img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Burger (mobile) */
+.burger {
+  display: none;
+  background: none;
+  border: 0;
+  padding: 8px;
+}
+
+.burger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: #333;
+  margin: 5px 0;
+}

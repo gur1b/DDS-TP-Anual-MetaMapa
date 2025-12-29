@@ -1,0 +1,649 @@
+/* Mejor integración visual para la lista de archivos adjuntos */
+.attach-group-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2em;
+}
+.lista-archivos {
+    width: 100%;
+    margin: 0.5em 0 0 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4em;
+    align-items: flex-start;
+}
+.archivo-pill {
+    display: flex;
+    align-items: center;
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    border-radius: 999px;
+    padding: 0.35em 1em 0.35em 0.9em;
+    font-size: 0.97em;
+    color: #1f2937;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    max-width: 220px;
+    min-width: 0;
+    position: relative;
+    margin-bottom: 0.2em;
+    transition: box-shadow .15s;
+    font-family: inherit;
+}
+.archivo-pill span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+    min-width: 0;
+    font-size: 0.97em;
+}
+.archivo-pill button {
+    background: none;
+    border: none;
+    color: #F47C2C;
+    cursor: pointer;
+    font-size: 1.15em;
+    margin-left: 0.5em;
+    padding: 0 0.2em;
+    transition: color .15s;
+}
+.archivo-pill button:hover {
+    color: #c85e10;
+}
+/* Lista de archivos adjuntos tipo pill */
+.lista-archivos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5em;
+    margin-top: 0.5em;
+    padding-left: 0;
+    list-style: none;
+}
+.archivo-pill {
+    display: flex;
+    align-items: center;
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    border-radius: 999px;
+    padding: 0.35em 1em 0.35em 0.9em;
+    font-size: 0.97em;
+    color: #1f2937;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    max-width: 260px;
+    min-width: 0;
+    position: relative;
+    margin-bottom: 0.2em;
+    transition: box-shadow .15s;
+}
+.archivo-pill span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+    min-width: 0;
+}
+.archivo-pill button {
+    background: none;
+    border: none;
+    color: #F47C2C;
+    cursor: pointer;
+    font-size: 1.15em;
+    margin-left: 0.5em;
+    padding: 0 0.2em;
+    transition: color .15s;
+}
+.archivo-pill button:hover {
+    color: #c85e10;
+}
+/* ====== Base ====== */
+:root{
+    --orange:#F47C2C;
+    --orange-2:#FF9A57;
+    --blue: #2196F3; /* Azul para el botón de la imagen */
+    --blue-dark: #1976D2;
+    --dark:#22252B;
+    --text:#2E2E2E;
+    --muted:#6F7A87;
+    --paper:#fff8f2;
+    --card:#fff;
+    --glass:rgba(255, 255, 255, .85);
+    --radius:18px;
+    --shadow:0 10px 30px rgba(0,0,0,.12);
+}
+
+*{box-sizing:border-box}
+html{ scroll-behavior: smooth; }
+html,body{}
+
+body{
+    margin:0;
+    font-family:Montserrat,system-ui,Segoe UI,Roboto,Arial,sans-serif;
+    color:var(--text);
+    background:#fff;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    /* MODIFICADO: Fondo de mapa con puntos como en la imagen */
+    background-image: url("../../img/fondoHOME1.png"); /* ruta de la imagen */
+    background-size: cover;     /* que cubra todo el ancho y alto */
+    background-position: center; /* centrada */
+    background-repeat: no-repeat;
+    color: white;
+}
+
+.container{
+    width:min(1100px, 92%);
+    margin-inline:auto;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+/* ====== Form Section (MODIFICADO) ====== */
+.report-section {
+    padding: 60px 0; /* Espacio arriba y abajo */
+    flex-grow: 1; /* Ocupa el espacio disponible */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.collab{ /* Eliminamos fondo oscuro de la sección original */
+    background: none;
+}
+.collab-grid{ /* Modificamos para centrar el form */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 0;
+}
+
+
+/* Form card (MODIFICADO) */
+.report-card{
+    display:grid;
+    gap: 20px; /* Espacio entre campos */
+    background: #fffffff5; /* Ligeramente transparente */
+    color:#1e1e1e;
+    border-radius:20px;
+    padding: 24px;
+    border:1px solid #ddd;
+    box-shadow: var(--shadow);
+    max-width: 700px; /* Ancho del formulario */
+    margin: 0 auto; /* Centrado */
+
+    /* MODIFICADO: Layout 2x2 */
+    grid-template-columns: 1fr 1fr;
+}
+.report-header{
+    background: var(--orange);
+    color:#fff; font-weight:800; text-transform:uppercase;
+    padding: 12px 14px;
+    border-radius:12px;
+    letter-spacing:.03em;
+    font-size: 1.1rem;
+
+    /* MODIFICADO: Centrado y ocupa 2 columnas */
+    text-align: center;
+    grid-column: 1 / -1; /* Ocupa ambas columnas */
+    margin-bottom: 10px; /* Espacio extra */
+}
+.field{ display:grid; gap:6px; }
+.field.half{ display:grid; } /* La grilla padre ya se encarga */
+.field span{ font-size:.85rem; font-weight:700; color:#4a4a4a; text-align: left; }
+
+input[type="text"], input[type="date"],
+select, textarea{
+    width:100%; padding:10px 12px;
+    border-radius:10px;
+    border:1px solid #ccc; /* Borde más visible */
+    background:#fff;
+    font:inherit; outline:none;
+    transition: border-color .15s, box-shadow .15s;
+}
+
+input:focus, select:focus, textarea:focus{
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px #f47c2c33;
+}
+
+/* Link "Adjuntar" (AÑADIDO) */
+.attach-link {
+    grid-column: 1 / -1; /* Ocupa ambas columnas */
+    text-align: left;
+    text-decoration: none;
+    color: var(--blue);
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-top: 5px;
+}
+.attach-link:hover {
+    text-decoration: underline;
+}
+
+/* Botón (MODIFICADO) */
+.btn-primary{
+    margin-top:6px;
+    appearance:none;
+    border:0; border-radius:12px;
+    padding:12px 16px; font-weight:800; cursor:pointer;
+    background: linear-gradient(180deg, var(--orange), #e66b18);
+    color:#fff;
+    box-shadow: 0 8px 18px rgba(244,124,44,.35);
+    transition: transform .06s ease, filter .2s ease, background .2s;
+
+    /* MODIFICADO: Ocupa ambas columnas y se centra */
+    grid-column: 1 / -1;
+    justify-self: center; /* Centra el botón en la grilla */
+    width: fit-content; /* Ancho justo */
+}
+
+/* Botón Azul (AÑADIDO) */
+.btn-blue {
+    background: linear-gradient(180deg, var(--blue), var(--blue-dark));
+    box-shadow: 0 8px 18px rgba(33, 150, 243, .35);
+}
+.btn-primary:hover{ filter:saturate(110%) brightness(1.02); }
+.btn-primary:active{ transform: translateY(1px); }
+
+.hint{ /* Estilo original, aunque no se usa en el nuevo form */
+    margin:4px 2px 0;
+    font-size:.8rem; color:#6b6f76;
+}
+
+/* ====== Responsividad (Móvil) (AÑADIDO) ====== */
+@media (max-width: 768px){
+    .menu{
+        display: none; /* Oculto por defecto */
+        flex-direction: column;
+        position: absolute;
+        top: 65px; /* Ajustar bajo el header */
+        left: 0;
+        right: 0;
+        background: #fff;
+        padding: 20px;
+        box-shadow: 0 10px 20px rgba(0,0,0,.1);
+    }
+    .burger{ display: block; } /* Se muestra el burger */
+
+    /* Form en 1 columna en móvil */
+    .report-card {
+        grid-template-columns: 1fr;
+    }
+    /* Resetea spans de columna en móvil */
+    .report-header, .field, .attach-link, .btn-primary {
+        grid-column: 1 / 1;
+    }
+}
+
+.btn-primary{
+    margin-top:6px;
+    appearance:none; border:0; border-radius:12px;
+    padding:12px 16px; font-weight:800; cursor:pointer;
+    background: linear-gradient(180deg, var(--orange), #e66b18);
+    color:#fff; box-shadow: 0 8px 18px rgba(244,124,44,.35);
+    transition: transform .06s ease, filter .2s ease;
+}
+.btn-primary:hover{ filter:saturate(110%) brightness(1.02); }
+.btn-primary:active{ transform: translateY(1px); }
+
+
+/* Ícono del clip */
+.file-btn i {
+    font-size: 1rem;
+    color: var(--orange);
+    transition: color 0.25s ease;
+}
+
+/* Hover con efecto oscuro */
+.file-btn:hover {
+    background: #eaeaea;
+    border-color: var(--orange);
+}
+
+.file-btn:hover i {
+    color: #c85e10; /* clip más oscuro en hover */
+}
+
+/* Para mantener consistencia con tus inputs */
+.field.half .file-btn {
+    width: 100%;
+    justify-content: center;
+}
+
+/* Ocultamos el input nativo */
+input[type="file"] {
+    display: none;
+}
+
+/* Botón visual del adjunto */
+.file-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    background: #f4f4f4;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-weight: 600;
+    color: #333;
+    transition: all 0.25s ease;
+    line-height: 1;            /* ayuda a centrar verticalmente */
+}
+
+/* Ícono del clip (ya lo tenías, lo dejo completo por si acaso) */
+.file-btn i {
+    font-size: 1rem;
+    color: var(--orange);
+    transition: color 0.25s ease;
+    display: inline-block;      /* asegura alineación limpia */
+    vertical-align: middle;
+}
+
+/* Hover */
+.file-btn:hover {
+    background: #eaeaea;
+    border-color: var(--orange);
+}
+.file-btn:hover i {
+    color: #c85e10;
+}
+
+/* Que el botón ocupe todo el ancho si lo querés full-width en ese layout */
+.field.half .file-btn {
+    width: 100%;
+    justify-content: center;
+}
+/* ====== Base ====== */
+:root{
+    --orange:#F47C2C;
+    --orange-2:#FF9A57;
+    --blue: #2196F3; /* Azul para el botón de la imagen */
+    --blue-dark: #1976D2;
+    --dark:#22252B;
+    --text:#2E2E2E;
+    --muted:#6F7A87;
+    --paper:#fff8f2;
+    --card:#fff;
+    --glass:rgba(255, 255, 255, .85);
+    --radius:18px;
+    --shadow:0 10px 30px rgba(0,0,0,.12);
+}
+
+*{box-sizing:border-box}
+html{ scroll-behavior: smooth; }
+html,body{height:100%}
+
+body{
+    margin:0;
+    font-family:Montserrat,system-ui,Segoe UI,Roboto,Arial,sans-serif;
+    color:var(--text);
+    background:#fff;
+
+    /* MODIFICADO: Fondo de mapa con puntos como en la imagen */
+    background-image: url("../../img/fondoHOME1.png"); /* ruta de la imagen */
+    background-size: cover;     /* que cubra todo el ancho y alto */
+    background-position: center; /* centrada */
+    background-repeat: no-repeat;
+    color: white;
+}
+
+.container{
+    width:min(1100px, 92%);
+    margin-inline:auto;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+}
+
+/* ====== Form Section (MODIFICADO) ====== */
+.report-section {
+    padding: 60px 0; /* Espacio arriba y abajo */
+    flex-grow: 1; /* Ocupa el espacio disponible */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.collab{ /* Eliminamos fondo oscuro de la sección original */
+    background: none;
+}
+.collab-grid{ /* Modificamos para centrar el form */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 0;
+}
+
+
+/* Form card (MODIFICADO) */
+.report-card{
+    display:grid;
+    gap: 20px; /* Espacio entre campos */
+    background: #fffffff5; /* Ligeramente transparente */
+    color:#1e1e1e;
+    border-radius:20px;
+    padding: 24px;
+    border:1px solid #ddd;
+    box-shadow: var(--shadow);
+    max-width: 700px; /* Ancho del formulario */
+    margin: 0 auto; /* Centrado */
+
+    /* MODIFICADO: Layout 2x2 */
+    grid-template-columns: 1fr 1fr;
+}
+.report-header{
+    background: var(--orange);
+    color:#fff; font-weight:800; text-transform:uppercase;
+    padding: 12px 14px;
+    border-radius:12px;
+    letter-spacing:.03em;
+    font-size: 1.1rem;
+
+    /* MODIFICADO: Centrado y ocupa 2 columnas */
+    text-align: center;
+    grid-column: 1 / -1; /* Ocupa ambas columnas */
+    margin-bottom: 10px; /* Espacio extra */
+}
+.field{ display:grid; gap:6px; }
+.field.half{ display:grid; } /* La grilla padre ya se encarga */
+.field span{ font-size:.85rem; font-weight:700; color:#4a4a4a; text-align: left; }
+
+input[type="text"], input[type="date"],
+select, textarea{
+    width:100%; padding:10px 12px;
+    border-radius:10px;
+    border:1px solid #ccc; /* Borde más visible */
+    background:#fff;
+    font:inherit; outline:none;
+    transition: border-color .15s, box-shadow .15s;
+}
+
+input:focus, select:focus, textarea:focus{
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px #f47c2c33;
+}
+
+/* Link "Adjuntar" (AÑADIDO) */
+.attach-link {
+    grid-column: 1 / -1; /* Ocupa ambas columnas */
+    text-align: left;
+    text-decoration: none;
+    color: var(--blue);
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-top: 5px;
+}
+.attach-link:hover {
+    text-decoration: underline;
+}
+
+/* Botón (MODIFICADO) */
+.btn-primary{
+    margin-top:6px;
+    appearance:none;
+    border:0; border-radius:12px;
+    padding:12px 16px; font-weight:800; cursor:pointer;
+    background: linear-gradient(180deg, var(--orange), #e66b18);
+    color:#fff;
+    box-shadow: 0 8px 18px rgba(244,124,44,.35);
+    transition: transform .06s ease, filter .2s ease, background .2s;
+
+    /* MODIFICADO: Ocupa ambas columnas y se centra */
+    grid-column: 1 / -1;
+    justify-self: center; /* Centra el botón en la grilla */
+    width: fit-content; /* Ancho justo */
+}
+
+/* Botón Azul (AÑADIDO) */
+.btn-blue {
+    background: linear-gradient(180deg, var(--blue), var(--blue-dark));
+    box-shadow: 0 8px 18px rgba(33, 150, 243, .35);
+}
+.btn-primary:hover{ filter:saturate(110%) brightness(1.02); }
+.btn-primary:active{ transform: translateY(1px); }
+
+.hint{ /* Estilo original, aunque no se usa en el nuevo form */
+    margin:4px 2px 0;
+    font-size:.8rem; color:#6b6f76;
+}
+
+/* ====== Footer (AÑADIDO) ====== */
+.site-footer {
+    background: var(--dark);
+    color: #fff;
+    padding: 30px 0;
+    margin-top: auto; /* Empuja el footer al fondo */
+}
+
+.footer-grid {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.footer-grid a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.footer-grid a:hover {
+    color: var(--orange-2);
+}
+
+/* ====== Responsividad (Móvil) (AÑADIDO) ====== */
+@media (max-width: 768px){
+    .menu{
+        display: none; /* Oculto por defecto */
+        flex-direction: column;
+        position: absolute;
+        top: 65px; /* Ajustar bajo el header */
+        left: 0;
+        right: 0;
+        background: #fff;
+        padding: 20px;
+        box-shadow: 0 10px 20px rgba(0,0,0,.1);
+    }
+    .burger{ display: block; } /* Se muestra el burger */
+
+    /* Form en 1 columna en móvil */
+    .report-card {
+        grid-template-columns: 1fr;
+    }
+    /* Resetea spans de columna en móvil */
+    .report-header, .field, .attach-link, .btn-primary {
+        grid-column: 1 / 1;
+    }
+}
+
+.btn-primary{
+    margin-top:6px;
+    appearance:none; border:0; border-radius:12px;
+    padding:12px 16px; font-weight:800; cursor:pointer;
+    background: linear-gradient(180deg, var(--orange), #e66b18);
+    color:#fff; box-shadow: 0 8px 18px rgba(244,124,44,.35);
+    transition: transform .06s ease, filter .2s ease;
+}
+.btn-primary:hover{ filter:saturate(110%) brightness(1.02); }
+.btn-primary:active{ transform: translateY(1px); }
+
+
+/* Ícono del clip */
+.file-btn i {
+    font-size: 1rem;
+    color: var(--orange);
+    transition: color 0.25s ease;
+}
+
+/* Hover con efecto oscuro */
+.file-btn:hover {
+    background: #eaeaea;
+    border-color: var(--orange);
+}
+
+.file-btn:hover i {
+    color: #c85e10; /* clip más oscuro en hover */
+}
+
+/* Para mantener consistencia con tus inputs */
+.field.half .file-btn {
+    width: 100%;
+    justify-content: center;
+}
+
+/* Ocultamos el input nativo */
+input[type="file"] {
+    display: none;
+}
+
+/* Botón visual del adjunto */
+.file-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    background: #f4f4f4;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-weight: 600;
+    color: #333;
+    transition: all 0.25s ease;
+    line-height: 1;            /* ayuda a centrar verticalmente */
+}
+
+/* Ícono del clip (ya lo tenías, lo dejo completo por si acaso) */
+.file-btn i {
+    font-size: 1rem;
+    color: var(--orange);
+    transition: color 0.25s ease;
+    display: inline-block;      /* asegura alineación limpia */
+    vertical-align: middle;
+}
+
+/* Hover */
+.file-btn:hover {
+    background: #eaeaea;
+    border-color: var(--orange);
+}
+.file-btn:hover i {
+    color: #c85e10;
+}
+
+/* Que el botón ocupe todo el ancho si lo querés full-width en ese layout */
+.field.half .file-btn {
+    width: 100%;
+    justify-content: center;
+}

@@ -1,0 +1,116 @@
+/* Meta box (recuadro gris) dentro de cada card */
+.meta-box {
+    background: #f6f7fb;               /* gris muy claro */
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+/* Layout en 2 columnas para las filas de meta */
+.meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;    /* dos columnas */
+    gap: 12px 32px;                     /* espacio entre filas/columnas */
+}
+
+/* Estética de las filas */
+.meta-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    min-width: 0;                       /* para truncar si hace falta */
+}
+
+/* Etiquetas “Meta:” en gris oscuro y semi bold */
+.meta-label {
+    color: #6b7280;                     /* gris 600 */
+    font-weight: 600;
+    white-space: nowrap;
+}
+/* Solo el rótulo "Etiquetas:" en negro */
+.color {
+    color: #000; /* negro */
+}
+/* Valores más oscuros, permitiendo wrap */
+.meta-value {
+    color: #111827;                     /* gris 900 */
+    word-break: break-word;
+}
+
+/* Chips suaves (si querés un look más “pill” sutil) */
+.meta-value .chip {
+    background: #eef2f7;
+    color: #4b5563;                     /* gris 700 */
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    padding: 4px 10px;
+    border-radius: 9999px;
+    font-size: 0.85rem;
+}
+
+/* Responsive: en pantallas chicas, 1 columna */
+@media (max-width: 768px) {
+    .meta-grid {
+        grid-template-columns: 1fr;
+        gap: 10px 0;
+    }
+}
+/* ========== Contenedor de chips (recuadro) ========== */
+.pill-box {
+    background: #f6f7fb;                 /* gris muy claro */
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 12px;
+    padding: 10px 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* Variante de color: azul suave (opcional) */
+.pill-box--blue {
+    background: #eef6ff;                 /* azul muy claro */
+    border-color: rgba(29, 78, 216, 0.12);
+}
+
+/* ========== Chips ========== */
+.chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    background: #eef2f7;                 /* pill neutra */
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    color: #374151;                      /* gris 700 */
+    font-size: 0.85rem;
+    line-height: 1.2;
+    user-select: none;
+}
+
+/* Chip para categorías (ligeramente destacada) */
+.chip--category {
+    background: #e7f1ff;
+    color: #1d4ed8;                      /* azul 700 */
+    border-color: rgba(29, 78, 216, 0.16);
+}
+
+/* Si querés los tags con otro tono (opcional) */
+.chip--tag {
+    background: #f0f2f5;
+    color: #4b5563;
+}
+
+/* Asegurar consistencia dentro de meta y lista de tags */
+.meta-value .chip,
+.tags.view-mode .chip {
+    /* hereda .chip base */
+}
+
+/* Responsive: en pantallas chicas el recuadro ocupa todo bien */
+@media (max-width: 768px) {
+    .pill-box {
+        padding: 10px;
+    }
+}
+/* Solo el rótulo "Etiquetas:" en negro */
+.meta-label--black { color: #000 !important; }

@@ -1,0 +1,11 @@
+apiVersion: 1
+
+providers:
+  - name: "metamapa"
+    orgId: 1
+    folder: "MetaMapa"
+    type: file
+    disableDeletion: false
+    editable: true
+    options:
+      path: /var/lib/grafana/dashboards

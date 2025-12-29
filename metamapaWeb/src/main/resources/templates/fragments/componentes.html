@@ -1,0 +1,63 @@
+
+<div th:if="${popupError}" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;background:rgba(0,0,0,0.25);display:flex;align-items:center;justify-content:center;">
+    <div style="background:#fff;padding:2rem 2.5rem;border-radius:1rem;box-shadow:0 2px 16px rgba(0,0,0,0.15);font-size:1.25rem;color:#F47C2C;text-align:center;max-width:90vw;">
+        <strong th:text="${popupError}">Esa sección es accesible únicamente para los admins :v</strong>
+        <br><br>
+        <a href="/" style="display:inline-block;margin-top:1rem;padding:.5rem 1.5rem;background:#F47C2C;color:#fff;border-radius:999px;text-decoration:none;font-weight:600;">Volver al inicio</a>
+    </div>
+</div>
+
+<header class="site-header" id="top" th:fragment="navbar">
+    <div class="container nav">
+        <a class="brand" th:href="@{/}">
+            <img class="brand-logo" th:src="@{/img/logoNAVBAR.png}" alt="Logo MetaMapa">
+        </a>
+        <nav class="menu">
+            <a th:href="@{/}">Inicio</a>
+            <a th:href="@{/reportar}">Reportar suceso</a>
+            <a th:href="@{/mapa}">Ver mapa</a>
+            <a th:href="@{/colecciones}">Navegar sucesos</a>
+            <a th:href="@{/dashboard}">Dashboard</a>
+            <a th:if="${esAdmin}" th:href="@{/admin/colecciones}">Panel de Control</a>
+            <a th:if="${#authorization.expression('isAuthenticated()')}"
+               href="#"
+               class="login-link-container"
+               aria-label="Perfil"
+               id="btn-sidebar-perfil"
+               onclick="abrirSidebarPerfil(); return false;">
+                <div class="avatar">
+                    <img th:if="${#authentication.principal instanceof T(org.springframework.security.oauth2.core.user.DefaultOAuth2User) and #authentication.principal.attributes['picture'] != null}"
+                         th:src="${#authentication.principal.attributes['picture']}"
+                         class="avatar-img"
+                         alt="Perfil">
+                    <i th:if="${!(#authentication.principal instanceof T(org.springframework.security.oauth2.core.user.DefaultOAuth2User)) or #authentication.principal.attributes['picture'] == null}"
+                       class="fa-regular fa-user"></i>
+                </div>
+                <span class="login-text">Mi Perfil</span>
+            </a>
+
+            <a th:if="${#authorization.expression('!isAuthenticated()')}"
+               th:href="@{/api/auth/login}"
+               class="login-link-container"
+               aria-label="Iniciar Sesión">
+                <div class="avatar">
+                    <i class="fa-regular fa-user"></i>
+                </div>
+                <span class="login-text">Iniciar Sesión</span>
+            </a>
+        </nav>
+
+        <button class="burger" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+    </div>
+</header>
+
+<footer class="site-footer" th:fragment="footer">
+    <div class="container footer-grid">
+        <a href="mailto:metamapa@gmail.com"><i class="fa-solid fa-envelope"></i> metamapa@gmail.com</a>
+        <a th:href="@{/mapa}"><i class="fa-solid fa-map-location-dot"></i> Mapa</a>
+        <a href="https://instagram.com" target="_blank" rel="noreferrer"><i class="fa-brands fa-instagram"></i> @metamapa</a>
+    </div>
+</footer>
+
+<!-- Modal de login/registro -->
+<div th:replace="fragments/login-modal :: none"></div>

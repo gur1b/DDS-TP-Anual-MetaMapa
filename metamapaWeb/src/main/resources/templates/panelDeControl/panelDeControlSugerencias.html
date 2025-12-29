@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(
+          titulo='Panel de control - Sugerencias',
+          linksAdicionales=~{:: #links-panel},
+          scriptsAdicionales=~{:: #scripts-panel},
+          contenido=~{:: #contenido-panel}
+      )}">
+
+<!-- ========== CSS ESPECÍFICO ========== -->
+<th:block id="links-panel">
+    <link rel="stylesheet" th:href="@{/css/pages-css/button.css}">
+    <link rel="stylesheet" th:href="@{/css/pages-css/panelDeControl.css}">
+    <style>
+        /* panelDeControlSugerencias.css */
+        .suggest-toolbar{
+            display:flex;
+            align-items:center;
+            justify-content:flex-end;
+            margin: .75rem 0 1rem 0;
+        }
+
+        .suggest-counter{
+            color:#6b7280;
+            font-weight:600;
+            font-size:.95rem;
+        }
+    </style>
+</th:block>
+
+<!-- ========== CONTENIDO PRINCIPAL ========== -->
+<main id="contenido-panel" class="admin-page">
+
+    <div class="admin-bg"></div>
+
+    <section class="admin-surface">
+        <header class="surface-header">
+            <h1 class="surface-title">Panel de control — Sugerencias de cambio</h1>
+        </header>
+
+        <div class="admin-container">
+            <div class="admin-main-content">
+
+                <div class="search-bar">
+                    <input id="search-input" type="text" placeholder="Buscar sugerencia o hecho...">
+                    <button class="search-btn" id="search-btn">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </div>
+
+                <div class="collections-list" id="sugerencias-list">
+                    <article th:each="s : ${listaDeSugerencias}"
+                             class="collection-card solicitud-card"
+                             th:id="${'sugerencia-' + s.id()}">
+
+                        <div class="card-header">
+                            <h2 th:text="${'Sugerencia #' + s.id()}">Sugerencia #1</h2>
+                        </div>
+
+                        <div class="card-body">
+
+                            <div class="card-field">
+                                <strong>Motivo / descripción:</strong>
+                                <p th:text="${s.descripcionSolicitud()} ?: 'No indica'">No indica</p>
+                            </div>
+
+                            <!-- ====== BLOQUE: PROPUESTA DE CAMBIO ====== -->
+                            <div class="hecho-box">
+                                <h3>Cambios sugeridos</h3>
+
+                                <div class="hecho-row">
+                                    <span class="hecho-label">Título sugerido:</span>
+                                    <span class="hecho-value" th:text="${s.tituloSugerencia()} ?: 'No cambiar'">No cambiar</span>
+                                </div>
+
+                                <div class="hecho-row">
+                                    <span class="hecho-label">Descripción sugerida:</span>
+                                    <span class="hecho-value" th:text="${s.descripcionSugerencia()} ?: 'No cambiar'">No cambiar</span>
+                                </div>
+
+                                <div class="hecho-row">
+                                    <span class="hecho-label">Fecha suceso sugerida:</span>
+                                    <span class="hecho-value"
+                                          th:text="${s.fechaSucesoSugerencia()} != null ? ${#temporals.format(s.fechaSucesoSugerencia(), 'dd/MM/yyyy')} : 'No cambiar'">
+                                        No cambiar
+                                    </span>
+                                </div>
+
+                                <div class="hecho-row">
+                                    <span class="hecho-label">Hora suceso sugerida:</span>
+                                    <span class="hecho-value" th:text="${s.horaSucesoSugerencia()} != null ? ${s.horaSucesoSugerencia()} : 'No cambiar'">
+                                        No cambiar
+                                    </span>
+                                </div>
+
+                                <div class="hecho-row">
+                                    <span class="hecho-label">Categoría sugerida:</span>
+                                    <span class="hecho-value" th:text="${s.categoriaSugerencia()} ?: 'No cambiar'">No cambiar</span>
+                                </div>
+
+                                <div class="hecho-row">
+                                    <span class="hecho-label">Etiquetas sugeridas:</span>
+                                    <span class="hecho-value"
+                                          th:if="${s.etiquetasSugerencia() != null and !#lists.isEmpty(s.etiquetasSugerencia())}">
+                                        <span class="chip" th:each="e : ${s.etiquetasSugerencia()}" th:text="${e}">tag</span>
+                                    </span>
+                                    <span class="hecho-value muted"
+                                          th:if="${s.etiquetasSugerencia() == null or #lists.isEmpty(s.etiquetasSugerencia())}">
+                                        No cambiar
+                                    </span>
+                                </div>
+
+                                <div class="hecho-row">
+                                    <span class="hecho-label">Fecha sugerencia:</span>
+                                    <span class="hecho-value"
+                                          th:text="${s.fechaSugerencia()} != null ? ${#temporals.format(s.fechaSugerencia(), 'dd/MM/yyyy')} : 'No indica'">
+                                        No indica
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- ====== BLOQUE: HECHO ACTUAL ====== -->
+                            <div class="hecho-box">
+                                <h3>Datos del hecho (actual)</h3>
+
+                                <div class="hecho-row">
+                                    <span class="hecho-label">Título:</span>
+                                    <span class="hecho-value" th:text="${s.tituloHecho()} ?: 'No indica'">No indica</span>
+                                </div>
+
+                                <div class="hecho-row">
+                                    <span class="hecho-label">Descripción:</span>
+                                    <span class="hecho-value" th:text="${s.descripcionHecho()} ?: 'No indica'">No indica</span>
+                                </div>
+
+                                <div class="hecho-row">
+                                    <span class="hecho-label">Contribuyente:</span>
+                                    <span class="hecho-value" th:text="${s.contribuyenteHecho()} ?: 'No indica'">No indica</span>
+                                </div>
+
+                                <div class="hecho-row">
+                                    <span class="hecho-label">Fecha suceso:</span>
+                                    <span class="hecho-value"
+                                          th:text="${s.fechaSucesoHecho()} != null ? ${#temporals.format(s.fechaSucesoHecho(), 'dd/MM/yyyy')} : 'No indica'">
+                                        No indica
+                                    </span>
+                                </div>
+
+                                <div class="hecho-row">
+                                    <span class="hecho-label">Hora suceso:</span>
+                                    <span class="hecho-value"
+                                          th:text="${s.horaSucesoHecho()} != null ? ${s.horaSucesoHecho()} : 'No indica'">
+                                        No indica
+                                    </span>
+                                </div>
+
+                                <div class="hecho-row">
+                                    <span class="hecho-label">Categoría:</span>
+                                    <span class="hecho-value" th:text="${s.categoriaHecho()} ?: 'No indica'">No indica</span>
+                                </div>
+
+                                <div class="hecho-row">
+                                    <span class="hecho-label">Etiquetas:</span>
+                                    <span class="hecho-value"
+                                          th:if="${s.etiquetasHecho() != null and !#lists.isEmpty(s.etiquetasHecho())}">
+                                        <span class="chip" th:each="e : ${s.etiquetasHecho()}" th:text="${e}">tag</span>
+                                    </span>
+                                    <span class="hecho-value muted"
+                                          th:if="${s.etiquetasHecho() == null or #lists.isEmpty(s.etiquetasHecho())}">
+                                        No indica
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- BOTONES -->
+                            <div class="solicitud-actions">
+                                <form th:action="@{'/admin/sugerenciasDeCambio/' + ${s.id()} + '/rechazar'}" method="post">
+                                    <button type="submit" class="modal-btn modal-btn-danger">Rechazar</button>
+                                </form>
+                                <form th:action="@{'/admin/sugerenciasDeCambio/' + ${s.id()} + '/aceptar'}" method="post">
+                                    <button type="submit" class="modal-btn modal-btn-primary">Aceptar</button>
+                                </form>
+                            </div>
+
+                        </div>
+                    </article>
+                </div>
+
+            </div>
+
+            <aside class="admin-sidebar">
+                <nav class="admin-menu">
+                    <a th:href="@{/admin/colecciones}" class="admin-menu-item">ADMINISTRAR COLECCIONES</a>
+                    <a th:href="@{/admin/hechos}" class="admin-menu-item">ADMINISTRAR HECHOS</a>
+                    <a th:href="@{/admin/fuentes}" class="admin-menu-item">ADMINISTRAR FUENTES</a>
+                    <a th:href="@{/admin/solicitudesEliminacion}" class="admin-menu-item">ADMINISTRAR SOLICITUDES DE ELIMINACIÓN</a>
+                    <a th:href="@{/admin/sugerenciasDeCambio}" class="admin-menu-item active">ADMINISTRAR SUGERENCIAS DE CAMBIO</a>
+                </nav>
+
+                <form th:action="@{/ejecutar-agregacion}"
+                      method="post"
+                      class="aggregation-actions">
+
+                    <input type="hidden" name="_csrf"
+                           th:if="${_csrf}"
+                           th:value="${_csrf.token}"/>
+
+                    <button type="submit" class="aggregation-btn">
+                        Ejecutar Servicio de Agregación
+                    </button>
+                </form>
+                <div class="contenedor-botones-observabilidad" style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
+
+                    <a th:href="${graphqlUrl}" target="_blank" class="aggregation-btn" style="text-decoration: none; text-align: center; background-color: #2980b9; color: white;">
+                        <i class="fa-solid fa-rocket"></i> Playground GraphQL
+                    </a>
+
+                    <a th:href="${grafanaUrl}" target="_blank" class="aggregation-btn" style="text-decoration: none; text-align: center; background-color: #f47a20; color: white;">
+                        <i class="fa-solid fa-chart-line"></i> Ver Métricas Grafana
+                    </a>
+
+                </div>
+            </aside>
+        </div>
+    </section>
+
+</main>
+
+<th:block id="scripts-panel">
+    <script th:src="@{/js/panelDeControlSugerencias.js}" defer></script>
+</th:block>
+
+</html>

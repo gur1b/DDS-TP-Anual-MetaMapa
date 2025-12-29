@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(
+          titulo='Reportar suceso',
+          linksAdicionales=~{:: #links-reportar},
+          scriptsAdicionales=~{:: #scripts-reportar},
+          contenido=~{:: #contenido-reportar}
+      )}">
+
+<th:block id="links-reportar">
+  <link rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""/>
+  <style>
+    :root{
+      --orange: #F47C2C;
+      --bg-card: #ffffff;
+      --border: #e5e7eb;
+      --text: #1f2937;
+      --muted:#6b7280;
+    }
+    body {
+      background-image: url('/img/fondoHOME1.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-attachment: fixed;
+    }
+    .report-wrapper{
+      display: flex;
+      justify-content: center;
+      padding: 1.5rem 1rem 3rem;
+    }
+    .report-card{
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, .06);
+      width: min(1080px, 100%);
+      /* para que no quede pegado */
+      min-height: 280px;
+    }
+    .report-header{
+      background: var(--orange);
+      color: #fff;
+      padding: 1rem 1.5rem;
+      text-align: center;
+      font-weight: 700;
+      font-size: 1.25rem;
+    }
+    .report-body{
+      padding: 1.5rem 1.75rem 1.5rem;
+      display: grid;
+      gap: 1.25rem;
+    }
+    .form-grid{
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 1.25rem 1.75rem;
+    }
+    .form-group{
+      display: flex;
+      flex-direction: column;
+      gap: .35rem;
+    }
+    label{
+      font-weight: 600;
+      color: #222;
+    }
+    input[type="text"],
+    input[type="date"],
+    input[type="time"],
+    select,
+    textarea{
+      border: 1px solid #ddd;
+      border-radius: .75rem;
+      padding: .6rem .75rem;
+      font-size: .95rem;
+      outline: none;
+      transition: box-shadow .15s, border-color .15s;
+    }
+    input:focus, select:focus, textarea:focus{
+      border-color: rgba(244,124,44,.6);
+    }
+    textarea{
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    /* NUEVO: Envoltorio para manejar posición relativa */
+    .attach-group-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .attach-btn{
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      border-radius: .75rem;
+      padding: .55rem .8rem;
+      cursor: pointer;
+      width: 100%;
+      position: relative;
+      justify-content: flex-start; /* Alineación inicial */
+      padding-right: 3rem; /* Espacio para el botón de remover */
+      flex-grow: 1;
+    }
+    #clipIcon {
+      margin-right: .4rem;
+    }
+    #archivoLabel {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      flex-grow: 1;
+    }
+    .remove-file-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 0;
+      margin: 0;
+      line-height: 1;
+      transition: color .15s;
+
+      /* Posicionamiento absoluto para estar fuera del label pero visualmente dentro */
+      position: absolute;
+      right: 1.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.4rem;
+      z-index: 10;
+    }
+    .remove-file-btn:hover {
+      color: var(--text);
+    }
+    .attach-btn i{color:var(--orange);}
+    .report-actions{
+      display:flex;
+      justify-content:center;
+      margin-top:.5rem;
+    }
+    .btn-primary{
+      background: var(--orange);
+      color:#fff;
+      padding:.6rem 2.2rem;
+      border:none;
+      border-radius: 999px;
+      font-weight:600;
+      font-size:1rem;
+      cursor:pointer;
+      transition: transform .1s;
+    }
+    .btn-primary:hover{transform: translateY(-1px);}
+    .hidden{display:none !important;}
+
+    /* mapa */
+    #mapa-reportar{
+      width: 100%;
+      height: 280px;
+      border-radius: 1rem;
+      overflow: hidden;
+      border: 1px solid #e5e7eb;
+    }
+    .map-help{
+      font-size: .8rem;
+      color: var(--muted);
+      margin-top: .25rem;
+    }
+    @media (max-width: 768px){
+      .report-card{
+        border-radius: 0;
+        box-shadow: none;
+      }
+      .success-state{
+        padding: 2rem 1rem 2.5rem;
+      }
+      .success-state h2{
+        font-size: 1.4rem;
+      }
+      .success-actions{
+        flex-direction: column;
+        gap: .6rem;
+      }
+      .success-actions a{
+        text-align: center;
+        width: 100%;
+      }
+    }
+    @media (max-width: 850px){
+      .form-grid{grid-template-columns: 1fr;}
+      .report-body{padding: 1.25rem 1rem 1.5rem;}
+    }
+    .success-state{
+      padding: 2.5rem 2rem 2.8rem;
+      text-align: center;
+    }
+    .success-icon{
+      width: 70px;
+      height: 70px;
+      margin: 0 auto 1rem;
+      border-radius: 999px;
+      background: rgba(27, 197, 102, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      color: #1BC566;
+    }
+    .success-state h2{
+      font-size: 1.7rem;
+      margin-bottom: .35rem;
+    }
+
+    .success-state p{
+      color: #6b7280;
+      margin-bottom: 1.5rem;
+    }
+
+    .success-actions{
+      display: flex;
+      justify-content: center;
+      gap: .75rem;
+      flex-wrap: wrap;
+    }
+
+    .success-actions .btn-primary{
+      background: #F47C2C;
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: .7rem 2.4rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .success-actions .btn-secondary{
+      background: #edf0f4;
+      border: none;
+      border-radius: 999px;
+      padding: .7rem 1.95rem;
+      font-weight: 500;
+      text-decoration: none;
+      color: #1f2937;
+    }
+    .btn-secondary{
+      margin-top:6px;
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      color: #1f2937;
+      border-radius: 999px;
+      padding: .55rem 1.5rem;
+      font-weight: 500;
+      text-decoration: none;
+    }
+    .btn-secondary:hover{
+      background: #e5e7eb;
+    }
+    .tag-input {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: .4rem;
+      border: 1px solid #ddd;
+      border-radius: .75rem;
+      padding: .4rem .6rem;
+    }
+    .tag-input input {
+      border: none;
+      flex: 1;
+      outline: none;
+      padding: .4rem;
+      font-size: .95rem;
+    }
+    .tag {
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      border-radius: 999px;
+      padding: .2rem .6rem;
+      display: flex;
+      align-items: center;
+      gap: .3rem;
+      font-size: .85rem;
+    }
+    .remove-tag {
+      background: none;
+      border: none;
+      color: #6b7280;
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 0;
+      margin: 0;
+      line-height: 1;
+    }
+    .remove-tag:hover {
+      color: #1f2937;
+    }
+    @media (min-width: 851px){
+      #categoria-otra-group{
+        grid-column: 2; /* misma columna que Categoría */
+      }
+    }
+  </style>
+</th:block>
+
+<div id="contenido-reportar">
+  <div class="report-wrapper">
+    <div class="report-card" th:switch="${estado}">
+
+      <div th:case="'ok'" class="success-state">
+        <div class="success-icon">
+          <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <h2>Hecho enviado</h2>
+        <p>Tu reporte se envió correctamente al sistema.</p>
+        <div class="success-actions">
+          <a th:href="@{/reportar}" class="btn-primary">Cargar otro hecho</a>
+          <a th:href="@{/}" class="btn-secondary">Volver al inicio</a>
+        </div>
+      </div>
+
+      <div th:case="'error'" class="success-state">
+        <div class="success-icon" style="background: rgba(239,68,68,0.1); color:#ef4444;">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <h2>Algo salió mal</h2>
+        <p th:text="${mensajeError != null} ? ${mensajeError} : 'No se pudo enviar el reporte.'">
+          No se pudo enviar el reporte.
+        </p>
+        <div class="success-actions">
+          <a th:href="@{/reportar}" class="btn-primary">Volver a intentar</a>
+          <a th:href="@{/}" class="btn-secondary">Volver al inicio</a>
+        </div>
+      </div>
+
+      <form th:case="*" th:action="@{/reportar}" method="post" id="form-reportar" enctype="multipart/form-data">
+        <div class="report-header">REPORTAR SUCESO</div>
+        <div class="report-body">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="titulo">Título suceso <span style="color:#F47C2C;">*</span></label>
+              <input type="text" id="titulo" name="titulo" placeholder="Ej: Árbol caído en la vereda" required>
+            </div>
+
+            <div class="form-group">
+              <label for="categoria">Categoría <span style="color:#F47C2C;">*</span></label>
+              <select id="categoria" name="categoria" required>
+                <option value="">Elegí una categoría</option>
+                <option th:each="c : ${categorias}"
+                        th:value="${c}"
+                        th:text="${c}">
+                </option>
+                <option value="Otro">Otro</option>
+              </select>
+            </div>
+
+            <!-- input que aparece solo si se elige "Otro" -->
+            <div class="form-group hidden" id="categoria-otra-group">
+              <label for="categoriaOtra">Especificá la categoría <span style="color:#F47C2C;">*</span></label>
+              <input type="text" id="categoriaOtra" name="categoriaOtra"
+                     placeholder="Describí la categoría">
+            </div>
+            <div class="form-group">
+              <label for="fechaSuceso">Fecha de suceso <span style="color:#F47C2C;">*</span></label>
+              <input type="date" id="fechaSuceso" name="fechaSuceso"
+                     placeholder="dd/mm/aaaa" required>
+            </div>
+
+            <div class="form-group">
+              <label for="horaSuceso">Hora del suceso<span style="color:#F47C2C;"></span></label>
+              <input type="time" id="horaSuceso" name="horaSuceso"
+                     step="60" placeholder="HH:mm">
+              <small class="map-help">Formato 24 hs (HH:mm). Si no sabés la hora, dejalo vacío.</small>
+            </div>
+
+
+            <div class="form-group" style="grid-column: 1 / -1;">
+              <label for="descripcion">Descripción <span style="color:#F47C2C;">*</span></label>
+              <textarea id="descripcion" name="descripcion" placeholder="Contanos qué pasó..." required></textarea>
+            </div>
+
+            <div class="form-group" style="grid-column: 1 / -1;">
+              <label for="inputEtiqueta">Etiquetas</label>
+              <div class="tag-input" id="tagInput">
+                <input type="text" id="inputEtiqueta" placeholder="Escribí y presioná espacio...">
+              </div>
+              <input type="hidden" name="etiquetas" id="etiquetasHidden">
+            </div>
+
+            <div class="form-group" style="grid-column: 1 / -1;">
+              <label for="multimedia">Adjuntar evidencias</label>
+              <div class="attach-group-wrapper">
+                <label class="attach-btn" id="attachBtnLabel">
+                  <i class="fa-solid fa-paperclip" id="clipIcon"></i>
+                  <span id="archivoLabel">Adjuntar</span>
+                  <input type="file" id="multimedia" accept="image/*,video/*" style="display:none">
+                </label>
+                <ul id="listaArchivos" class="lista-archivos"></ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top:.25rem;">
+            <label>Ubicación <span style="color:#F47C2C;">*</span></label>
+            <div id="mapa-reportar"></div>
+            <p class="map-help">Hacé clic en el mapa para marcar la ubicación del suceso.</p>
+            <input type="hidden" id="latitud" name="latitud" required>
+            <input type="hidden" id="longitud" name="longitud" required>
+          </div>
+
+          <div class="form-group" th:if="${#authorization.expression('isAuthenticated()')}">
+            <label style="font-weight: 500; display:flex; align-items:center; gap:.4rem;">
+              <input type="checkbox" id="noPublicarDatos" name="noPublicarDatos" style="width:auto;">
+              No publicar mis datos como contribuyente
+            </label>
+            <p class="map-help">
+              Si marcás esta opción, tu correo NO será enviado con el reporte.
+            </p>
+          </div>
+
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label style="font-weight: 500; display:flex; align-items:center; gap:.4rem;">
+              <input type="checkbox" id="urgente" name="urgente" style="width:auto;">
+              Marcar este reporte como urgente
+            </label>
+            <p class="map-help">
+              Si marcás esta opción, el suceso se enviará marcado como urgente.
+            </p>
+          </div>
+
+          <div style="color: #F47C2C; font-size: 0.98rem;">
+            <span style="font-weight: bold;">*</span> Campos obligatorios
+          </div>
+
+          <div class="report-actions">
+            <button type="submit" class="btn-primary">Reportar</button>
+          </div>
+        </div>
+      </form>
+      <input type="hidden" id="csrf-token" th:value="${_csrf.token}">
+
+    </div>
+  </div>
+</div>
+
+<th:block id="scripts-reportar">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+          crossorigin=""></script>
+
+  <script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+      // Limitar fecha máxima al día actual
+      const fechaInput = document.getElementById('fechaSuceso');
+      if (fechaInput) {
+        const hoy = new Date();
+        const yyyy = hoy.getFullYear();
+        const mm = String(hoy.getMonth() + 1).padStart(2, '0');
+        const dd = String(hoy.getDate()).padStart(2, '0');
+        const maxDate = `${yyyy}-${mm}-${dd}`;
+        fechaInput.setAttribute('max', maxDate);
+      }
+      // Validación para obligar a seleccionar ubicación en el mapa
+      const form = document.getElementById('form-reportar');
+      if (form) {
+        form.addEventListener('submit', function(e) {
+          const lat = document.getElementById('latitud').value;
+          const lon = document.getElementById('longitud').value;
+          if (!lat || !lon) {
+            alert('Debes seleccionar una ubicación en el mapa antes de enviar el reporte.');
+            e.preventDefault();
+          }
+        });
+      }
+      // ====== mostrar/ocultar "Otro" ======
+      const categoriaSelect = document.getElementById('categoria');
+      const categoriaOtraGroup = document.getElementById('categoria-otra-group');
+      const categoriaOtraInput = document.getElementById('categoriaOtra');
+
+      if (categoriaSelect) {
+        categoriaSelect.addEventListener('change', () => {
+          const v = categoriaSelect.value;
+          if (v && v.toLowerCase() === 'otro') {
+            categoriaOtraGroup.classList.remove('hidden');
+            categoriaOtraInput.required = true;
+          } else {
+            categoriaOtraGroup.classList.add('hidden');
+            categoriaOtraInput.required = false;
+            categoriaOtraInput.value = '';
+          }
+        });
+      }
+
+      // ====== ADJUNTAR EVIDENCIAS (FINAL CORREGIDO) ======
+
+      const multimediaInput = document.getElementById('multimedia');
+      const archivoLabel = document.getElementById('archivoLabel');
+      const listaArchivos = document.getElementById('listaArchivos');
+      let archivosSeleccionados = [];
+
+
+      // Cuando se seleccionan archivos nuevos
+      multimediaInput.addEventListener('change', function() {
+        if (this.files.length > 0) {
+          for (let i = 0; i < this.files.length; i++) {
+            archivosSeleccionados.push(this.files[i]);
+          }
+          actualizarListaArchivos();
+        }
+        // Limpiar el input para permitir volver a seleccionar el mismo archivo si se quiere
+        this.value = '';
+      });
+
+      function actualizarListaArchivos() {
+        listaArchivos.innerHTML = '';
+        if (archivosSeleccionados.length === 0) {
+          archivoLabel.textContent = 'Adjuntar';
+        } else {
+          archivoLabel.textContent = archivosSeleccionados.length + ' archivo(s)';
+        }
+        archivosSeleccionados.forEach((file, idx) => {
+          const li = document.createElement('li');
+          li.style.display = 'flex';
+          li.style.alignItems = 'center';
+          li.style.gap = '0.5em';
+          li.innerHTML = `<span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${file.name}</span> <button type="button" style="background:none;border:none;color:#F47C2C;cursor:pointer;font-size:1.1em;" title="Quitar" data-idx="${idx}">&times;</button>`;
+          li.querySelector('button').addEventListener('click', function() {
+            archivosSeleccionados.splice(idx, 1);
+            actualizarListaArchivos();
+          });
+          listaArchivos.appendChild(li);
+        });
+      }
+
+      // Al enviar el formulario, armar el FormData manualmente
+      document.getElementById('form-reportar').addEventListener('submit', function(e) {
+        if (archivosSeleccionados.length > 0) {
+          e.preventDefault();
+          const form = e.target;
+          const formData = new FormData(form);
+          archivosSeleccionados.forEach(f => formData.append('multimedia', f));
+          fetch(form.action, {
+            method: 'POST',
+            body: formData
+          }).then(resp => {
+            if (resp.redirected) {
+              window.location.href = resp.url;
+            } else {
+              return resp.text().then(html => { document.body.innerHTML = html; });
+            }
+          });
+        }
+      });
+
+
+      // ====== MAPA ======
+      const mapDiv = document.getElementById('mapa-reportar');
+      if (mapDiv) {
+        const map = L.map('mapa-reportar').setView([-34.6037, -58.3816], 11);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+          attribution: '&copy; OpenStreetMap'
+        }).addTo(map);
+
+        let marker = null;
+        const latInput = document.getElementById('latitud');
+        const lonInput = document.getElementById('longitud');
+
+        function setMarker(latlng) {
+          if (marker) {
+            marker.setLatLng(latlng);
+          } else {
+            marker = L.marker(latlng, { draggable: true }).addTo(map);
+            marker.on('dragend', (e) => {
+              const { lat, lng } = e.target.getLatLng();
+              latInput.value = lat;
+              lonInput.value = lng;
+            });
+          }
+          latInput.value = latlng.lat;
+          lonInput.value = latlng.lng;
+        }
+
+        map.on('click', (e) => {
+          setMarker(e.latlng);
+        });
+
+        // opcional: centrar en ubicación real
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(pos => {
+            const lat = pos.coords.latitude;
+            const lon = pos.coords.longitude;
+            map.setView([lat, lon], 14);
+          });
+        }
+
+        // por si el contenedor estaba oculto al inicio
+        setTimeout(() => {
+          map.invalidateSize();
+        }, 200);
+      }
+      const horaInput = document.getElementById('horaSuceso');
+      if (horaInput) {
+        horaInput.addEventListener('input', () => {
+          // Deja solo HH:mm
+          const ok = /^\d{2}:\d{2}$/.test(horaInput.value) || horaInput.value === '';
+          if (!ok) horaInput.setCustomValidity('Usá formato HH:mm');
+          else horaInput.setCustomValidity('');
+        });
+      }
+
+    });
+
+    // ====== ETIQUETAS (TAGS) ======
+    document.addEventListener('DOMContentLoaded', () => {
+      const input = document.getElementById('inputEtiqueta');
+      const container = document.getElementById('tagInput');
+      const hidden = document.getElementById('etiquetasHidden');
+      const tags = [];
+
+      function renderTags() {
+        container.querySelectorAll('.tag').forEach(t => t.remove());
+        tags.forEach((tag, i) => {
+          const span = document.createElement('span');
+          span.className = 'tag';
+          span.textContent = tag;
+          const remove = document.createElement('button');
+          remove.innerHTML = '&times;';
+          remove.className = 'remove-tag';
+          remove.onclick = () => {
+            tags.splice(i, 1);
+            renderTags();
+          };
+          span.appendChild(remove);
+          container.insertBefore(span, input);
+        });
+        hidden.value = tags.join(' ');
+      }
+
+      input.addEventListener('keydown', (e) => {
+        if (e.key === ' ' || e.key === 'Enter') {
+          e.preventDefault();
+          const val = input.value.trim();
+          if (val && !tags.includes(val)) {
+            tags.push(val);
+            renderTags();
+          }
+          input.value = '';
+        }
+      });
+    });
+  </script>
+</th:block>
+
+
+</html>

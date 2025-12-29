@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(
+          titulo='Inicio',
+          linksAdicionales=~{:: #links-de-home},
+          scriptsAdicionales=~{:: #scripts-de-home},
+          contenido=~{:: #contenido-de-home}
+      )}">
+
+<th:block id="links-de-home">
+    <link rel="stylesheet" th:href="@{/css/pages-css/home.css}">
+</th:block>
+
+
+<div id="contenido-de-home">
+    <div th:if="${toastError}" id="popup-toast-error" style="position: fixed; top: 30px; left: 50%; transform: translateX(-50%); z-index: 9999; background: #ff4d4f; color: #fff; padding: 1rem 2rem; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.15); font-size: 1.15rem; display: flex; align-items: center; gap: 0.75rem;">
+        <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="#fff"/><line x1="12" y1="8" x2="12" y2="12" stroke="#fff"/><circle cx="12" cy="16" r="1" fill="#fff"/></svg>
+        <span th:text="${toastError}"></span>
+        <button onclick="document.getElementById('popup-toast-error').style.display='none'" style="background: none; border: none; color: #fff; font-size: 1.5rem; margin-left: 1rem; cursor: pointer;">&times;</button>
+    </div>
+    <div th:if="${toastSuccess}" id="popup-toast-success" style="position: fixed; top: 30px; left: 50%; transform: translateX(-50%); z-index: 9999; background: #4BB543; color: #fff; padding: 1rem 2rem; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.15); font-size: 1.15rem; display: flex; align-items: center; gap: 0.75rem;">
+        <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="#fff"/><polyline points="8 12 11 15 16 10" style="fill:none;stroke:#fff;stroke-width:2"/></svg>
+        <span th:text="${toastSuccess}"></span>
+        <button onclick="document.getElementById('popup-toast-success').style.display='none'" style="background: none; border: none; color: #fff; font-size: 1.5rem; margin-left: 1rem; cursor: pointer;">&times;</button>
+    </div>
+    <script th:inline="javascript">
+        /* Ocultar automáticamente el popup después de 4 segundos */
+        if (document.getElementById('popup-toast-error')) {
+            setTimeout(function() {
+                document.getElementById('popup-toast-error').style.display = 'none';
+            }, 4000);
+        }
+        if (document.getElementById('popup-toast-success')) {
+            setTimeout(function() {
+                document.getElementById('popup-toast-success').style.display = 'none';
+            }, 4000);
+        }
+    </script>
+
+    <section id="inicio" class="hero">
+        <div class="hero-inner container">
+            <h1 class="hero-title">
+                MetaMapa
+            </h1>
+            <p class="hero-subtitle">La ciudad te habla, nosotros te avisamos.</p>
+
+            <div class="about-card">
+                <h2 class="card-title">Quiénes somos</h2>
+                <p class="card-body">
+                    MetaMapa es una iniciativa colaborativa impulsada por organizaciones sociales y equipos tecnológicos comprometidos con la transparencia y el acceso a la información. A través de una plataforma abierta y de código libre, construimos un mapa vivo de la ciudad, donde cada evento o noticia puede ser localizado, comprendido y compartido.
+                </p>
+                <p class="card-body">
+                    En MetaMapa, la ciudad te habla y nosotros te ayudamos a escucharla y actuar sobre ella.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="reportar" class="collab">
+        <div class="container" style="max-width: 700px; margin: 0 auto; text-align: center;">
+            <h2>Reportá un suceso</h2>
+            <p>
+                En <strong>MetaMapa</strong> creemos en el poder de la colaboración ciudadana.
+                Reportar un suceso significa aportar información que ayuda a visibilizar
+                problemáticas sociales, ambientales o de seguridad.
+            </p>
+            <p>
+                Cada aporte puede marcar la diferencia: desde registrar un incendio o una inundación,
+                hasta compartir un hecho que afecte a tu comunidad.
+                Tu reporte contribuye a construir un mapa vivo de nuestra realidad.
+            </p>
+            <a href="http://localhost:8080/reportar" class="btn-primary" style="margin-top: 1rem;display: block;
+               margin: 1.5rem auto 0; text-align: center;">
+                Reportar suceso
+            </a>
+        </div>
+    </section>
+
+</div>
+
+
+<th:block id="scripts-de-home">
+    <script th:src="@{/js/home.js}" defer></script>
+</th:block>
+
+</html>

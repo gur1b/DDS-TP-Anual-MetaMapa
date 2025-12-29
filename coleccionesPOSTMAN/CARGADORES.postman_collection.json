@@ -1,0 +1,474 @@
+{
+	"info": {
+		"_postman_id": "d8767890-0692-4be6-b7ab-c29d08983dec",
+		"name": "CARGADORES",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42598532"
+	},
+	"item": [
+		{
+			"name": "CARGADOR DINAMICA",
+			"item": [
+				{
+					"name": "health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8083/cargadorDinamico/health",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"cargadorDinamico",
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cargar hecho",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"hash\": \"d6e9c0b2f1\",\r\n  \"titulo\": \"Incendio en depósito\",\r\n  \"descripcion\": \"Principio de incendio controlado por bomberos, sin heridos.\",\r\n  \"categoria\": \"Incendio\",\r\n  \"latitud\": -34.6167,\r\n  \"longitud\": -58.4455,\r\n  \"fechaSuceso\": \"2025-02-18\",\r\n  \"horaSuceso\": \"20:15\",\r\n  \"etiquetas\": [\"bomberos\", \"incendio\", \"sin-heridos\"],\r\n  \"contribuyente\": \"usuario@example.com\",\r\n  \"multimedia\": [\"https://example.com/foto-incendio-1.jpg\"]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8083/cargadorDinamico/agregarHecho",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"cargadorDinamico",
+								"agregarHecho"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener hechos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8083/cargadorDinamico/obtenerHechos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"cargadorDinamico",
+								"obtenerHechos"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "New Request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8083/cargadorDinamico/obtenerHechos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8083",
+									"path": [
+										"cargadorDinamico",
+										"obtenerHechos"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "X-Correlation-Id",
+									"value": "f0637c47-5ea2-4d0e-ab7a-ffc9a7dbdd31"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 15 Dec 2025 01:15:26 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"hash\": \"d6e9c0b2f1\",\n        \"titulo\": \"Incendio en depósito\",\n        \"descripcion\": \"Principio de incendio controlado por bomberos, sin heridos.\",\n        \"categoria\": \"Incendio\",\n        \"latitud\": \"-34.6167\",\n        \"longitud\": \"-58.4455\",\n        \"fechaSuceso\": \"2025-02-18\",\n        \"horaSuceso\": \"20:15\",\n        \"fechaCarga\": \"2025-12-14\",\n        \"linkFuente\": \"Cargado por la web\",\n        \"etiquetas\": [\n            \"bomberos\",\n            \"incendio\",\n            \"sin-heridos\"\n        ],\n        \"contribuyente\": \"usuario@example.com\",\n        \"multimedia\": [\n            \"https://example.com/foto-incendio-1.jpg\"\n        ],\n        \"tipoFuente\": \"DINAMICA\",\n        \"fueExtraido\": true,\n        \"idFuente\": 1\n    }\n]"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "CARGADOR ESTATICA",
+			"item": [
+				{
+					"name": "health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8085/cargadorEstatico/health",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"cargadorEstatico",
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Hechos de fuentes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8085/cargadorEstatico/obtenerHechos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"cargadorEstatico",
+								"obtenerHechos"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "health Copy",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8085/cargadorEstatico/obtenerHechos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8085",
+									"path": [
+										"cargadorEstatico",
+										"obtenerHechos"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "X-Correlation-Id",
+									"value": "766c27ce-ad47-45ff-ac38-1de40c8ced86"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 15 Dec 2025 01:23:25 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"titulo\": \"Robo a peatón en avenida céntrica\",\n        \"descripcion\": \"Un individuo sustrajo pertenencias tras intimidar a la víctima\",\n        \"categoria\": \"Robo\",\n        \"latitud\": \"-31.4201\",\n        \"longitud\": \"-64.1888\",\n        \"fechaSuceso\": \"14-06-25\",\n        \"horaSuceso\": \"21:30\",\n        \"etiquetas\": [\n            \"robo\",\n            \"calle\",\n            \"noche\"\n        ],\n        \"contribuyente\": \"Juan Rodríguez\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"ESTATICA\",\n        \"fueExtraido\": null,\n        \"idFuente\": 4,\n        \"linkFuente\": \"alertasurbanas.csv\"\n    },\n    {\n        \"titulo\": \"Accidente entre auto y bicicleta\",\n        \"descripcion\": \"Colisión leve en cruce semaforizado\",\n        \"categoria\": \"Accidente\",\n        \"latitud\": \"-32.9442\",\n        \"longitud\": \"-60.6505\",\n        \"fechaSuceso\": \"22-05-25\",\n        \"horaSuceso\": \"08:10\",\n        \"etiquetas\": [\n            \"transito\",\n            \"bicicleta\",\n            \"mañana\"\n        ],\n        \"contribuyente\": \"Carlos Medina\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"ESTATICA\",\n        \"fueExtraido\": null,\n        \"idFuente\": 4,\n        \"linkFuente\": \"alertasurbanas.csv\"\n    },\n    {\n        \"titulo\": \"Pelea entre vecinos por ruidos molestos\",\n        \"descripcion\": \"Discusión nocturna que derivó en agresiones verbales\",\n        \"categoria\": \"Violencia\",\n        \"latitud\": \"-34.9214\",\n        \"longitud\": \"-57.9544\",\n        \"fechaSuceso\": \"03-07-25\",\n        \"horaSuceso\": \"23:15\",\n        \"etiquetas\": [\n            \"vecinos\",\n            \"noche\",\n            \"violencia\"\n        ],\n        \"contribuyente\": \"María López\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"ESTATICA\",\n        \"fueExtraido\": null,\n        \"idFuente\": 4,\n        \"linkFuente\": \"alertasurbanas.csv\"\n    },\n    {\n        \"titulo\": \"Estafa por venta falsa online\",\n        \"descripcion\": \"El comprador transfirió dinero y no recibió el producto\",\n        \"categoria\": \"Estafa\",\n        \"latitud\": \"-34.6145\",\n        \"longitud\": \"-68.3301\",\n        \"fechaSuceso\": \"18-09-25\",\n        \"horaSuceso\": \"19:40\",\n        \"etiquetas\": [\n            \"online\",\n            \"fraude\",\n            \"venta\"\n        ],\n        \"contribuyente\": \"Luciana Fernández\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"ESTATICA\",\n        \"fueExtraido\": null,\n        \"idFuente\": 4,\n        \"linkFuente\": \"alertasurbanas.csv\"\n    },\n    {\n        \"titulo\": \"Robo de moto estacionada\",\n        \"descripcion\": \"Motocicleta sustraída de la vía pública sin testigos\",\n        \"categoria\": \"Robo\",\n        \"latitud\": \"-38.9516\",\n        \"longitud\": \"-68.0591\",\n        \"fechaSuceso\": \"01-06-25\",\n        \"horaSuceso\": \"02:20\",\n        \"etiquetas\": [\n            \"moto\",\n            \"robo\",\n            \"madrugada\"\n        ],\n        \"contribuyente\": \"Daniel Pérez\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"ESTATICA\",\n        \"fueExtraido\": null,\n        \"idFuente\": 4,\n        \"linkFuente\": \"alertasurbanas.csv\"\n    },\n    {\n        \"titulo\": \"Accidente por calzada mojada\",\n        \"descripcion\": \"Un vehículo despistó debido a lluvias intensas\",\n        \"categoria\": \"Accidente\",\n        \"latitud\": \"-27.3621\",\n        \"longitud\": \"-55.9006\",\n        \"fechaSuceso\": \"19-04-25\",\n        \"horaSuceso\": \"06:50\",\n        \"etiquetas\": [\n            \"lluvia\",\n            \"transito\",\n            \"mañana\"\n        ],\n        \"contribuyente\": \"Roberto Sosa\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"ESTATICA\",\n        \"fueExtraido\": null,\n        \"idFuente\": 4,\n        \"linkFuente\": \"alertasurbanas.csv\"\n    },\n    {\n        \"titulo\": \"Pelea en bar durante la madrugada\",\n        \"descripcion\": \"Clientes protagonizaron una pelea tras una discusión\",\n        \"categoria\": \"Violencia\",\n        \"latitud\": \"-38.7167\",\n        \"longitud\": \"-62.2651\",\n        \"fechaSuceso\": \"09-08-25\",\n        \"horaSuceso\": \"03:05\",\n        \"etiquetas\": [\n            \"bar\",\n            \"noche\",\n            \"violencia\"\n        ],\n        \"contribuyente\": \"Juan Rodríguez\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"ESTATICA\",\n        \"fueExtraido\": null,\n        \"idFuente\": 4,\n        \"linkFuente\": \"alertasurbanas.csv\"\n    },\n    {\n        \"titulo\": \"Robo de bolso en transporte público\",\n        \"descripcion\": \"La víctima sufrió el robo al descender del colectivo\",\n        \"categoria\": \"Robo\",\n        \"latitud\": \"-26.8241\",\n        \"longitud\": \"-65.2226\",\n        \"fechaSuceso\": \"27-07-25\",\n        \"horaSuceso\": \"18:45\",\n        \"etiquetas\": [\n            \"colectivo\",\n            \"robo\",\n            \"tarde\"\n        ],\n        \"contribuyente\": \"María López\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"ESTATICA\",\n        \"fueExtraido\": null,\n        \"idFuente\": 4,\n        \"linkFuente\": \"alertasurbanas.csv\"\n    },\n    {\n        \"titulo\": \"Amenazas entre comerciantes\",\n        \"descripcion\": \"Conflicto verbal con amenazas en zona comercial\",\n        \"categoria\": \"Violencia\",\n        \"latitud\": \"-31.5375\",\n        \"longitud\": \"-68.5364\",\n        \"fechaSuceso\": \"21-08-25\",\n        \"horaSuceso\": \"17:10\",\n        \"etiquetas\": [\n            \"comercio\",\n            \"amenazas\",\n            \"violencia\"\n        ],\n        \"contribuyente\": \"Carlos Medina\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"ESTATICA\",\n        \"fueExtraido\": null,\n        \"idFuente\": 4,\n        \"linkFuente\": \"alertasurbanas.csv\"\n    },\n    {\n        \"titulo\": \"Estafa por falso soporte técnico\",\n        \"descripcion\": \"La víctima entregó datos personales tras una llamada\",\n        \"categoria\": \"Estafa\",\n        \"latitud\": \"-24.1858\",\n        \"longitud\": \"-65.2995\",\n        \"fechaSuceso\": \"02-10-25\",\n        \"horaSuceso\": \"16:35\",\n        \"etiquetas\": [\n            \"telefono\",\n            \"engaño\",\n            \"fraude\"\n        ],\n        \"contribuyente\": \"Luciana Fernández\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"ESTATICA\",\n        \"fueExtraido\": null,\n        \"idFuente\": 4,\n        \"linkFuente\": \"alertasurbanas.csv\"\n    },\n    {\n        \"titulo\": \"Accidente múltiple en ruta\",\n        \"descripcion\": \"Dos autos y una camioneta involucrados en choque en cadena\",\n        \"categoria\": \"Accidente\",\n        \"latitud\": \"-40.8135\",\n        \"longitud\": \"-62.9967\",\n        \"fechaSuceso\": \"30-05-25\",\n        \"horaSuceso\": \"07:40\",\n        \"etiquetas\": [\n            \"ruta\",\n            \"transito\",\n            \"mañana\"\n        ],\n        \"contribuyente\": \"Roberto Sosa\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"ESTATICA\",\n        \"fueExtraido\": null,\n        \"idFuente\": 4,\n        \"linkFuente\": \"alertasurbanas.csv\"\n    },\n    {\n        \"titulo\": \"Robo de bicicleta en plaza\",\n        \"descripcion\": \"La bicicleta fue sustraída mientras el dueño conversaba\",\n        \"categoria\": \"Robo\",\n        \"latitud\": \"-34.1708\",\n        \"longitud\": \"-58.959\",\n        \"fechaSuceso\": \"11-06-25\",\n        \"horaSuceso\": \"19:05\",\n        \"etiquetas\": [\n            \"plaza\",\n            \"bicicleta\",\n            \"robo\"\n        ],\n        \"contribuyente\": \"Juan Rodríguez\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"ESTATICA\",\n        \"fueExtraido\": null,\n        \"idFuente\": 4,\n        \"linkFuente\": \"alertasurbanas.csv\"\n    },\n    {\n        \"titulo\": \"Discusión violenta en vía pública\",\n        \"descripcion\": \"Pelea entre dos personas por un conflicto previo\",\n        \"categoria\": \"Violencia\",\n        \"latitud\": \"-32.4075\",\n        \"longitud\": \"-63.2436\",\n        \"fechaSuceso\": \"14-08-25\",\n        \"horaSuceso\": \"20:55\",\n        \"etiquetas\": [\n            \"calle\",\n            \"violencia\",\n            \"noche\"\n        ],\n        \"contribuyente\": \"María López\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"ESTATICA\",\n        \"fueExtraido\": null,\n        \"idFuente\": 4,\n        \"linkFuente\": \"alertasurbanas.csv\"\n    },\n    {\n        \"titulo\": \"Estafa por alquiler inexistente\",\n        \"descripcion\": \"Seña abonada por una vivienda que no existía\",\n        \"categoria\": \"Estafa\",\n        \"latitud\": \"-45.8641\",\n        \"longitud\": \"-67.4966\",\n        \"fechaSuceso\": \"29-09-25\",\n        \"horaSuceso\": \"11:20\",\n        \"etiquetas\": [\n            \"alquiler\",\n            \"fraude\",\n            \"online\"\n        ],\n        \"contribuyente\": \"Daniel Pérez\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"ESTATICA\",\n        \"fueExtraido\": null,\n        \"idFuente\": 4,\n        \"linkFuente\": \"alertasurbanas.csv\"\n    },\n    {\n        \"titulo\": \"Accidente de moto en esquina barrial\",\n        \"descripcion\": \"El conductor perdió el control al doblar\",\n        \"categoria\": \"Accidente\",\n        \"latitud\": \"-51.623\",\n        \"longitud\": \"-69.2168\",\n        \"fechaSuceso\": \"07-04-25\",\n        \"horaSuceso\": \"09:00\",\n        \"etiquetas\": [\n            \"moto\",\n            \"transito\",\n            \"mañana\"\n        ],\n        \"contribuyente\": \"Roberto Sosa\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"ESTATICA\",\n        \"fueExtraido\": null,\n        \"idFuente\": 4,\n        \"linkFuente\": \"alertasurbanas.csv\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Obtener las fuentes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8085/cargadorEstatico/obtenerFuentes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"cargadorEstatico",
+								"obtenerFuentes"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "New Request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8085/cargadorEstatico/obtenerFuentes",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8085",
+									"path": [
+										"cargadorEstatico",
+										"obtenerFuentes"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "X-Correlation-Id",
+									"value": "5ca8a232-181b-4041-af4c-b8a76f472872"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 15 Dec 2025 01:24:47 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 1,\n        \"nombre\": \"Dataset accidentes Córdoba 2024\",\n        \"link\": \"accidentes_cba_2024.csv\",\n        \"codigoFuente\": \"ESTATICA\"\n    },\n    {\n        \"id\": 4,\n        \"nombre\": \"Comunidad ARG\",\n        \"link\": \"alertasurbanas.csv\",\n        \"codigoFuente\": \"CSV\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Agregar fuente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 1,\r\n  \"nombre\": \"Alertas urbanas\",\r\n  \"link\": \"alertas_urbanas.csv\",\r\n  \"tipoFuente\": \"ESTATICA\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8085/cargadorEstatico/agregarFuente",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"cargadorEstatico",
+								"agregarFuente"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar fuente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8085/cargadorEstatico/eliminar/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"cargadorEstatico",
+								"eliminar",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CARGADOR PROXY",
+			"item": [
+				{
+					"name": "Health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8084/cargadorProxy/health",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"cargadorProxy",
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener hechos",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": [
+						{
+							"name": "New Request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8084/cargadorProxy/obtenerHechos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8084",
+									"path": [
+										"cargadorProxy",
+										"obtenerHechos"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "20692"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"titulo\": \"Choque entre auto y moto en avenida\",\n        \"descripcion\": \"Accidente vial con un motociclista herido.\",\n        \"categoria\": \"Accidente\",\n        \"latitud\": \"-31.4201\",\n        \"longitud\": \"-64.1888\",\n        \"fechaSuceso\": \"2025-06-05\",\n        \"horaSuceso\": \"08:15\",\n        \"etiquetas\": [\n            \"transito\",\n            \"heridos\"\n        ],\n        \"contribuyente\": \"Roberto Sosa\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 2,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/SeguridadCiudadana\"\n    },\n    {\n        \"titulo\": \"Pelea violenta a la salida de un boliche\",\n        \"descripcion\": \"Dos grupos se enfrentaron durante la madrugada.\",\n        \"categoria\": \"Violencia\",\n        \"latitud\": \"-32.9442\",\n        \"longitud\": \"-60.6505\",\n        \"fechaSuceso\": \"2025-07-28\",\n        \"horaSuceso\": \"03:40\",\n        \"etiquetas\": [\n            \"noche\",\n            \"boliche\"\n        ],\n        \"contribuyente\": \"Juan Rodríguez\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 2,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/SeguridadCiudadana\"\n    },\n    {\n        \"titulo\": \"Robo con empujones en comercio\",\n        \"descripcion\": \"El ladrón empujó a la víctima durante el robo.\",\n        \"categoria\": \"Violencia\",\n        \"latitud\": \"-34.6145\",\n        \"longitud\": \"-68.3301\",\n        \"fechaSuceso\": \"2025-08-12\",\n        \"horaSuceso\": \"19:25\",\n        \"etiquetas\": [\n            \"comercio\",\n            \"robo\"\n        ],\n        \"contribuyente\": \"María López\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 2,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/SeguridadCiudadana\"\n    },\n    {\n        \"titulo\": \"Accidente entre colectivo y auto\",\n        \"descripcion\": \"Colisión en hora pico sin heridos graves.\",\n        \"categoria\": \"Accidente\",\n        \"latitud\": \"-38.9516\",\n        \"longitud\": \"-68.0591\",\n        \"fechaSuceso\": \"2025-05-20\",\n        \"horaSuceso\": \"18:30\",\n        \"etiquetas\": [\n            \"transito\",\n            \"tarde\"\n        ],\n        \"contribuyente\": \"Carlos Medina\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 2,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/SeguridadCiudadana\"\n    },\n    {\n        \"titulo\": \"Robo de moto estacionada\",\n        \"descripcion\": \"La moto fue sustraída sin violencia.\",\n        \"categoria\": \"Robo\",\n        \"latitud\": \"-26.8241\",\n        \"longitud\": \"-65.2226\",\n        \"fechaSuceso\": \"2025-06-18\",\n        \"horaSuceso\": \"02:10\",\n        \"etiquetas\": [\n            \"moto\",\n            \"noche\"\n        ],\n        \"contribuyente\": \"Daniel Pérez\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 2,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/SeguridadCiudadana\"\n    },\n    {\n        \"titulo\": \"Pelea entre conductores\",\n        \"descripcion\": \"Discusión de tránsito terminó en agresiones.\",\n        \"categoria\": \"Violencia\",\n        \"latitud\": \"-34.9214\",\n        \"longitud\": \"-57.9544\",\n        \"fechaSuceso\": \"2025-07-01\",\n        \"horaSuceso\": \"17:30\",\n        \"etiquetas\": [\n            \"transito\",\n            \"violencia\"\n        ],\n        \"contribuyente\": \"Juan Rodríguez\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 2,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/SeguridadCiudadana\"\n    },\n    {\n        \"titulo\": \"Accidente de moto en cruce\",\n        \"descripcion\": \"El motociclista cayó al intentar esquivar un auto.\",\n        \"categoria\": \"Accidente\",\n        \"latitud\": \"-25.2637\",\n        \"longitud\": \"-57.5759\",\n        \"fechaSuceso\": \"2025-04-09\",\n        \"horaSuceso\": \"09:10\",\n        \"etiquetas\": [\n            \"moto\",\n            \"mañana\"\n        ],\n        \"contribuyente\": \"Roberto Sosa\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 2,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/SeguridadCiudadana\"\n    },\n    {\n        \"titulo\": \"Robo a peatón con amenazas\",\n        \"descripcion\": \"El delincuente intimidó verbalmente a la víctima.\",\n        \"categoria\": \"Robo\",\n        \"latitud\": \"-27.4514\",\n        \"longitud\": \"-58.9867\",\n        \"fechaSuceso\": \"2025-08-03\",\n        \"horaSuceso\": \"22:15\",\n        \"etiquetas\": [\n            \"calle\",\n            \"amenaza\"\n        ],\n        \"contribuyente\": \"María López\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 2,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/SeguridadCiudadana\"\n    },\n    {\n        \"titulo\": \"Accidente múltiple en avenida\",\n        \"descripcion\": \"Tres vehículos involucrados en cadena.\",\n        \"categoria\": \"Accidente\",\n        \"latitud\": \"-24.7859\",\n        \"longitud\": \"-65.4117\",\n        \"fechaSuceso\": \"2025-05-29\",\n        \"horaSuceso\": \"07:55\",\n        \"etiquetas\": [\n            \"transito\",\n            \"mañana\"\n        ],\n        \"contribuyente\": \"Carlos Medina\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 2,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/SeguridadCiudadana\"\n    },\n    {\n        \"titulo\": \"Pelea en bar durante la noche\",\n        \"descripcion\": \"Dos personas se golpearon tras una discusión.\",\n        \"categoria\": \"Violencia\",\n        \"latitud\": \"-38.7167\",\n        \"longitud\": \"-62.2651\",\n        \"fechaSuceso\": \"2025-09-18\",\n        \"horaSuceso\": \"23:10\",\n        \"etiquetas\": [\n            \"bar\",\n            \"noche\"\n        ],\n        \"contribuyente\": \"Luciana Fernández\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 2,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/SeguridadCiudadana\"\n    },\n    {\n        \"titulo\": \"Robo de bicicleta con forcejeo\",\n        \"descripcion\": \"La víctima intentó resistirse al robo.\",\n        \"categoria\": \"Violencia\",\n        \"latitud\": \"-32.8895\",\n        \"longitud\": \"-68.8458\",\n        \"fechaSuceso\": \"2025-06-26\",\n        \"horaSuceso\": \"18:40\",\n        \"etiquetas\": [\n            \"bicicleta\",\n            \"calle\"\n        ],\n        \"contribuyente\": \"Juan Rodríguez\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 2,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/SeguridadCiudadana\"\n    },\n    {\n        \"titulo\": \"Accidente por semáforo en rojo\",\n        \"descripcion\": \"Un vehículo cruzó en rojo y provocó el choque.\",\n        \"categoria\": \"Accidente\",\n        \"latitud\": \"-31.5375\",\n        \"longitud\": \"-68.5364\",\n        \"fechaSuceso\": \"2025-07-14\",\n        \"horaSuceso\": \"08:50\",\n        \"etiquetas\": [\n            \"semaforo\",\n            \"transito\"\n        ],\n        \"contribuyente\": \"Roberto Sosa\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 2,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/SeguridadCiudadana\"\n    },\n    {\n        \"titulo\": \"Robo de auto sin violencia\",\n        \"descripcion\": \"El vehículo fue sustraído mientras estaba estacionado.\",\n        \"categoria\": \"Robo\",\n        \"latitud\": \"-43.3002\",\n        \"longitud\": \"-65.1023\",\n        \"fechaSuceso\": \"2025-05-03\",\n        \"horaSuceso\": \"01:30\",\n        \"etiquetas\": [\n            \"auto\",\n            \"noche\"\n        ],\n        \"contribuyente\": \"Daniel Pérez\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 2,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/SeguridadCiudadana\"\n    },\n    {\n        \"titulo\": \"Pelea familiar en la vía pública\",\n        \"descripcion\": \"Discusión que requirió intervención policial.\",\n        \"categoria\": \"Violencia\",\n        \"latitud\": \"-45.8641\",\n        \"longitud\": \"-67.4966\",\n        \"fechaSuceso\": \"2025-08-27\",\n        \"horaSuceso\": \"20:30\",\n        \"etiquetas\": [\n            \"familia\",\n            \"calle\"\n        ],\n        \"contribuyente\": \"María López\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 2,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/SeguridadCiudadana\"\n    },\n    {\n        \"titulo\": \"Accidente entre camioneta y auto\",\n        \"descripcion\": \"Impacto lateral sin heridos de gravedad.\",\n        \"categoria\": \"Accidente\",\n        \"latitud\": \"-40.8135\",\n        \"longitud\": \"-62.9967\",\n        \"fechaSuceso\": \"2025-06-16\",\n        \"horaSuceso\": \"15:20\",\n        \"etiquetas\": [\n            \"transito\",\n            \"tarde\"\n        ],\n        \"contribuyente\": \"Carlos Medina\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 2,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/SeguridadCiudadana\"\n    },\n    {\n        \"titulo\": \"Robo a comercio durante la madrugada\",\n        \"descripcion\": \"Forzaron la persiana del local.\",\n        \"categoria\": \"Robo\",\n        \"latitud\": \"-51.6230\",\n        \"longitud\": \"-69.2168\",\n        \"fechaSuceso\": \"2025-07-07\",\n        \"horaSuceso\": \"02:45\",\n        \"etiquetas\": [\n            \"comercio\",\n            \"madrugada\"\n        ],\n        \"contribuyente\": \"Luciana Fernández\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 2,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/SeguridadCiudadana\"\n    },\n    {\n        \"titulo\": \"Pelea entre jóvenes en esquina\",\n        \"descripcion\": \"Vecinos alertaron por ruidos y gritos.\",\n        \"categoria\": \"Violencia\",\n        \"latitud\": \"-34.1708\",\n        \"longitud\": \"-58.9590\",\n        \"fechaSuceso\": \"2025-09-01\",\n        \"horaSuceso\": \"23:35\",\n        \"etiquetas\": [\n            \"esquina\",\n            \"noche\"\n        ],\n        \"contribuyente\": \"Juan Rodríguez\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 2,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/SeguridadCiudadana\"\n    },\n    {\n        \"titulo\": \"Accidente por lluvia intensa\",\n        \"descripcion\": \"Un auto despistó por el pavimento mojado.\",\n        \"categoria\": \"Accidente\",\n        \"latitud\": \"-27.3621\",\n        \"longitud\": \"-55.9006\",\n        \"fechaSuceso\": \"2025-04-21\",\n        \"horaSuceso\": \"06:55\",\n        \"etiquetas\": [\n            \"lluvia\",\n            \"mañana\"\n        ],\n        \"contribuyente\": \"Roberto Sosa\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 2,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/SeguridadCiudadana\"\n    },\n    {\n        \"titulo\": \"Robo de bolso en parada de taxi\",\n        \"descripcion\": \"El delincuente huyó corriendo.\",\n        \"categoria\": \"Robo\",\n        \"latitud\": \"-32.4075\",\n        \"longitud\": \"-63.2436\",\n        \"fechaSuceso\": \"2025-08-19\",\n        \"horaSuceso\": \"21:10\",\n        \"etiquetas\": [\n            \"taxi\",\n            \"noche\"\n        ],\n        \"contribuyente\": \"María López\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 2,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/SeguridadCiudadana\"\n    },\n    {\n        \"titulo\": \"Pelea entre clientes en supermercado\",\n        \"descripcion\": \"Discusión por una fila terminó en golpes.\",\n        \"categoria\": \"Violencia\",\n        \"latitud\": \"-33.2950\",\n        \"longitud\": \"-66.3356\",\n        \"fechaSuceso\": \"2025-07-23\",\n        \"horaSuceso\": \"19:00\",\n        \"etiquetas\": [\n            \"supermercado\",\n            \"tarde\"\n        ],\n        \"contribuyente\": \"Carlos Medina\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 2,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/SeguridadCiudadana\"\n    },\n    {\n        \"titulo\": \"Robo de celular en parada de colectivo\",\n        \"descripcion\": \"Un delincuente sustrajo un celular mientras la víctima esperaba el colectivo.\",\n        \"categoria\": \"Robo\",\n        \"latitud\": \"-34.9214\",\n        \"longitud\": \"-57.9544\",\n        \"fechaSuceso\": \"2025-08-12\",\n        \"horaSuceso\": \"19:20\",\n        \"etiquetas\": [\n            \"calle\",\n            \"celular\",\n            \"noche\"\n        ],\n        \"contribuyente\": \"María López\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 2,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/SeguridadCiudadana\"\n    },\n    {\n        \"titulo\": \"Robo de celular en parada de colectivo\",\n        \"descripcion\": \"Un delincuente sustrajo un celular mientras la víctima esperaba el colectivo.\",\n        \"categoria\": \"Robo\",\n        \"latitud\": \"-34.9214\",\n        \"longitud\": \"-57.9544\",\n        \"fechaSuceso\": \"2025-08-12\",\n        \"horaSuceso\": \"19:20\",\n        \"etiquetas\": [\n            \"calle\",\n            \"celular\",\n            \"noche\"\n        ],\n        \"contribuyente\": \"María López\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 3,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/ReportesVecinales\"\n    },\n    {\n        \"titulo\": \"Falsa venta de entradas por Instagram\",\n        \"descripcion\": \"Publicación ofrecía entradas para un recital que nunca fueron entregadas.\",\n        \"categoria\": \"Estafa\",\n        \"latitud\": \"-31.4201\",\n        \"longitud\": \"-64.1888\",\n        \"fechaSuceso\": \"2025-09-10\",\n        \"horaSuceso\": \"21:30\",\n        \"etiquetas\": [\n            \"online\",\n            \"redes\",\n            \"fraude\"\n        ],\n        \"contribuyente\": \"yahoo@gmail.com\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 3,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/ReportesVecinales\"\n    },\n    {\n        \"titulo\": \"Arrebato de mochila en la vía pública\",\n        \"descripcion\": \"Una persona fue sorprendida por detrás y le robaron la mochila.\",\n        \"categoria\": \"Robo\",\n        \"latitud\": \"-32.9442\",\n        \"longitud\": \"-60.6505\",\n        \"fechaSuceso\": \"2025-07-03\",\n        \"horaSuceso\": \"18:45\",\n        \"etiquetas\": [\n            \"calle\",\n            \"robo\",\n            \"mochila\"\n        ],\n        \"contribuyente\": \"Luciana Fernández\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 3,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/ReportesVecinales\"\n    },\n    {\n        \"titulo\": \"Robo de bicicleta en la calle\",\n        \"descripcion\": \"La bicicleta estaba apoyada y fue sustraída rápidamente.\",\n        \"categoria\": \"Robo\",\n        \"latitud\": \"-32.8895\",\n        \"longitud\": \"-68.8458\",\n        \"fechaSuceso\": \"2025-04-18\",\n        \"horaSuceso\": \"17:55\",\n        \"etiquetas\": [\n            \"calle\",\n            \"bicicleta\"\n        ],\n        \"contribuyente\": \"Juan Rodríguez\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 3,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/ReportesVecinales\"\n    },\n    {\n        \"titulo\": \"Estafa por alquiler inexistente\",\n        \"descripcion\": \"Se transfirió una seña por un departamento que no existía.\",\n        \"categoria\": \"Estafa\",\n        \"latitud\": \"-34.6145\",\n        \"longitud\": \"-68.3301\",\n        \"fechaSuceso\": \"2025-10-12\",\n        \"horaSuceso\": \"11:30\",\n        \"etiquetas\": [\n            \"alquiler\",\n            \"online\",\n            \"fraude\"\n        ],\n        \"contribuyente\": \"Luciana Fernández\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 3,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/ReportesVecinales\"\n    },\n    {\n        \"titulo\": \"Pelea entre vecinos por estacionamiento\",\n        \"descripcion\": \"Discusión que terminó con empujones y golpes leves.\",\n        \"categoria\": \"Violencia\",\n        \"latitud\": \"-26.8241\",\n        \"longitud\": \"-65.2226\",\n        \"fechaSuceso\": \"2025-06-20\",\n        \"horaSuceso\": \"20:10\",\n        \"etiquetas\": [\n            \"vecinos\",\n            \"noche\"\n        ],\n        \"contribuyente\": \"Carlos Medina\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 3,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/ReportesVecinales\"\n    },\n    {\n        \"titulo\": \"Accidente leve entre dos autos\",\n        \"descripcion\": \"Choque sin heridos en una esquina barrial.\",\n        \"categoria\": \"Accidente\",\n        \"latitud\": \"-38.9516\",\n        \"longitud\": \"-68.0591\",\n        \"fechaSuceso\": \"2025-05-08\",\n        \"horaSuceso\": \"09:05\",\n        \"etiquetas\": [\n            \"transito\",\n            \"mañana\"\n        ],\n        \"contribuyente\": \"María López\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 3,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/ReportesVecinales\"\n    },\n    {\n        \"titulo\": \"Robo de billetera en comercio\",\n        \"descripcion\": \"La víctima notó la sustracción al salir del local.\",\n        \"categoria\": \"Robo\",\n        \"latitud\": \"-27.4514\",\n        \"longitud\": \"-58.9867\",\n        \"fechaSuceso\": \"2025-06-22\",\n        \"horaSuceso\": \"14:40\",\n        \"etiquetas\": [\n            \"comercio\",\n            \"billetera\"\n        ],\n        \"contribuyente\": \"Juan Rodríguez\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 3,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/ReportesVecinales\"\n    },\n    {\n        \"titulo\": \"Estafa por marketplace falso\",\n        \"descripcion\": \"El sitio imitaba una tienda real para robar datos.\",\n        \"categoria\": \"Estafa\",\n        \"latitud\": \"-24.7859\",\n        \"longitud\": \"-65.4117\",\n        \"fechaSuceso\": \"2025-11-01\",\n        \"horaSuceso\": \"23:15\",\n        \"etiquetas\": [\n            \"online\",\n            \"tarjeta\"\n        ],\n        \"contribuyente\": \"daniel.perez@gmail.com\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 3,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/ReportesVecinales\"\n    },\n    {\n        \"titulo\": \"Pelea en plaza durante la noche\",\n        \"descripcion\": \"Dos grupos se enfrentaron verbalmente y a golpes.\",\n        \"categoria\": \"Violencia\",\n        \"latitud\": \"-38.7167\",\n        \"longitud\": \"-62.2651\",\n        \"fechaSuceso\": \"2025-09-05\",\n        \"horaSuceso\": \"22:05\",\n        \"etiquetas\": [\n            \"plaza\",\n            \"noche\"\n        ],\n        \"contribuyente\": \"Roberto Sosa\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 3,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/ReportesVecinales\"\n    },\n    {\n        \"titulo\": \"Robo de mochila en colectivo\",\n        \"descripcion\": \"La víctima sufrió el robo al descender del transporte.\",\n        \"categoria\": \"Robo\",\n        \"latitud\": \"-43.3002\",\n        \"longitud\": \"-65.1023\",\n        \"fechaSuceso\": \"2025-07-18\",\n        \"horaSuceso\": \"18:30\",\n        \"etiquetas\": [\n            \"colectivo\",\n            \"robo\"\n        ],\n        \"contribuyente\": \"yahoo@gmail.com\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 3,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/ReportesVecinales\"\n    },\n    {\n        \"titulo\": \"Discusión violenta entre comerciantes\",\n        \"descripcion\": \"Una pelea verbal escaló a agresiones físicas.\",\n        \"categoria\": \"Violencia\",\n        \"latitud\": \"-31.5375\",\n        \"longitud\": \"-68.5364\",\n        \"fechaSuceso\": \"2025-08-25\",\n        \"horaSuceso\": \"16:50\",\n        \"etiquetas\": [\n            \"comercio\",\n            \"violencia\"\n        ],\n        \"contribuyente\": \"Carlos Medina\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 3,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/ReportesVecinales\"\n    },\n    {\n        \"titulo\": \"Accidente de moto en calle residencial\",\n        \"descripcion\": \"El motociclista perdió el control y cayó al asfalto.\",\n        \"categoria\": \"Accidente\",\n        \"latitud\": \"-27.3621\",\n        \"longitud\": \"-55.9006\",\n        \"fechaSuceso\": \"2025-04-02\",\n        \"horaSuceso\": \"07:40\",\n        \"etiquetas\": [\n            \"moto\",\n            \"mañana\"\n        ],\n        \"contribuyente\": \"María López\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 3,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/ReportesVecinales\"\n    },\n    {\n        \"titulo\": \"Estafa por falso sorteo\",\n        \"descripcion\": \"Se pedían datos personales para participar de un premio inexistente.\",\n        \"categoria\": \"Estafa\",\n        \"latitud\": \"-45.8641\",\n        \"longitud\": \"-67.4966\",\n        \"fechaSuceso\": \"2025-10-28\",\n        \"horaSuceso\": \"20:45\",\n        \"etiquetas\": [\n            \"sorteo\",\n            \"online\"\n        ],\n        \"contribuyente\": \"luciana.fernandez@yahoo.com\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 3,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/ReportesVecinales\"\n    },\n    {\n        \"titulo\": \"Robo de cartera en vereda\",\n        \"descripcion\": \"Un arrebatador escapó corriendo tras el robo.\",\n        \"categoria\": \"Robo\",\n        \"latitud\": \"-32.4075\",\n        \"longitud\": \"-63.2436\",\n        \"fechaSuceso\": \"2025-06-30\",\n        \"horaSuceso\": \"18:05\",\n        \"etiquetas\": [\n            \"vereda\",\n            \"robo\"\n        ],\n        \"contribuyente\": \"Juan Rodríguez\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 3,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/ReportesVecinales\"\n    },\n    {\n        \"titulo\": \"Accidente entre bicicleta y peatón\",\n        \"descripcion\": \"Colisión leve en senda peatonal.\",\n        \"categoria\": \"Accidente\",\n        \"latitud\": \"-34.1708\",\n        \"longitud\": \"-58.9590\",\n        \"fechaSuceso\": \"2025-05-27\",\n        \"horaSuceso\": \"12:20\",\n        \"etiquetas\": [\n            \"bicicleta\",\n            \"peaton\"\n        ],\n        \"contribuyente\": \"Roberto Sosa\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 3,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/ReportesVecinales\"\n    },\n    {\n        \"titulo\": \"Amenazas entre vecinos\",\n        \"descripcion\": \"Discusión por ruidos molestos con amenazas verbales.\",\n        \"categoria\": \"Violencia\",\n        \"latitud\": \"-40.8135\",\n        \"longitud\": \"-62.9967\",\n        \"fechaSuceso\": \"2025-09-02\",\n        \"horaSuceso\": \"23:00\",\n        \"etiquetas\": [\n            \"vecinos\",\n            \"noche\"\n        ],\n        \"contribuyente\": \"María López\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 3,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/ReportesVecinales\"\n    },\n    {\n        \"titulo\": \"Estafa por compra de electrodoméstico\",\n        \"descripcion\": \"El producto nunca fue entregado tras el pago.\",\n        \"categoria\": \"Estafa\",\n        \"latitud\": \"-38.9510\",\n        \"longitud\": \"-57.9560\",\n        \"fechaSuceso\": \"2025-11-15\",\n        \"horaSuceso\": \"19:50\",\n        \"etiquetas\": [\n            \"online\",\n            \"venta\"\n        ],\n        \"contribuyente\": \"daniel.perez@gmail.com\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 3,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/ReportesVecinales\"\n    },\n    {\n        \"titulo\": \"Robo de casco de moto\",\n        \"descripcion\": \"El casco fue sustraído de una moto estacionada.\",\n        \"categoria\": \"Robo\",\n        \"latitud\": \"-51.6230\",\n        \"longitud\": \"-69.2168\",\n        \"fechaSuceso\": \"2025-07-22\",\n        \"horaSuceso\": \"17:15\",\n        \"etiquetas\": [\n            \"moto\",\n            \"robo\"\n        ],\n        \"contribuyente\": \"Juan Rodríguez\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 3,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/ReportesVecinales\"\n    },\n    {\n        \"titulo\": \"Discusión violenta en vía pública\",\n        \"descripcion\": \"Dos personas discutieron y se empujaron en la calle.\",\n        \"categoria\": \"Violencia\",\n        \"latitud\": \"-25.2637\",\n        \"longitud\": \"-57.5759\",\n        \"fechaSuceso\": \"2025-08-08\",\n        \"horaSuceso\": \"18:55\",\n        \"etiquetas\": [\n            \"calle\",\n            \"violencia\"\n        ],\n        \"contribuyente\": \"Carlos Medina\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 3,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/ReportesVecinales\"\n    },\n    {\n        \"titulo\": \"Accidente por frenada brusca\",\n        \"descripcion\": \"Un auto impactó al de adelante en tráfico lento.\",\n        \"categoria\": \"Accidente\",\n        \"latitud\": \"-31.6333\",\n        \"longitud\": \"-60.7000\",\n        \"fechaSuceso\": \"2025-06-12\",\n        \"horaSuceso\": \"08:35\",\n        \"etiquetas\": [\n            \"transito\",\n            \"mañana\"\n        ],\n        \"contribuyente\": \"Roberto Sosa\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 3,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/ReportesVecinales\"\n    },\n    {\n        \"titulo\": \"Estafa por falso soporte técnico\",\n        \"descripcion\": \"Un supuesto técnico solicitó claves por teléfono.\",\n        \"categoria\": \"Estafa\",\n        \"latitud\": \"-24.1858\",\n        \"longitud\": \"-65.2995\",\n        \"fechaSuceso\": \"2025-10-05\",\n        \"horaSuceso\": \"16:10\",\n        \"etiquetas\": [\n            \"telefono\",\n            \"engaño\"\n        ],\n        \"contribuyente\": \"yahoo@gmail.com\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 3,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/ReportesVecinales\"\n    },\n    {\n        \"titulo\": \"Robo de bolso en bar\",\n        \"descripcion\": \"El bolso fue sustraído mientras la víctima estaba sentada.\",\n        \"categoria\": \"Robo\",\n        \"latitud\": \"-53.7875\",\n        \"longitud\": \"-67.7090\",\n        \"fechaSuceso\": \"2025-09-18\",\n        \"horaSuceso\": \"22:20\",\n        \"etiquetas\": [\n            \"bar\",\n            \"noche\"\n        ],\n        \"contribuyente\": \"Luciana Fernández\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 3,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/ReportesVecinales\"\n    },\n    {\n        \"titulo\": \"Pelea entre clientes en local\",\n        \"descripcion\": \"Discusión que derivó en golpes sin heridos graves.\",\n        \"categoria\": \"Violencia\",\n        \"latitud\": \"-31.7300\",\n        \"longitud\": \"-60.5300\",\n        \"fechaSuceso\": \"2025-07-11\",\n        \"horaSuceso\": \"21:05\",\n        \"etiquetas\": [\n            \"local\",\n            \"violencia\"\n        ],\n        \"contribuyente\": \"María López\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 3,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/ReportesVecinales\"\n    },\n    {\n        \"titulo\": \"Pelea violenta a la salida de un boliche\",\n        \"descripcion\": \"Dos grupos se enfrentaron durante la madrugada.\",\n        \"categoria\": \"Violencia\",\n        \"latitud\": \"-32.9442\",\n        \"longitud\": \"-60.6505\",\n        \"fechaSuceso\": \"2025-07-28\",\n        \"horaSuceso\": \"03:40\",\n        \"etiquetas\": [\n            \"noche\",\n            \"boliche\"\n        ],\n        \"contribuyente\": \"Juan Rodríguez\",\n        \"multimedia\": null,\n        \"tipoFuente\": \"PROXY\",\n        \"fueExtraido\": null,\n        \"idFuente\": 3,\n        \"linkFuente\": \"https://69344a4e4090fe3bf01f882a.mockapi.io/metamapa/ReportesVecinales\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Agregar fuente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 7,\r\n  \"nombre\": \"API Seguridad Ciudadana\",\r\n  \"link\": \"https://api.ejemplo.com/hechos\",\r\n  \"tipoFuente\": \"PROXY\",\r\n  \"strategyTipoConexion\": \"API REST\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8084/cargadorProxy/agregarFuente",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"cargadorProxy",
+								"agregarFuente"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar fuente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 7,\r\n  \"nombre\": \"API Seguridad Ciudadana\",\r\n  \"link\": \"https://api.ejemplo.com/hechos\",\r\n  \"tipoFuente\": \"PROXY\",\r\n  \"strategyTipoConexion\": \"API REST\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8084/cargadorProxy/eliminar/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"cargadorProxy",
+								"eliminar",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

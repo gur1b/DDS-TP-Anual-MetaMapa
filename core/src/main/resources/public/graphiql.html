@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>MetaMapa – GraphQL Playground</title>
+    <style>
+        :root{
+            --orange:#F47C2C;
+            --orange-2:#FF9A57;
+            --dark:#22252B;
+            --text:#2E2E2E;
+            --muted:#6F7A87;
+            --paper:#fff8f2;
+            --card:#fff;
+            --glass:rgba(255, 255, 255, .85);
+            --radius:18px;
+            --shadow:0 10px 30px rgba(0,0,0,.12);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: var(--paper);
+            color: var(--text);
+            overflow: hidden;
+        }
+
+        header {
+            padding: 16px 24px;
+            border-bottom: 1px solid rgba(0,0,0,.06);
+            background: var(--card);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            position: relative;
+            z-index: 2;
+        }
+
+        header h1 {
+            font-size: 18px;
+        }
+
+        header span {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .tag {
+            border-radius: 999px;
+            padding: 4px 12px;
+            font-size: 11px;
+            background: var(--orange);
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(244,124,44,.35);
+            font-weight: 500;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 320px minmax(0, 1.5fr) minmax(0, 1.2fr);
+            gap: 0;
+            height: calc(100vh - 56px);
+        }
+
+        .panel {
+            border-right: 1px solid rgba(0,0,0,.05);
+            padding: 12px 12px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: var(--card);
+            height: 100%;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .panel:nth-child(2),
+        .panel:nth-child(3) {
+            background: var(--card);
+        }
+
+        h2 {
+            margin: 0;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: var(--dark);
+        }
+
+        .subtitle {
+            font-size: 11px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        label {
+            display: block;
+            font-size: 11px;
+            margin-bottom: 2px;
+            color: var(--muted);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            border-radius: 8px;
+            border: 1px solid rgba(0,0,0,.12);
+            background: var(--paper);
+            color: var(--text);
+            padding: 6px 8px;
+            font-size: 12px;
+            font-family: inherit;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: 2px solid var(--orange-2);
+            outline-offset: 1px;
+            border-color: var(--orange-2);
+        }
+
+        input::placeholder {
+            color: var(--muted);
+        }
+
+        textarea {
+            resize: none;
+            height: 100%;
+            font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 12px;
+        }
+
+        textarea#queryArea {
+            flex: 1;
+            min-height: 0;
+            overflow: auto;
+        }
+
+        .field-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .field-row > div {
+            flex: 1;
+        }
+
+        .filters {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            overflow-y: auto;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        button {
+            border-radius: 999px;
+            border: none;
+            padding: 6px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: transform .08s ease, box-shadow .08s ease, background .08s ease, color .08s ease, border-color .08s ease;
+        }
+
+        button:active {
+            transform: scale(.97);
+            box-shadow: none;
+        }
+
+        .btn-primary {
+            background: var(--orange);
+            color: #fff;
+            box-shadow: 0 6px 16px rgba(244,124,44,.45);
+            font-weight: 500;
+        }
+
+        .btn-primary:hover {
+            background: var(--orange-2);
+        }
+
+        .btn-secondary {
+            background: #fff;
+            color: var(--orange);
+            border: 1px solid rgba(244,124,44,.4);
+        }
+
+        .btn-secondary:hover {
+            background: var(--paper);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--muted);
+        }
+
+        .btn-ghost:hover {
+            background: rgba(0,0,0,.03);
+        }
+
+        .status {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        pre {
+            margin: 0;
+            padding: 8px;
+            background: var(--dark);
+            border-radius: 10px;
+            border: 1px solid rgba(0,0,0,.4);
+            color: #f9fafb;
+            height: 100%;
+            overflow: auto;
+            font-size: 12px;
+            font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            box-shadow: 0 8px 20px rgba(0,0,0,.35);
+        }
+
+        pre#resultArea {
+            flex: 1;
+            min-height: 0;
+            overflow: auto;
+        }
+
+        .pill-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 4px;
+        }
+
+        .pill {
+            padding: 2px 8px;
+            border-radius: 999px;
+            border: 1px solid rgba(0,0,0,.08);
+            font-size: 11px;
+            cursor: pointer;
+            color: var(--muted);
+            background: #fff;
+        }
+
+        .pill:hover {
+            border-color: var(--orange-2);
+            color: var(--orange);
+            box-shadow: 0 3px 10px rgba(0,0,0,.08);
+        }
+    </style>
+
+</head>
+<body>
+<header>
+    <div>
+        <h1>MetaMapa – GraphQL Playground</h1>
+        <span>Servicio Agregador · endpoint <code>/graphql</code></span>
+    </div>
+</header>
+
+<div class="layout">
+    <!-- PANEL 1: filtros "alto nivel" -->
+    <div class="panel">
+        <h2>Constructor de filtros</h2>
+        <div class="subtitle">Genera queries sobre <code>hechos(filter: HechoFilterInput)</code> sin escribir todo a mano.</div>
+
+        <div class="filters">
+            <div>
+                <label for="coleccionId">Colección (coleccionId · ID)</label>
+                <input id="coleccionId" type="text" placeholder="Ej: 1" />
+            </div>
+
+            <div>
+                <label for="textoBuscado">Texto buscado (título / descripción)</label>
+                <input id="textoBuscado" type="text" placeholder="Ej: choque, incendio..." />
+            </div>
+
+            <div class="field-row">
+                <div>
+                    <label for="categoriaNombre">Categoría (nombre)</label>
+                    <input id="categoriaNombre" type="text" placeholder="Ej: Accidente" />
+                </div>
+                <div>
+                    <label for="estado">Estado</label>
+                    <select id="estado">
+                        <option value="">(cualquiera)</option>
+                        <option value="ACEPTADO">ACEPTADO</option>
+                        <option value="INACTIVO">INACTIVO</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="field-row">
+                <div>
+                    <label for="sucesoDesde">Suceso desde</label>
+                    <input id="sucesoDesde" type="date" />
+                </div>
+                <div>
+                    <label for="sucesoHasta">Suceso hasta</label>
+                    <input id="sucesoHasta" type="date" />
+                </div>
+            </div>
+
+            <div class="field-row">
+                <div>
+                    <label for="cargaDesde">Carga desde</label>
+                    <input id="cargaDesde" type="date" />
+                </div>
+                <div>
+                    <label for="cargaHasta">Carga hasta</label>
+                    <input id="cargaHasta" type="date" />
+                </div>
+            </div>
+
+            <div>
+                <label for="idFuente">ID de fuente</label>
+                <input id="idFuente" type="number" placeholder="Ej: 3" />
+            </div>
+
+            <div>
+                <div class="subtitle">Snippets rápidos</div>
+                <div class="pill-row">
+                    <div class="pill" onclick="loadSnippet('choquesColeccion1')">Choques en colección 1</div>
+                    <div class="pill" onclick="loadSnippet('incendios')">Incendios</div>
+                    <div class="pill" onclick="loadSnippet('rangoFecha')">Rango de fecha suceso</div>
+                    <div class="pill" onclick="loadHechosFull()">Hechos – TODO</div>
+                    <div class="pill" onclick="loadColeccionesFull()">Colecciones – TODO</div>
+                    <div class="pill" onclick="loadFuentesFull()">Fuentes – TODO</div>
+                    <div class="pill" onclick="loadTodoFull()">TODO junto</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <button class="btn-ghost" onclick="clearFilters()">Limpiar filtros</button>
+            <button class="btn-secondary" onclick="buildQuery()">Generar query</button>
+        </div>
+    </div>
+
+    <!-- PANEL 2: editor de query -->
+    <div class="panel">
+        <h2>Editor de query</h2>
+        <div class="subtitle">Podés editar la query GraphQL generada o escribir la tuya.</div>
+        <textarea id="queryArea"></textarea>
+        <div class="buttons">
+            <button class="btn-secondary" onclick="loadExampleColeccion()">Ejemplo colección</button>
+            <button class="btn-primary" onclick="runQuery()">Ejecutar query</button>
+        </div>
+        <div class="status" id="statusText">Listo.</div>
+    </div>
+
+    <!-- PANEL 3: resultado -->
+    <div class="panel">
+        <h2>Resultado</h2>
+        <div class="subtitle">Respuesta JSON de <code>/graphql</code>.</div>
+        <pre id="resultArea">{}</pre>
+    </div>
+</div>
+
+<script>
+    const queryArea = document.getElementById('queryArea');
+    const statusText = document.getElementById('statusText');
+    const resultArea = document.getElementById('resultArea');
+
+    const $ = (id) => document.getElementById(id);
+
+    function clearFilters() {
+        ['coleccionId','textoBuscado','categoriaNombre','estado',
+            'sucesoDesde','sucesoHasta','cargaDesde','cargaHasta','idFuente']
+            .forEach(id => {
+                const el = $(id);
+                if (el.tagName === 'SELECT') el.value = '';
+                else el.value = '';
+            });
+    }
+
+    function buildFilterObject() {
+        const filter = {};
+
+        const coleccionId = $('coleccionId').value.trim();
+        if (coleccionId) filter.coleccionId = coleccionId; // ID
+
+        const textoBuscado = $('textoBuscado').value.trim();
+        if (textoBuscado) filter.textoBuscado = textoBuscado;
+
+        const categoriaNombre = $('categoriaNombre').value.trim();
+        if (categoriaNombre) filter.categoriaNombre = categoriaNombre;
+
+        const estado = $('estado').value;
+        if (estado) filter.estado = estado;
+
+        const sucesoDesde = $('sucesoDesde').value;
+        if (sucesoDesde) filter.sucesoDesde = sucesoDesde;
+
+        const sucesoHasta = $('sucesoHasta').value;
+        if (sucesoHasta) filter.sucesoHasta = sucesoHasta;
+
+        const cargaDesde = $('cargaDesde').value;
+        if (cargaDesde) filter.cargaDesde = cargaDesde;
+
+        const cargaHasta = $('cargaHasta').value;
+        if (cargaHasta) filter.cargaHasta = cargaHasta;
+
+        const idFuente = $('idFuente').value;
+        if (idFuente) filter.idFuente = parseInt(idFuente, 10);
+
+        return filter;
+    }
+
+    function buildQuery() {
+        const filter = buildFilterObject();
+        const filterFields = Object.entries(filter)
+            .map(([key, value]) => {
+                if (typeof value === 'number') {
+                    return `    ${key}: ${value}`;
+                } else if (key === 'estado') {
+                    // enum
+                    return `    ${key}: ${value}`;
+                } else if (key === 'coleccionId') {
+                    // ID -> lo mandamos como string para llevarnos bien con el datafetcher
+                    return `    ${key}: "${value}"`;
+                } else {
+                    return `    ${key}: "${value}"`;
+                }
+            })
+            .join('\n');
+
+        const filterBlock = filterFields
+            ? `  hechos(filter: {\n${filterFields}\n  }) {\n`
+            : `  hechos {\n`;
+
+        const query = `{
+${filterBlock}    id
+    titulo
+    descripcion
+    categoria { id nombre }
+    etiquetas { id nombre }
+    fuenteDeOrigen
+    linkFuente
+    fechaCarga
+    fechaSuceso
+    horaSuceso
+    estado
+    ultimaFechaModificacion
+    contribuyente {
+      id
+      nombre
+      mail
+      fechaNacimiento
+    }
+    ubicacion {
+      id
+      latitud
+      longitud
+    }
+    hash
+  }
+}`;
+
+        queryArea.value = query;
+        statusText.textContent = 'Query generada a partir de los filtros.';
+    }
+
+    async function runQuery() {
+        const query = queryArea.value.trim();
+        if (!query) {
+            statusText.textContent = 'No hay query para ejecutar.';
+            return;
+        }
+
+        statusText.textContent = 'Ejecutando query...';
+        resultArea.textContent = '';
+
+        try {
+            const response = await fetch('/graphql', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'web/json',
+                    'Accept': 'web/json'
+                },
+                body: JSON.stringify({ query })
+            });
+
+            const text = await response.text();
+            let json;
+            try {
+                json = JSON.parse(text);
+            } catch (e) {
+                json = { error: 'Respuesta no es JSON válido', raw: text };
+            }
+
+            resultArea.textContent = JSON.stringify(json, null, 2);
+            statusText.textContent = `Listo (status ${response.status}).`;
+        } catch (err) {
+            resultArea.textContent = JSON.stringify(
+                { error: err.message ?? String(err) },
+                null,
+                2
+            );
+            statusText.textContent = 'Error al llamar a /graphql.';
+        }
+    }
+
+    function loadExampleColeccion() {
+        queryArea.value = `{
+  coleccion(id: 1) {
+    id
+    titulo
+    descripcionColeccion
+    hechos {
+      id
+      titulo
+      fechaSuceso
+    }
+  }
+}`;
+        statusText.textContent = 'Ejemplo de query de colección cargado.';
+    }
+
+    function loadSnippet(name) {
+        if (name === 'choquesColeccion1') {
+            $('coleccionId').value = '1';
+            $('textoBuscado').value = 'choque';
+        } else if (name === 'incendios') {
+            $('categoriaNombre').value = 'Incendio';
+        } else if (name === 'rangoFecha') {
+            $('sucesoDesde').value = '2024-01-01';
+            $('sucesoHasta').value = '2025-12-31';
+        }
+        buildQuery();
+    }
+
+    // inicial: query completa de hechos
+    queryArea.value = `{
+  hechos {
+    id
+    titulo
+    descripcion
+    categoria { id nombre }
+    etiquetas { id nombre }
+    fuenteDeOrigen
+    linkFuente
+    fechaCarga
+    fechaSuceso
+    horaSuceso
+    estado
+    ultimaFechaModificacion
+    contribuyente {
+      id
+      nombre
+      mail
+      fechaNacimiento
+    }
+    ubicacion {
+      id
+      latitud
+      longitud
+    }
+    hash
+  }
+}`;
+
+    function loadHechosFull() {
+        queryArea.value = `{
+  hechos {
+    id
+    titulo
+    descripcion
+    categoria { id nombre }
+    etiquetas { id nombre }
+    fuenteDeOrigen
+    linkFuente
+    fechaCarga
+    fechaSuceso
+    horaSuceso
+    estado
+    ultimaFechaModificacion
+    contribuyente {
+      id
+      nombre
+      mail
+      fechaNacimiento
+    }
+    ubicacion {
+      id
+      latitud
+      longitud
+    }
+    hash
+  }
+}`;
+        statusText.textContent = "Query completa de HECHOS cargada.";
+    }
+
+    function loadColeccionesFull() {
+        queryArea.value = `{
+  colecciones {
+    id
+    titulo
+    descripcionColeccion
+    modoDeNavegacion
+    fuentes {
+      id
+      nombre
+      tipoFuente
+      link
+      codigoDeFuente
+      ultimoProcesado
+    }
+    hechos {
+      id
+      titulo
+      fechaSuceso
+      categoria { id nombre }
+    }
+    hechosVisibles {
+      id
+      titulo
+      fechaSuceso
+    }
+  }
+}`;
+        statusText.textContent = "Query completa de COLECCIONES cargada.";
+    }
+
+    function loadFuentesFull() {
+        queryArea.value = `{
+  fuentes {
+    id
+    nombre
+    link
+    tipoFuente
+    codigoDeFuente
+    ultimoProcesado
+  }
+}`;
+        statusText.textContent = "Query completa de FUENTES cargada.";
+    }
+
+    function loadTodoFull() {
+        queryArea.value = `{
+  hechos {
+    id
+    titulo
+    descripcion
+    categoria { id nombre }
+    etiquetas { id nombre }
+    fuenteDeOrigen
+    linkFuente
+    fechaCarga
+    fechaSuceso
+    horaSuceso
+    estado
+    ultimaFechaModificacion
+    contribuyente {
+      id
+      nombre
+      mail
+      fechaNacimiento
+    }
+    ubicacion {
+      id
+      latitud
+      longitud
+    }
+    hash
+  }
+
+  colecciones {
+    id
+    titulo
+    descripcionColeccion
+    modoDeNavegacion
+    fuentes {
+      id
+      nombre
+      tipoFuente
+      link
+      codigoDeFuente
+      ultimoProcesado
+    }
+    hechos {
+      id
+      titulo
+      fechaSuceso
+    }
+    hechosVisibles {
+      id
+      titulo
+      fechaSuceso
+    }
+  }
+
+  fuentes {
+    id
+    nombre
+    link
+    tipoFuente
+    codigoDeFuente
+    ultimoProcesado
+  }
+}`;
+        statusText.textContent = "Query completa TODO (Hechos + Colecciones + Fuentes) cargada.";
+    }
+
+
+</script>
+</body>
+</html>
